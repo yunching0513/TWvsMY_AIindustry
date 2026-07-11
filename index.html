@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>台馬半導體與AI產業分工地圖</title>
-<meta name="description" content="半導體與AI硬體供應鏈聚落的互動地圖：前段製程、先進封裝、後段封測、IC設計與資料中心，一圖看懂台灣與馬來西亞的產業分工。">
+<meta name="description" content="半導體與AI硬體供應鏈聚落的互動地圖與研究文稿：前段製程、先進封裝、後段封測、IC設計與資料中心，一圖看懂台灣與馬來西亞的產業分工。">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="台馬半導體與AI產業分工地圖">
 <meta property="og:title" content="台灣與馬來西亞的產業分工地圖">
-<meta property="og:description" content="半導體與AI硬體供應鏈聚落的互動地圖：前段製程、先進封裝、後段封測、IC設計與資料中心，一圖看懂台灣與馬來西亞的產業分工。">
+<meta property="og:description" content="半導體與AI硬體供應鏈聚落的互動地圖與研究文稿：前段製程、先進封裝、後段封測、IC設計與資料中心，一圖看懂台灣與馬來西亞的產業分工。">
 <meta property="og:url" content="https://yunching0513.github.io/TWvsMY_AIindustry/">
 <meta property="og:image" content="https://yunching0513.github.io/TWvsMY_AIindustry/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="台灣與馬來西亞的產業分工地圖">
-<meta name="twitter:description" content="半導體與AI硬體供應鏈聚落的互動地圖，一圖看懂台灣與馬來西亞的產業分工。">
+<meta name="twitter:description" content="半導體與AI硬體供應鏈聚落的互動地圖與研究文稿，一圖看懂台灣與馬來西亞的產業分工。">
 <meta name="twitter:image" content="https://yunching0513.github.io/TWvsMY_AIindustry/og-image.png">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
@@ -187,6 +187,8 @@
   table.mtx thead th{font-family:var(--latin);font-size:12px;letter-spacing:var(--ls);text-transform:uppercase;
     color:var(--ink-faint);font-weight:600;border-bottom:1.5px solid var(--tint)}
   table.mtx tbody th{font-family:var(--gothic);font-weight:500;color:var(--ink-strong);white-space:nowrap;font-size:13.5px}
+  .co-badge{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:8px;vertical-align:middle;
+    box-shadow:0 0 0 1px rgba(0,0,0,.08)}
   table.mtx td{color:#4a4a4a;font-weight:300;line-height:1.6}
   table.mtx td b{color:var(--ink);font-weight:500}
   table.mtx tr:last-child td,table.mtx tr:last-child th{border-bottom:none}
@@ -210,6 +212,50 @@
   .dash-caveat{font-size:12px;color:var(--ink-faint);font-weight:300;line-height:1.8;margin-top:6px;
     padding:16px 20px;background:var(--panel-soft);border-radius:4px;border-left:2px solid var(--tint)}
   .dash-caveat b{color:#5c5c5c;font-weight:500}
+
+  /* ---- research essays ---- */
+  .essay{border:1px solid var(--line);border-radius:4px;background:var(--panel);
+    padding:clamp(24px,3.5vw,42px);margin-bottom:30px}
+  .essay-kicker{font-family:var(--latin);font-size:13px;letter-spacing:var(--ls-wide);
+    text-transform:uppercase;color:var(--ink-faint);font-weight:600;margin-bottom:10px}
+  .essay h3{font-family:var(--serif);font-size:clamp(20px,2.8vw,27px);font-weight:600;
+    color:var(--ink-strong);line-height:1.5;margin-bottom:8px}
+  .essay-meta{font-family:var(--latin);font-size:14px;color:var(--accent);
+    letter-spacing:var(--ls);font-weight:600;margin-bottom:24px}
+  .essay-meta .zh{font-family:var(--gothic);font-weight:500;color:#5c5c5c;letter-spacing:.04em}
+  .essay p{font-size:14.5px;font-weight:300;color:#4a4a4a;line-height:2.05;margin-bottom:16px}
+  .essay p b{color:var(--ink);font-weight:500}
+  .essay .lead-h{font-family:var(--latin);font-size:13px;letter-spacing:var(--ls-wide);
+    text-transform:uppercase;color:var(--ink-faint);font-weight:600;margin-bottom:12px}
+  .essay details{border:1px solid var(--line);border-radius:4px;background:var(--bg);
+    margin-bottom:12px;overflow:hidden}
+  .essay summary{cursor:pointer;list-style:none;display:flex;align-items:baseline;
+    justify-content:space-between;gap:14px;padding:17px 22px;
+    font-family:var(--serif);font-size:16.5px;font-weight:600;color:var(--ink-strong);
+    transition:.25s var(--ease);line-height:1.5}
+  .essay summary::-webkit-details-marker{display:none}
+  .essay summary::after{content:"+";font-family:var(--latin);font-size:21px;font-weight:500;
+    color:var(--ink-faint);flex:none;transition:.25s var(--ease)}
+  .essay details[open] summary::after{content:"\2212"}
+  .essay summary:hover{color:var(--shu)}
+  .e-my .essay summary:hover,.essay.e-my summary:hover{color:var(--midori)}
+  .essay .d-body{padding:8px 24px 24px;border-top:1px solid var(--line);background:var(--panel)}
+  .essay .d-body h4{font-family:var(--gothic);font-size:15px;font-weight:500;color:var(--ink-strong);
+    margin:24px 0 10px;padding-left:12px;border-left:3px solid var(--shu-soft);line-height:1.6}
+  .essay.e-my .d-body h4{border-left-color:var(--midori-soft)}
+  .essay .d-body p:last-child{margin-bottom:6px}
+  .essay .verdict{background:var(--panel-soft);border-left:2px solid var(--shu);
+    padding:16px 20px;border-radius:4px;margin:20px 0 6px}
+  .essay.e-my .verdict{border-left-color:var(--midori)}
+  .essay .verdict p{margin-bottom:0;font-size:13.5px}
+  .essay ul{list-style:none;margin:0 0 16px}
+  .essay ul li{font-size:14.5px;font-weight:300;color:#4a4a4a;line-height:2;
+    padding-left:20px;position:relative;margin-bottom:8px}
+  .essay ul li::before{content:"";position:absolute;left:2px;top:.95em;width:7px;height:7px;
+    border-radius:50%;background:var(--shu-soft);box-shadow:0 0 0 1px rgba(0,0,0,.06)}
+  .essay.e-my ul li::before{background:var(--midori-soft)}
+  .essay ul li b{color:var(--ink);font-weight:500}
+  .essay .mtx-scroll{margin:14px -6px 20px}
 </style>
 </head>
 <body>
@@ -230,8 +276,8 @@
     </div>
     <div class="viewbtns" id="viewbtns">
       <div class="vbtn active" data-v="all">全區視角</div>
-      <div class="vbtn" data-v="tw">台灣 Taiwan</div>
-      <div class="vbtn" data-v="my">馬來西亞 Malaysia</div>
+      <div class="vbtn" data-v="tw">🇹🇼 台灣 Taiwan</div>
+      <div class="vbtn" data-v="my">🇲🇾 馬來西亞 Malaysia</div>
     </div>
     <div class="layerbtns">
       <div class="lbtn on" id="layer-cluster"><span class="sw"></span>產業聚落</div>
@@ -269,6 +315,8 @@
     <div class="block">
       <div class="block-h">01 · Investment Comparison</div>
       <div class="block-t">重大資料中心與半導體投資金額對照(US$)</div>
+      <p style="font-size:12.5px;color:#5c5c5c;font-weight:300;margin:-14px 0 22px;line-height:1.7">
+        每家公司以其<b style="font-weight:500">品牌代表色</b>呈現;上排 🇹🇼 為台灣、下排 🇲🇾 為馬來西亞。長條長度對應投資金額(以最大值Intel US$7bn為滿刻度)。</p>
       <div class="inv-bars" id="invBars"></div>
       <p class="dash-caveat" style="margin-top:26px"><b>注:</b> 多為「宣布/承諾」金額而非實際落地支出;Nvidia台灣「US$150bn/年」為在台年度採購承諾規模,非單一設施投資,為維持比例可讀性未完整入圖。台灣長條多為晶片設計/製造/R&D投資,馬來西亞多為hyperscaler資料中心:兩者性質不同,對照時應留意。</p>
     </div>
@@ -279,7 +327,7 @@
       <div class="block-t">誰在哪、做什麼</div>
       <div class="mtx-scroll">
         <table class="mtx">
-          <thead><tr><th>公司</th><th><span class="dot-tw">●</span> 台灣 Taiwan</th><th><span class="dot-my">●</span> 馬來西亞 Malaysia</th></tr></thead>
+          <thead><tr><th>公司</th><th>🇹🇼 台灣 Taiwan</th><th>🇲🇾 馬來西亞 Malaysia</th></tr></thead>
           <tbody id="mtxBody"></tbody>
         </table>
       </div>
@@ -291,7 +339,7 @@
       <div class="block-t">電力與水資源的瓶頸風險</div>
       <div class="risk-grid">
         <div class="risk-card">
-          <div class="risk-geo tw">台灣 Taiwan</div>
+          <div class="risk-geo tw">🇹🇼 台灣 Taiwan</div>
           <div class="risk-metric">
             <div class="risk-mtop"><span class="risk-mname">北部電網餘裕</span><span class="risk-mval">受限</span></div>
             <div class="risk-meter"><div class="risk-meterfill" style="width:78%;background:var(--shu)"></div></div>
@@ -309,7 +357,7 @@
           </div>
         </div>
         <div class="risk-card">
-          <div class="risk-geo my">馬來西亞 Malaysia</div>
+          <div class="risk-geo my">🇲🇾 馬來西亞 Malaysia</div>
           <div class="risk-metric">
             <div class="risk-mtop"><span class="risk-mname">化石燃料發電佔比</span><span class="risk-mval">88–92%</span></div>
             <div class="risk-meter"><div class="risk-meterfill" style="width:90%;background:var(--midori)"></div></div>
@@ -330,6 +378,235 @@
     </div>
 
     <p class="dash-caveat"><b>資料來源與時點:</b> 2024–2026年,取自公司公告、Taiwan MOEA/InvesTaiwan、Malaysia MIDA/MITI、Nikkei Asia、Reuters、DigiTimes、The Edge Malaysia、Ember、TransitionZero等。部分為宣布未落地之承諾值;環境數據在政府與環團間存在詮釋爭議;OpenAI/Anthropic在兩國均無實體設施,僅間接供應鏈關係。發表前建議對照一手統計重新查證。</p>
+  </div>
+
+  <!-- ============ RESEARCH ESSAYS ============ -->
+  <div class="dash">
+    <div class="dash-eyebrow">Research Notes</div>
+    <h2>研究文稿</h2>
+    <p class="dash-sub">地圖與儀表板背後的兩份研究文稿：一篇以文獻回顧<b>批判性檢視台灣成功因素</b>的兩套競爭性解釋，一篇梳理<b>馬來西亞科技產業的空間發展史</b>。摘要與研究動機直接呈現，其餘章節點擊標題即可展開全文。</p>
+
+    <!-- ESSAY 01 : TAIWAN -->
+    <div class="essay e-tw">
+      <div class="essay-kicker">Essay 01 &middot; Literature Review &amp; Framework</div>
+      <h3>台灣半導體與AI產業的崛起：發展型國家、全球生產網絡，以及台馬合作的可能性</h3>
+      <div class="essay-meta">文獻回顧與政策框架 &middot; <span class="zh">吳昀慶</span></div>
+
+      <div class="lead-h">Abstract &middot; 摘要</div>
+      <p>英文學術文獻對台灣晶片與AI崛起提出兩套競爭性解釋：<b>發展型國家／產業政策論</b>（Wade、Amsden、瞿宛文、Joseph Wong；工研院→聯電/台積電的衍生模式），以及以廠商為中心的<b>全球生產網絡論</b>（Henry Yeung 的 strategic coupling；Langlois 的垂直分工「消失的手」）。最站得住腳的立場是綜合觀點：國家在1970至80年代確實扮演了決定性的「助產士」角色，但台灣持續性的主導地位，與1980至90年代美國產業 fabless/foundry 分工的偶然轉向、以及冷戰時期的美國市場准入密不可分。這在有條件的意義下支持「跨國分工鏈巧合」假說：偶然性打開了窗口，廠商層次的執行力與先前累積的國家能力讓台灣得以穿越這個窗口。</p>
+      <p>台灣的AI地位大體上是半導體地位的衍生物。台灣主導AI硬體（台積電握有2025年全球晶圓代工營收的69.9%；CoWoS先進封裝近乎壟斷；鴻海占全球AI伺服器市場約40%），但<b>沒有基礎模型、沒有全球平台企業</b>，軟硬體嚴重失衡：這種「硬體鎖定」風險在文獻中尚未被充分理論化。</p>
+      <p>馬來西亞與台灣原則上<b>互補多於競爭</b>（馬來西亞：後段OSAT/ATP約占全球13%、土地、水、較廉價電力、英語勞動力、東協市場准入、地緣政治中立；台灣：先進邏輯製程、先進封裝、IC設計、IP、ODM伺服器整合）。但SilTerra的失敗（1995年起）顯示台灣模式無法整套移植。務實的合作空間在成熟製程晶圓廠、OSAT/先進封裝、AI伺服器與資料中心整合：然而這些正好也是雙方競爭最激烈的區塊。</p>
+
+      <details>
+        <summary>第一部分：文獻所指認的台灣成功驅動因素</summary>
+        <div class="d-body">
+          <h4>1.1 發展型國家經典（作為詮釋證據充分，作為解釋則具爭議）</h4>
+          <p>奠基性著作將台灣（連同南韓）視為東亞「發展型國家」的典範：</p>
+          <p>Robert Wade,《Governing the Market: Economic Theory and the Role of Government in East Asian Industrialization》（1990；增訂版2003、2018，Princeton University Press）。Wade同時拒斥新古典的「自由市場」與粗糙的「國家主義」讀法，主張台灣是一種<b>「受治理的市場」（governed market）</b>：國家引導投資、選擇性保護策略性產業，同時仍仰賴市場機制。</p>
+          <p>Alice H. Amsden,《The Rise of "The Rest": Challenges to the West from Late-Industrializing Economies》（2001，Oxford University Press）。追趕的本質是技術的學習與吸收，並由<b>「互惠控制機制」（reciprocal control mechanism）</b>所強制：補貼的給予以績效標準（出口目標、國產化比率）為條件。Amsden區分「獨立」路徑（台灣、韓國，建立投資研發的本國企業）與「整合」路徑（拉丁美洲，由跨國企業主導）。</p>
+          <p>Alice H. Amsden &amp; Wan-wen Chu,《Beyond Late Development: Taiwan's Upgrading Policies》（2003，MIT Press）。將論證延伸至成熟高科技領域的「後進者」升級，關鍵在<b>「技能、速度與規模」</b>，由政府實驗室（工研院）為民間量產鋪路。</p>
+          <p>Peter B. Evans,《Embedded Autonomy: States and Industrial Transformation》（1995，Princeton University Press）。提出影響深遠的角色類型學：監護者（custodian）、造物主（demiurge）、助產士（midwife）、畜養者（husbandry），以及<b>「鑲嵌自主性」（embedded autonomy）</b>概念（官僚體系既自主，又與民間資本密切連結）。此一類型學支撐了後來的論證：台灣國家較接近<b>助產士</b>（誘導民間廠商進入新部門），而非造物主（國家直接生產）：這與韓國的財閥畜養模式形成對比。</p>
+          <h4>1.2 工研院衍生模式（證據充分，經驗上有完整記錄）</h4>
+          <p>這是產業政策論的經驗骨幹：</p>
+          <ul>
+            <li>工研院（1973年成立）被描述為銜接外國實驗室與本土廠商的「技術中介者」。</li>
+            <li>1976年的RCA技術移轉協議（可追溯至1974年一場技術官僚的早餐會，與會者包括李國鼎人脈圈與RCA的潘文淵）催生了台灣第一座IC廠。</li>
+            <li>工研院衍生出聯電（1980）、台積電（1987）：移轉了「廠房、設備、技術與98名專業人員」，以及台灣光罩（1989）。</li>
+            <li><b>新竹科學園區（1980）</b>集中了廠商、供應商與兩所錨定大學（交大與清大），並提供補貼的土地與水電、低稅率。</li>
+            <li>飛利浦合資案具決定性：張忠謀接洽十餘家IC企業，只有飛利浦回應，入股並提供技術與專利保護傘，錨定了台積電的可信度。</li>
+            <li>ECIPE分析（2024）提供了一個有用的細節：台灣模式從<b>「國家主導的創建」演化為「國家賦能的升級」</b>，刻意避免永久性的國家所有權，將企業推向市場檢驗。</li>
+          </ul>
+          <h4>1.3 純晶圓代工的商業模式創新（證據充分）</h4>
+          <p>張忠謀的創見：專做他人設計、不自有產品的專業代工廠，在文獻中被一致視為催化全球fabless生態系的關鍵一著。張忠謀與台灣科技領導層的創始世代多半持有美國學位（MIT、Stanford），並有德州儀器、貝爾實驗室、IBM的資歷，讓台積電充滿了「受美國訓練的經理人」。</p>
+          <h4>1.4 人力資本與「人才迴流」（證據充分）</h4>
+          <p>AnnaLee Saxenian &amp; Jinn-Yuh Hsu, "The Silicon Valley–Hsinchu Connection: Technical Communities and Industrial Upgrading,"《Industrial and Corporate Change》10(4): 893–920 (2001)；Saxenian, "From Brain Drain to Brain Circulation,"《Studies in Comparative International Development》40(2): 35–61 (2005)；Saxenian,《Regional Advantage》(1994, Harvard UP)。</p>
+          <p>核心主張：矽谷與新竹之間是<b>雙向流動</b>，而非單向的「人才外流」。Saxenian指出，新竹科學園區超過半數的公司由矽谷歸國者創辦，且旅美台灣技術官僚將政策導向市場取向（而非古典國家主義）的模式：包括1985年創建的創投產業。</p>
+          <p><b>爭議：</b>Zhou &amp; Hsu（2008,《Pacific Affairs》）揭示了此模型的限度：人才迴流在北京中關村未能複製，因為先決條件（去中心化的廠商網絡、基於信任的廠商間學習、創投基礎設施、國家對技術移轉的促成）並不存在。這直接關聯到第四部分的可移植性問題。</p>
+          <h4>1.5 創投、租稅獎勵、中小企業網絡（證據充分）</h4>
+          <p>台灣自1985年起建立創投產業（在亞洲屬早），並運用<b>《促進產業升級條例》（1991）</b>為期20年的研發租稅獎勵。中小企業網絡與彈性生產的文獻（Gary Hamilton、Ian Skoggard）強調台灣綿密的分包網絡：不過這套說法更適合PC與零組件時代，而非資本密集的晶圓代工時代。</p>
+          <h4>1.6 AI產業：一個硬體供應鏈的故事（硬體部分證據充分，價值捕獲部分具爭議）</h4>
+          <p>台灣的AI地位建立在實體AI堆疊之上：</p>
+          <ul>
+            <li><b>晶圓代工：</b>台積電握有2025全年全球晶圓代工營收的69.9%（1,225.4億美元），2025年第四季為70.4%（TrendForce，《Taipei Times》2026年3月14日報導），高於2024年的64.4%；先進製程（3nm、2nm）高度集中於台灣。</li>
+            <li><b>先進封裝：</b>CoWoS是Nvidia/AMD GPU的瓶頸環節；台積電CoWoS產能預估在2025至26年間由約每月70,000片擴充至115,000片（產業估計，《TechNews》），OSAT領域另有日月光、矽品、京元電等。</li>
+            <li><b>ODM/伺服器組裝：</b>鴻海（全球AI伺服器市占約40%；董事長劉揚偉，2025年5月29日股東會）、廣達/雲達、緯創、緯穎（自緯創分割）、英業達、和碩、仁寶，加上散熱（奇鋐、雙鴻）、電源（台達電、光寶）、網通（智邦）、載板（欣興、景碩）。2026年第一季五大ODM營收合計超過新台幣2兆元（約630億美元）（TVBS/DIGITIMES）。</li>
+            <li><b>國家戰略：</b>《台灣AI行動計畫》與《人工智慧基本法》草案。</li>
+          </ul>
+          <p><b>學術評估：</b>評論界日益將台灣的AI角色定位為半導體地位的衍生物：「台灣掌握了AI硬體幾乎整個後段」。這同時是一項發現，也是一個研究缺口（見第三部分）。</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>第二部分：批判性／修正主義讀法：偶然性假說的評估</summary>
+        <div class="d-body">
+          <p>核心假說：台灣的成功實質上是<b>全球分工的偶然結果</b>，而非主要歸功於產業政策。這在一批數量可觀且嚴謹的學術研究中獲得部分支持。</p>
+          <h4>2.1 Yeung的strategic coupling論：最有力的結構性挑戰（證據充分，影響深遠）</h4>
+          <p>Henry Wai-chung Yeung,《Strategic Coupling: East Asian Industrial Transformation in the New Global Economy》（2016，Cornell University Press）與<b>《Interconnected Worlds: Global Electronics and Production Networks in East Asia》</b>（2022，Stanford University Press）。</p>
+          <p>核心論證：自1980年代末以來，東亞的領導廠商（台積電、三星、鴻海）已<b>「長大到超出」其母國國家</b>，不再依賴國家支持。因此產業轉型的驅動力是廠商特定策略與「strategic coupling」：嵌入由領導廠商（Apple、Nvidia、Qualcomm）所編排的全球生產網絡，而非國家指導。「我們不能把本國企業的績效讀作國家行動的直接結果。」Yeung稱發展型國家是<b>「必要但不充分條件」</b>。</p>
+          <p>這是支持偶然性論點最重要的單一學術來源，因為它把成功重新框定為與領導廠商編排的GVC耦合：也就是在全球分工中取得有利位置。</p>
+          <h4>2.2 垂直分工／「消失的手」文獻（證據充分，直接支持偶然性論）</h4>
+          <p>Langlois &amp; Steinmueller, "The Evolution of Competitive Advantage in the Global Semiconductor Industry, 1947–1996," 收於Mowery &amp; Nelson (eds.),《The Sources of Industrial Leadership》(1999, Cambridge UP)；Richard Langlois, "The Vanishing Hand,"《Industrial and Corporate Change》(2003)；Macher, Mowery et al. (2002)；Kapoor論互補者；Langlois &amp; Robertson,《Research Policy》21: 297–313 (1992) 論模組化。</p>
+          <p>fabless與foundry的分工，是一場<b>源自美國的產業架構轉變</b>，由模組化設計、晶圓廠成本攀升，以及交易與能力動態所驅動。在1985至1994年間，矽谷約有250家fabless新創誕生；到2002年，全球640家fabless廠商中有475家位於美國。Yeung（2022）明確將這場「fabless革命」記錄為台積電的使能條件。</p>
+          <p><b>對論文的意涵：</b>美國fabless轉向的時機基本上外生於台灣政策。台積電並未創造fabless模式的需求，而是把自己擺在能夠承接美國產業架構本來就會產生之需求的位置上。這強力支持「意外之財」的讀法：但關鍵的但書是，台灣已經（透過工研院/RCA）預先建立了回應的能力。</p>
+          <h4>2.3 冷戰發展主義與美援（證據充分；外生性辯論確實尚未定論）</h4>
+          <p>1950至65年美國對台經濟援助總計約14億美元（依若干估算約當今日的160億美元），約占美國對「遠東」全部經濟援助的15至25%；另有超過30億美元的軍援與土地改革。關鍵來源：Neil Jacoby,《U.S. Aid to Taiwan》(1966)；Amsden與Cumings關於內生與外生因素的辯論；Meredith Woo-Cumings (ed.),《The Developmental State》(1999)；Stephan Haggard,《Pathways from the Periphery》(1990)。</p>
+          <p>Amsden自己承認「美援在最初幾年維繫了政權的存續」，且「把台灣舉為其他窮國的資本主義發展典範，是徒勞的」：這是對個案特殊性的承認，直接關係到可移植性問題。承襲自大陸技術官僚的國民黨國家能力，以及優越的美國市場准入，被論者視為其他後進者無法取得的意外之財。</p>
+          <h4>2.4 產業政策的失敗案例：選擇／倖存者偏誤的證據（證據充分）</h4>
+          <p>這是反駁「明智國家」敘事最有力的經驗案例：</p>
+          <ul>
+            <li><b>DRAM崩潰：</b>「兩兆雙星」計畫下的記憶體廠（茂德、力晶、南亞科等）先被韓國、後被中國超越；國家支持的台灣記憶體公司（TMC）救援案在2009年11月失敗，立法院否決了國發基金新台幣50億元的注資（《IEEE Spectrum》）。該產業投入逾新台幣1兆元，卻缺乏自主技術。</li>
+            <li><b>面板：</b>另一顆「星」；友達與群創（「雙虎」）自2008年後未再復元，被韓中廠商擊敗（《天下雜誌》，2014）。</li>
+            <li><b>太陽能光電：</b>類似的榮枯循環。</li>
+          </ul>
+          <p><b>意涵：</b>同一個國家、用同一套工具（補貼、國發基金、科學園區），施用於DRAM、面板與太陽能，卻失敗了。這是強力證據，顯示晶圓代工的成功被過度歸因於政策，且反映了倖存者偏誤：「不是政策挑中了台積電，是台積電挑中了自己。」DRAM與foundry的分歧（記錄於《天下》「台灣半導體悖論」一文）是理想的個案內對照組。</p>
+          <h4>2.5 計量／量化評估（薄弱但正在成長）</h4>
+          <p>Yang, Huang &amp; Hou, "Tax incentives and R&amp;D activity: Firm-level evidence from Taiwan,"《Research Policy》41(9): 1578–1588 (2012)：對《促進產業升級條例》的研發投資抵減，運用<b>傾向分數配對（propensity-score matching）</b>校正選擇偏誤。</p>
+          <p>RIETI Discussion Paper 25-E-005 (2025), "Science Parks in Taiwan and Their Value-adding Contributions"：運用增廣逆機率加權與交錯差異中的差異法，發現新竹、中科、南科均有正向的額外性（研發、博士雇用、TFP、專利品質）。</p>
+          <p>更廣泛的David, Hall &amp; Toole,《Research Policy》29 (2000) 文獻警告：補貼分配並非隨機（選擇偏誤）。<b>缺口：</b>對於工研院→晶圓代工這一旗艦干預本身的報酬率，目前沒有任何嚴謹的反事實估計。</p>
+          <h4>2.6 為產業政策論辯護的反批判（證據充分）</h4>
+          <p>瞿宛文："Can Taiwan's Second Movers Upgrade via Branding?"《Research Policy》38(6): 1054–1065 (2009)；"Latecomer Upgrading in Taiwan,"《Journal of the Asia Pacific Economy》20(3): 369–384 (2015)；"Catch-up and Learning in Taiwan," 收於Oqubay &amp; Ohno (eds.),《How Nations Learn》(2019, Oxford UP)。瞿主張，針對不同階段調適的產業政策才是台灣成長的驅動力，以此反對市場中心的讀法。</p>
+          <p>Joseph Wong,《Betting on Biotech: Innovation and the Limits of Asia's Developmental State》（2011, Cornell UP）：重要的是，Wong展示了該模式的限度：在前沿生技的根本不確定性（而非可管理的風險）之下，台、韓、星都難以「挑選贏家」。這是對發展型國家論的細緻化，而非單純辯護。</p>
+          <p>Douglas Fuller,《Paper Tigers, Hidden Dragons: Firms and the Political Economy of China's Technological Development》（2016/2019, Oxford UP）：顯示中國龐大的國家主義推動大體失敗，反而是華人管理、外資融資的「混合型」廠商成功。這隱含地警告我們不要把台灣讀成純粹的國家勝利，並將廠商的融資結構與承諾置於國家慷慨之上：這是發展型國家與GPN兩大陣營之間的橋樑。</p>
+          <h4>2.7 「矽盾」文獻（證據充分；詮釋上具爭議）</h4>
+          <p>Chris Miller,《Chip War: The Fight for the World's Most Critical Technology》（2022）；Craig Addison（「矽盾」一詞的創造者）；Kathrin Hille（FT報導）。蔡英文將晶片框定為「讓台灣得以自保的矽盾」。</p>
+          <p><b>爭論：</b>集中作為安全（嚇阻：摧毀戰利品反而嚇阻入侵）對比作為脆弱性（單點故障，反而招致脅迫或鎖定攻擊）。Miller指出這面盾牌「兩面都是刃」。2018年後的美國出口管制、CHIPS法案、台積電的亞利桑那與日本廠、供應鏈碎片化與「真正的民族國家該有晶圓廠」的技術民族主義（Yeung 2022）使爭論更趨尖銳。</p>
+          <div class="verdict"><p><b>第二部分的判斷：</b>證據實質支持一種<b>有條件的偶然性論題</b>。全球分工的重組（fabless轉向）與冷戰地緣政治是必要且大體外生的條件。但純粹的偶然論則走過了頭：工研院/RCA的能力建構與飛利浦的錨定，是刻意的國家作為，讓台灣得以捕捉這個窗口。誠實的表述應是：<b>結構性偶然創造了機會；國家的助產與廠商層次的strategic coupling將它兌現。</b>而DRAM、面板、太陽能的失敗證明國家無法隨心所欲地製造成功：這本身就是反對強政策論、支持偶然性讀法的最有力證據。</p></div>
+        </div>
+      </details>
+
+      <details>
+        <summary>第三部分：研究缺口：文獻薄弱之處</summary>
+        <div class="d-body">
+          <h4>3.1 勞動（主流經典中近乎全面的沉默）</h4>
+          <p>發展型國家與GPN文獻對於晶圓廠勞動條件、工時、電子供應鏈中的移工、廠務作業員的性別組成、職業健康，沉默得驚人。在有記錄的地方，它們坐落於科技與社會研究（STS）與法學文獻，而非政治經濟學。</p>
+          <p><b>RCA台灣案：</b>RCA於1970至92年間在台經營三座工廠，巔峰時雇用約80,000人，使以年輕女性為主的勞動力暴露於<b>「31種毒性物質的雞尾酒」</b>（包括三氯乙烯、苯；SCMP）。2025年1月15日，台灣高等法院判決RCA、奇異、Technicolor及其關係企業應賠償222名原告新台幣1億7,000萬元（約514萬美元）（中央社/Focus Taiwan）。關鍵學術著作：Paul Jobin、陳信行、林宜平於《East Asian Science, Technology and Society》(2011; 2023)。這是台灣史上最大的職業／毒物侵權案：卻幾乎缺席於歌頌同一時代的產業政策敘事。<b>這種抹除本身就是一項發現。</b></p>
+          <h4>3.2 環境與資源（理論化不足）</h4>
+          <p>晶圓廠的水、電、土地、PFAS與碳足跡；為半導體與AI擴張補貼能源的政治經濟學；台灣非核家園與暴增的AI/晶圓廠電力需求之間的張力。技術與環安衛文獻存在，但少有將批判性政治經濟分析與發展型國家辯論整合起來的研究。</p>
+          <h4>3.3 空間／都市與區域規劃（最明確的比較優勢：一個真實的缺口）</h4>
+          <p>科學園區的土地徵收（圈地）、新竹與台南的房價飆升、區域不均、通勤負擔，以及晶圓廠擴張的都市衝擊，在英文政治經濟學文獻中幾乎未被研究。以都市計畫背景而言，這是最能站得住腳、可產出原創一手資料的空間。</p>
+          <h4>3.4 AI產業本身（方法論尚未成熟）</h4>
+          <ul>
+            <li><b>測量：</b>如何定義與測量「AI產業」的成功：產值對比捕獲的價值。</li>
+            <li><b>價值捕獲對比組裝：</b>台灣是捕獲了價值，還是僅僅組裝？伺服器ODM代工的毛利率（個位數）與台積電的代工毛利率之間，揭示了赤裸的內部不對稱。</li>
+            <li><b>軟硬體不對稱：</b>台灣沒有基礎模型、沒有平台企業：台灣蓋了AI工廠，卻不擁有AI。「硬體鎖定」陷阱在評論中被斷言，卻未被嚴謹理論化。</li>
+          </ul>
+          <h4>3.5 比較研究缺口</h4>
+          <p>儘管分析價值明顯，台灣與東南亞後進者（馬來西亞、越南、泰國）之間鮮少有嚴謹的比較：這正是第四部分可以填補的空間。</p>
+          <h4>3.6 方法論缺口</h4>
+          <p>過度仰賴廠商訪談與贏家個案研究（倖存者偏誤：Yeung自己就使用了100多場高階主管訪談）。縱貫性廠商層級微觀資料與反事實／準實驗設計稀缺（2012年《Research Policy》的PSM研究與2025年RIETI的DiD是例外，而非常態）。</p>
+          <h4>3.7 理論缺口</h4>
+          <p>如何調和發展型國家的能動性與GVC/GPN的結構偶然性；運氣、局勢（conjuncture）與路徑依賴在後進發展理論中理論化不足。可在此貢獻：明確地將偶然性（fabless窗口）模型化為結構性機會，而將coupling與國家助產視為在該機會條件下的能動性。</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>第四部分：台馬比較與未來合作</summary>
+        <div class="d-body">
+          <h4>4.1 馬來西亞的科技軌跡（證據充分）</h4>
+          <p>檳城自1972年設立自由貿易區，吸引Intel（1972）、AMD、惠普、Osram、Clarion進駐：電子業FDI的起步早於台灣的晶圓代工時代。馬來西亞成為全球後段重鎮：截至2023年，占全球封裝、測試（ATP）產量約13%，並為全球第六大半導體出口國（MIDA）。</p>
+          <p>Rajah Rasiah的著作群（如《Development and Change》1992；UNU-MERIT工作論文；Best &amp; Rasiah）是不可或缺的英文文獻：檳城深化了能力（研發任務、本地設備與測試系統供應商），卻仍由跨國企業驅動、本土研發薄弱，並受聯邦協調失靈與限制性移民政策（阻礙高科技人才流入）所侷限。互補來源：Hal Hill、K.S. Jomo、Greg Felker、Wong Chan-Yuan；Yeung關於馬來西亞的GPN研究。</p>
+          <p><b>核心謎題：為何馬來西亞在電子業FDI起步更早，卻未能向上游的晶圓製造移動，而台灣做到了？</b>Rasiah的答案：跨國企業主導的「截斷式」營運、本土廠商形成薄弱、系統性協調不足：對比台灣由國家建構的本土能力與歸國工程師網絡。</p>
+          <h4>4.2 SilTerra：移植失敗的關鍵個案（證據充分）</h4>
+          <p>SilTerra（1995年11月創立，原名Wafer Technology Malaysia；1999年改名；馬哈迪的國家級計畫；2000年首次出片）是可移植性論證中最具啟發性的比較對象。</p>
+          <p><b>失敗原因：</b>長期虧損；執行長「旋轉門」；以及最關鍵的：本土IC設計產業發育不良，無法產生足夠的代工訂單（對比：台積電的需求來自美國的fabless生態系，而非本國設計業）。國庫控股（Khazanah）於2021年將其出售給DNeX（60%）與China Growth Partners Fund（40%）。它始終未能突破200mm與成熟製程。</p>
+          <p>SilTerra對比台積電，是可移植性論證的錨定個案研究：<b>相同的雄心（純晶圓代工），相反的結果。</b>決定性差異不在國家意志，而在是否存在已耦合的全球領導廠商客戶基礎，以及先前的能力積累：這直接印證了Yeung/Langlois的結構性讀法，勝過唯意志論的政策讀法。</p>
+          <h4>4.3 馬來西亞當前的推進（證據充分；成果尚待檢驗）</h4>
+          <ul>
+            <li><b>國家半導體策略（NSS）</b>，由總理安華於2024年5月28日在SEMICON SEA發表：至少250億馬幣（約53億美元）財政支持；十年三階段；目標培訓與升級60,000名工程師、建立至少10家設計／先進封裝冠軍企業（各10億至47億馬幣營收），並吸引5,000億馬幣投資（《The Edge Malaysia》；MIDA；Digital News Asia）。第一階段是將OSAT升級至先進封裝；晶圓廠推遲至第三階段（國貿部長Zafrul：「我們現在還負擔不起」）。</li>
+            <li>檳城於2023年吸引創紀錄的<b>610億馬幣</b>半導體FDI：超過此前七年總和：其中包括Intel的300億馬幣先進封裝廠（Digital News Asia）。英飛凌承諾投入250億馬幣（碳化矽，居林）。</li>
+            <li><b>柔佛資料中心熱潮：</b>YTL與Nvidia的43億美元AI基礎設施協議（已投入24億美元，建成200MW）；柔佛預計於2030年占全國資料中心產能約60%；柔佛－新加坡特別經濟區（2025年1月）；馬來西亞工業電價約每度0.10美元，對比新加坡的約0.27美元。</li>
+            <li>ARM授權協議（2025）；國家AI辦公室（2024年底成立）；MyDIGITAL/數位部；目標於2030年成為「AI國家」。</li>
+            <li><b>美國出口管制：</b>馬來西亞於2025年7月14日對美國原產先進AI晶片實施策略性貿易許可（1/2025號指令），因美方將馬來西亞視為轉運樞紐而加強審查（新加坡涉DeepSeek的詐欺案；美國草擬中的licensing規則鎖定馬來西亞與泰國）。這是馬來西亞資料中心戰略的一項即時脆弱性。</li>
+          </ul>
+          <h4>4.4 結構性限制（證據充分）</h4>
+          <p><b>人才：</b>馬來西亞半導體產業協會（MSIA）的Wong Siew Hai表示，馬來西亞每年流失約15%的人才至新加坡、台灣、美國與歐洲：「薪資膨脹，人才庫卻沒有成長」（CGS International的Shafiq Kadir：高等教育「在培養具備正確技能組合的畢業生上準備不足」）。</p>
+          <p>土著（Bumiputera）政策對人力資本形成與廠商創建的影響；官聯企業（GLC）主導；依賴跨國企業而非本土冠軍；令吉與薪資結構；本地研發強度低；技職教育（TVET）管道斷裂；跨政府的政策不連續。</p>
+          <p><b>資料中心就業的批判：</b>ISEAS的Sara Loo等人警告，就業承諾可能是「幻覺」：一座設施只需50至200名員工，「機器大多自己運轉」。柔佛的水電壓力（2019年曾有25萬柔佛人面臨缺水）是永續性風險。</p>
+          <h4>4.5 台商在馬來西亞的布局（證據充分）</h4>
+          <p>鴻海與DNeX：2022年5月簽署MoU，興建12吋晶圓廠，28/40nm，月產能40,000片（估計30至50億美元）；鴻海（透過Big Innovation Holdings）持有DNeX約5%並擁有一席董事，藉此間接持有SilTerra曝險。更廣泛的China+1與友岸外包動態；日月光/Aemulus、Inari Amertron、世界先進、南亞科的關係；馬來西亞積極招攬台商。</p>
+          <h4>4.6 互補對比競爭：核心的分工分析</h4>
+          <div class="mtx-scroll">
+            <table class="mtx">
+              <thead><tr><th>面向</th><th>🇹🇼 台灣掌握</th><th>🇲🇾 馬來西亞提供</th></tr></thead>
+              <tbody>
+                <tr><th>製造</th><td>先進邏輯製程（3nm/2nm）、先進節點集中</td><td>成熟製程產能（經鴻海-DNeX的28/40nm）、200mm</td></tr>
+                <tr><th>封裝</th><td>CoWoS/SoIC先進封裝</td><td>既有OSAT/ATP基礎（全球約13%）、先進封裝企圖</td></tr>
+                <tr><th>設計/IP</th><td>IC設計（聯發科、聯詠）、IP、設計服務</td><td>新生的IC設計（檳城、雪蘭莪聚落）</td></tr>
+                <tr><th>系統</th><td>ODM AI伺服器整合（鴻海約40%市占）</td><td>資料中心產能（柔佛）、電力/土地/水</td></tr>
+                <tr><th>使能條件</th><td>深厚的中小企業供應鏈、設備與材料</td><td>英語勞動力、東協市場門戶、地緣政治中立</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p><b>互補向量（務實可行）：</b>服務車用、物聯網、連網的成熟製程晶圓廠；OSAT與先進封裝的共同開發；結合馬來西亞電力與台灣ODM know-how的AI伺服器與資料中心整合；設備與測試系統在地化。</p>
+          <p><b>競爭碰撞（必須坦白）：</b>雙方恰恰在重疊之處競爭：成熟製程晶圓廠、後段封裝、資料中心。馬來西亞NSS第一階段的目標（OSAT升級至先進封裝）鎖定的正是日月光、矽品、京元電的地盤。任何政策簡報都必須明白指出這項張力。</p>
+          <h4>4.7 政策學習與可移植性問題（證據充分；這是第四部分誠實的核心）</h4>
+          <p><b>馬來西亞可以合理向台灣學習的：</b>工研院的「技術中介者」模式（馬來西亞的MIMOS是對應機構，但資源不足）；科學園區的聚落模式；透過授權進行技術移轉；在投入晶圓廠之前先建立本土IC設計的需求基礎（SilTerra的教訓）；國發基金那種有紀律、以衍生為導向的角色。</p>
+          <p><b>無法移植的（正面回應可移植性問題）：</b>台灣模式仰賴 (i) 冷戰時期的美援、市場准入與安全保證；(ii) 特定的威權時期國家與社會構型，具備外省技術官僚能力；(iii) 外生的1980至90年代美國fabless窗口；以及 (iv) 矽谷的華人工程師離散網絡（Saxenian的人才迴流）。這些馬來西亞一項也沒有。政策流動性（policy mobility）文獻，以及「台灣模式」在他處反覆失敗的紀錄：SilTerra（馬來西亞）、印度停滯的晶圓廠嘗試、越南：都證實制度難以旅行。Zhou &amp; Hsu（2008）論北京人才迴流複製失敗，是此處的理論錨點。</p>
+          <p><b>台灣可以向馬來西亞學習的（被低估的反向流動）：</b>能源與土地的可得性；東協外交空間與不結盟（台灣結構上欠缺的避險）；外籍人才的開放性與英語環境：這些都是台灣面臨硬性限制的領域（非核家園下的電力充裕性；外交孤立；人才短缺；外籍人才的語言障礙）。</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>建議與注意事項</summary>
+        <div class="d-body">
+          <h4>建議（給論文與政策簡報）</h4>
+          <p><b>第一階段：框架（立即）。</b>將論文圍繞發展型國家對比GPN/strategic coupling的辯論組織成文獻主軸。採取明確的綜合框架：Evans的助產士角色＋Yeung的strategic coupling＋Langlois的結構性窗口，形式化為「結構性偶然創造機會；國家助產與廠商耦合將它兌現」。運用DRAM/面板/太陽能的失敗作為個案內對照組，證明國家無法隨心所欲地製造成功：這是支持偶然性論題最有力的單一論證。</p>
+          <p><b>第二階段：原創貢獻（核心）。</b>將新穎主張押注在勞動、環境、都市空間的缺口（§3.1至3.3）：此處都市計畫背景具決定性，而文獻最為薄弱。就新竹與台南的土地徵收、房價、通勤產出一手資料：這是最站得住腳的新穎性，並直接回應方法論缺口（§3.6）。</p>
+          <p><b>第三階段：比較性酬載。</b>以SilTerra對比台積電作為可移植性的錨定比較個案，並以台馬互補／競爭矩陣（§4.6）作為政策簡報的核心。坦白陳述競爭碰撞（成熟製程晶圓廠、封裝、資料中心），而非只呈現雙贏框架。</p>
+          <h4>足以改變判斷的觀察指標</h4>
+          <ul>
+            <li>若馬來西亞的NSS在2030年前產出至少一家具全球競爭力的本土設計或先進封裝冠軍企業，「跨國企業依賴／中等收入陷阱」論題將實質弱化。</li>
+            <li>若台積電的海外廠（亞利桑那/日本/德國）達到與台灣同等的先進製程水準，「矽盾」邏輯與「台灣集中」前提都將弱化。</li>
+            <li>若美國對馬來西亞的AI晶片出口管制收緊為正式的licensing制度，柔佛的資料中心論題將實質受損：這是需要追蹤的變數。</li>
+            <li>若出現對晶圓代工時代干預措施的嚴謹反事實廠商層級評估，政策有效性辯論或可終獲裁決；在此之前，它仍在結構上懸而未決。</li>
+          </ul>
+          <h4>注意事項</h4>
+          <p><b>各部分的來源品質不一。</b>第一與第二部分建立在同儕審查的專書與期刊之上（Wade、Amsden、Evans、Yeung、瞿宛文、Fuller、Saxenian、Langlois；《Research Policy》、《Industrial and Corporate Change》），可作為學術引用。而AI供應鏈與馬來西亞時事的材料，多來自產業與媒體來源（DIGITIMES、天下、The Edge Malaysia、Forbes、MIDA、TrendForce）。市占率、產能與FDI數字應視為指示性且時點限定於2025至26年，在發表前需對照一手統計（SEMI、經濟部、MIDA、公司申報）重新查證。</p>
+          <p>若干數字是預測，而非已實現的結果（柔佛於2030年占約60%產能；CoWoS產能爬坡；NSS目標）。應標註為前瞻性陳述。</p>
+          <p>「偶然性對比政策」這一核心問題，在缺乏反事實設計的情況下無法經驗性地定案：論文應提出有理據的詮釋，而非宣稱因果證明。</p>
+          <p>RCA的數字（巔峰雇用約80,000人；31種物質；早期報導引述的逾1,300起癌症案例，對比2025年1月判決的222名原告）來自一場歷時二十年、涉及多個原告群體的訴訟的不同階段：請精確引用特定判決與原告群體，避免混淆。</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- ESSAY 02 : MALAYSIA -->
+    <div class="essay e-my">
+      <div class="essay-kicker">Essay 02 &middot; Research Background</div>
+      <h3>馬來西亞科技產業的仕途：國家空間重構與全球AI資本的歷史性疊合</h3>
+      <div class="essay-meta">研究背景與文獻探討 &middot; <span class="zh">顏聖錝</span></div>
+
+      <div class="lead-h">Motivation &middot; 研究背景與動機</div>
+      <p>回顧馬來西亞半個世紀以來的科技產業發展史，可以清晰地看見一條國家機關試圖透過「空間重構（state spatial restructuring）」來接軌全球資本的軌跡。從 1970 年代在檳城（Penang）設立自由貿易區，成功吸引 Intel 等美商進駐並打造出具備高度韌性的「東方矽谷」；到 1990 年代末期，馬哈迪政府傾國家之力，試圖在多媒體超級走廊（MSC）的框架下，由上而下打造以「亞洲矽谷」為宏圖的賽城（Cyberjaya）；乃至 2006 年啟動柔佛州的依斯干達特區（Iskandar Malaysia），如今更順勢成為東南亞最受矚目的 AI 資料中心聚落。多年來，馬來西亞透過這一系列連貫的都市巨型計畫（urban mega-projects），不斷向國際展現其企圖躋身「世界級玩家（world-class player）」的強烈野心。</p>
+      <p>然而，弔詭的是，回顧過去幾十年的學術文獻，學界對馬來西亞科技產業的評價其實普遍帶有濃厚的悲觀色彩與批判性。多數研究認為，這種高度依賴外國直接投資（FDI）的發展模式，本質上是一種「依賴型工業化」，不僅無助於本土技術的內生化，更讓馬來西亞長年深陷於低附加價值的代工泥淖中。但現實的發展卻似乎與學術界的悲觀預期產生了巨大落差——在當前全球 AI 產業爆發、各國對高階科技基礎設施無不競爭激烈的時刻，過去被批判為「缺乏原生創新環境」的馬來西亞，竟實打實地吸引了微軟、Google、Nvidia 等國際科技巨擘捧著百億資本爭相進駐。</p>
+      <p>值得讓人關注的是，究竟是過去的學術理論在解釋當代科技資本流動時出現了盲點？又或是，這波 AI 巨頭的進駐，其所看重的根本不是馬來西亞的「技術創新能力」，而是馬來西亞歷經多年空間重構後，所積累下來的特定空間與資源優勢？這正是本研究試圖解開的核心謎團。我們有必要重新將馬來西亞的科技業發展，置放在全球科技資本的空間邏輯下進行檢視，探討國家如何透過空間重構來回應國際資本的需求，而這又將如何重塑馬來西亞在全球 AI 價值鏈中的真實位置。</p>
+
+      <details>
+        <summary>二、文獻探討</summary>
+        <div class="d-body">
+          <p>要釐清馬來西亞在當代 AI 發展潮中的矛盾定位，我們必須先回到學界對其「依賴型發展」與「空間計畫」的歷史批判脈絡中。</p>
+          <p>在探討馬來西亞科技產業的技術追趕歷程時，早期的政治經濟學與創新系統研究多半將焦點放在「外資與本土經濟的斷裂」上。Jomo（1993）與 Rasiah（1995）的經典研究早就指出，馬來西亞在檳城所建立的電子產業奇蹟，某種程度上是一種<b>「飛地經濟（enclave economy）」</b>。跨國巨頭雖然帶來了就業機會與硬體設備，但核心的研發設計始終留在母國。Hobday（1995）在比較東亞四小龍的技術追趕軌跡時也直言，相較於台灣透過國家級研究機構成功將技術轉譯給本土企業，馬來西亞的國家創新系統存在著結構性的匱乏。這種缺乏衍生公司（spin-off）機制與技術溢散效應的困境，導致馬來西亞的本土企業長期在價值鏈的底層徘徊（Rasiah, 2010；Wong, 2011）。就此脈絡觀之，學界對馬來西亞科技業的悲觀，主要源自於其始終無法建立一套能自主造血的本土創新體系。</p>
+          <p>面對這種技術升級的瓶頸，馬來西亞國家機關的解方，往往是訴諸於更宏大的空間重構與巨型計畫。Bunnell（2002）在針對賽城的批判性研究中犀利地指出，政府過度沉溺於<b>「科技烏托邦」</b>的迷思，誤以為只要透過國家力量投入大量的硬體基礎建設、劃設科學園區，就能自然孕育出如美國矽谷般的軟體創新文化。但事實證明，這種剝離在地社會脈絡、由上而下強行植入的空間發展模式，最終往往讓賽城淪為房地產開發項目或是跨國企業外包低階文書處理的集散地，難以達成實質的技術升級。相對而言，Hutchinson（2009）認為檳城之所以能維持一定程度的聚落韌性，反而是因為地方政府在招商引資與產學協同上，展現了由下而上的制度靈活性，而非單純仰賴聯邦政府的巨型空間劃設。</p>
+          <p>當我們將這些文獻的批判視角延伸至當前的 AI 產業浪潮時，似乎就能看出一些端倪。近期的研究如 Kam（2025）與 Othman（2025）指出，馬來西亞在面臨新一波 AI 晶片與資料中心擴張時，依然面臨著嚴重的高階人才斷層與技術落差。Lee（2021）的實證分析也提醒，本土半導體廠商在試圖跨入 AI 晶片設計時，仍面臨難以跨越的專利壁壘。這意味著，過去學界所擔憂的「依賴型發展」與「創新能力匱乏」等核心結構問題，其實至今並未真正獲得解決。</p>
+          <div class="verdict"><p>既然技術能力並未產生質變，跨國 AI 資本為何仍蜂擁而至？這或許正凸顯了當代 AI 資本積累的特殊空間需求。AI 時代的基礎設施（如超大規模資料中心）所需的，可能不再是高度密集的研發腦力，而是<b>極度龐大的土地、穩定且低廉的水電能源，以及一個相對中立的地緣政治避風港</b>。馬來西亞過去數十年來為了打造「世界級」科技園區所進行的國土空間重構（如賽城的電網腹地與依斯干達特區的廣大腹地），意外地在今日成為了承載這些「高耗能、高耗水」科技巨獸的最佳空間容器。這也暗示了，當前 AI 資料中心進駐馬來西亞吃到的「紅利」，可能並非來自於其克服了技術追趕的困局，而是跨國資本在尋找新的<b>「空間修補（spatial fix）」</b>時，與馬來西亞既有的都市巨型計畫產生了歷史性的偶然疊合。</p></div>
+        </div>
+      </details>
+
+      <details>
+        <summary>三、馬來西亞科技產業發展脈絡</summary>
+        <div class="d-body">
+          <p>馬來西亞的科技產業發展，是一部由國家力量主導空間規劃、承接跨國外資資本，並試圖在全球價值鏈中不斷向上攀升的歷史。其軌跡可以劃分為四個關鍵時期：從 1970 年代的「飛地經濟」奠基、1990 年代的「科技烏托邦」實驗、千禧年後的技術升級陣痛，直到現今迎來 AI 與算力重組的新紀元。以下綜合學術文獻、官方政策與機構報告，梳理馬來西亞科技業的發展史與趨勢。</p>
+          <h4>1970－1980年代：自由貿易區與「東方矽谷」的崛起</h4>
+          <p>馬來西亞科技業的起點，並非源自本土技術的內生演化，而是為了解決高失業率與經濟危機所採取的「外向型工業化（Export-Oriented Industrialization）」政策。1972 年，在聯邦政府與檳城首席部長林蒼祐的主導下，設立了全馬第一個自由貿易區（FTZ）。檳城發展機構（PDC）憑藉免稅優惠、完善的基礎設施與廉價勞動力，成功吸引了 Intel、AMD 等八家被稱為<b>「八大武士（Eight Samurai）」</b>的跨國科技巨頭進駐（Hutchinson, 2009）。經濟學者 Jomo (1993) 與 Rasiah (1995) 嚴厲批判此時期的發展模式為「飛地經濟（Enclave Economy）」。跨國企業雖然帶來了就業與出口數據，但由於缺乏強制性的技術轉移條款，其核心研發仍留在母國，導致外資與本土中小企業之間存在嚴重的技術斷鏈。這段時期，馬來西亞成功在全球半導體後端「封裝與測試（OSAT）」環節站穩腳跟，但也埋下了過度依賴外資（FDI）的隱憂。</p>
+          <h4>1990－2020年代：多媒體超級走廊與「國家創新系統」的嘗試</h4>
+          <p>面對 1990 年代末全球網際網路的興起與亞洲四小龍的技術追趕，馬哈迪政府意識到單靠硬體代工無法維持競爭力，轉而發起由上而下的「都市巨型計畫（Urban Mega-Project）」。政府劃設了「多媒體超級走廊（MSC）」，並斥巨資打造以「亞洲矽谷」為目標的賽城（Cyberjaya），試圖將產業重心從硬體製造轉向軟體與多媒體創新。學者 Bunnell (2002) 對此提出強烈批判，認為這種剝離在地社會脈絡、迷信「硬體建設即能帶來軟體創新」的空間發展模式，最終未能如願孕育出本土的軟體巨頭。同時，儘管政府成立了微電子系統研究院（MIMOS）試圖推動本土 IC 設計，但 Wong (2011) 指出，馬來西亞的國家創新系統（NIS）存在嚴重的產學研斷鏈。由於缺乏如台灣工研院那種將技術轉化為衍生公司（Spin-off）的機制，馬來西亞在試圖向上游研發躍升時遭遇了嚴重的結構性挫敗（Hobday, 1995）。</p>
+          <p>進入 21 世紀第二個十年，中國的紅色供應鏈崛起對馬來西亞的低階代工帶來龐大壓力；然而，隨後爆發的美中貿易戰與科技戰，意外為馬來西亞帶來了「中國+1」的轉單紅利。儘管檳城的本土供應鏈在自動化設備製造上有所突破，但整體產業仍面臨嚴峻的技術升級瓶頸。學者 Lee (2021) 透過實證研究警告，本土廠商在跨入高階晶片設計時遭遇巨大的專利壁壘。更致命的是，Hutchinson &amp; Lee (2026) 指出，因薪資結構停滯，馬來西亞面臨高階理工人才大量流失至新加坡的磁吸效應，嚴重削弱了其研發潛力。</p>
+          <h4>2024 年迄今：AI 算力樞紐與國家半導體戰略</h4>
+          <p>當前，全球進入生成式 AI 與大語言模型的軍備競賽，馬來西亞的科技產業發展迎來了兩條截然不同、卻又相互支撐的全新軌跡。</p>
+          <p><b>政策領航：《國家半導體戰略》（NSS）力拚高階製造。</b>根據投資貿易與工業部（MITI）與 CREST 發布的藍圖，馬來西亞政府於 2024 年撥款 53 億美元，誓言擺脫單純的代工角色。政策核心轉向吸引外資設立先進封裝（Advanced Packaging）與高頻寬記憶體（HBM）產線。同時，官方正積極籌組本土「無晶圓廠聯盟（Fabless Consortium）」，試圖透過主權資金投資深科技初創企業，以填補過去數十年來在 IC 設計領域的空白（CREST, 2024; Othman, 2025）。</p>
+          <p><b>空間重構的新戰場：東南亞百億 AI 資料中心。</b>過去為軟體園區預留的廣大腹地（如賽城）與 2006 年啟動的柔佛依斯干達特區（Iskandar Malaysia），在今日意外成為承接 AI 算力基礎設施的絕佳容器。馬來西亞憑藉著相對廉價的水電成本、廣袤的土地與地緣政治的「中立避風港」優勢，成功吸引微軟、Google 與 Nvidia 等巨頭進駐（Fourteau, 2025）。然而，這也帶來了嚴峻的國土空間與資源挑戰。官方資料與學術研究（MIDA, 2025; Kam, 2025）皆指出，這些被稱為「吃電/吃水怪獸」的資料中心，正引發與民生用水競合及國家電網超載的危機。為解決外資的綠電需求（RE100），政府頒布了「企業再生能源供應計畫（CRESS）」，允許資料中心直接向民間購買綠電。未來的科技園區將被迫朝向高用水效率（WUE）與綠色能源閉環設計轉型（PETRA, 2025）。</p>
+        </div>
+      </details>
+    </div>
   </div>
 </div>
 
@@ -568,43 +845,44 @@
   });
 
   // ================= DASHBOARD: investment bars =================
-  // [name, company, TW value (US$bn), MY value (US$bn)]  (0 = none/na)
+  // [name, company, TW value (US$bn), MY value (US$bn), brandColor]
   var INV = [
-    ['資料中心 · 雲端','AWS',5.0,6.2],
-    ['資料中心','Microsoft',0.31,2.2],
-    ['資料中心','Google',1.6,2.0],
-    ['AI資料中心','Nvidia–YTL',0,4.3],
-    ['先進封裝/半導體','Intel',0,7.0],
-    ['R&D中心','AMD',0.27,0]
+    ['資料中心 · 雲端','AWS',5.0,6.2,'#FF9900'],
+    ['資料中心','Microsoft',0.31,2.2,'#00A4EF'],
+    ['資料中心','Google',1.6,2.0,'#4285F4'],
+    ['AI資料中心','Nvidia–YTL',0,4.3,'#76B900'],
+    ['先進封裝/半導體','Intel',0,7.0,'#0071C5'],
+    ['R&D中心','AMD',0.27,0,'#ED1C24']
   ];
   var maxInv = 7.0;
   var invHtml = INV.map(function(r){
-    var tw = (r[2]/maxInv*100), my=(r[3]/maxInv*100);
-    function bar(cls,geo,pct,val){
+    var tw = (r[2]/maxInv*100), my=(r[3]/maxInv*100), col=r[4];
+    function bar(geo,pct,val,shade){
       return '<div class="bar-track"><span class="bar-geo">'+geo+'</span>'+
-        '<span class="bar-outer"><span class="bar-fill '+cls+'" style="width:'+(val>0?pct:0)+'%"></span></span>'+
+        '<span class="bar-outer"><span class="bar-fill" style="width:'+(val>0?pct:0)+'%;background:'+shade+'"></span></span>'+
         '<span class="bar-val">'+(val>0?('$'+val+'bn'):'—')+'</span></div>';
     }
+    // TW = full brand color, MY = a lighter tint of the same brand color, so each company reads as one hue
     return '<div class="inv-row"><div class="inv-label"><span class="inv-name">'+r[0]+
-      '<span class="co">'+r[1]+'</span></span></div><div class="inv-bars">'+
-      bar('bar-tw','TW',tw,r[2])+bar('bar-my','MY',my,r[3])+'</div></div>';
+      '<span class="co" style="color:'+col+';font-weight:600">'+r[1]+'</span></span></div><div class="inv-bars">'+
+      bar('🇹🇼',tw,r[2],col)+bar('🇲🇾',my,r[3],col)+'</div></div>';
   }).join('');
   document.getElementById('invBars').innerHTML = invHtml;
 
   // ================= DASHBOARD: matrix =================
   var MTX = [
-    ['Google','彰化/台南/雲林資料中心;台北AI硬體工程中心(美國外最大)','Elmina, Selangor(US$2bn,2026完工)'],
-    ['Microsoft','Azure Taiwan North(傳桃園,2026)','Malaysia West(US$2.2bn,2025)'],
-    ['AWS','Asia Pacific Taipei(US$5bn,2025)','Asia Pacific Malaysia(US$6.2bn,2024)'],
-    ['Nvidia','Constellation全球總部;國家AI超級電腦','YTL AI DC(US$4.3bn,Johor)'],
-    ['Intel','<span class="cell-none">少量業務</span>','Penang先進封裝(US$7bn,逾萬人)'],
-    ['AMD','台南/高雄R&D(US$270m)','Penang封測 + GBS(1,200+)'],
-    ['Apple/TSMC','TSMC主要晶片供應(2nm);R&D','<span class="cell-none">無製造</span>;19家供應商廠'],
-    ['Tesla','<span class="cell-none">無製造</span>;Powerwall儲能','Cyberjaya總部+展示廳(2023)'],
-    ['OpenAI/Anthropic','<span class="cell-none">無設施</span>;OpenAI綁TSMC/Foxconn供應鏈','<span class="cell-none">無設施</span>']
+    ['Google','#4285F4','彰化/台南/雲林資料中心;台北AI硬體工程中心(美國外最大)','Elmina, Selangor(US$2bn,2026完工)'],
+    ['Microsoft','#00A4EF','Azure Taiwan North(傳桃園,2026)','Malaysia West(US$2.2bn,2025)'],
+    ['AWS','#FF9900','Asia Pacific Taipei(US$5bn,2025)','Asia Pacific Malaysia(US$6.2bn,2024)'],
+    ['Nvidia','#76B900','Constellation全球總部;國家AI超級電腦','YTL AI DC(US$4.3bn,Johor)'],
+    ['Intel','#0071C5','<span class="cell-none">少量業務</span>','Penang先進封裝(US$7bn,逾萬人)'],
+    ['AMD','#ED1C24','台南/高雄R&D(US$270m)','Penang封測 + GBS(1,200+)'],
+    ['Apple/TSMC','#A6392C','TSMC主要晶片供應(2nm);R&D','<span class="cell-none">無製造</span>;19家供應商廠'],
+    ['Tesla','#CC0000','<span class="cell-none">無製造</span>;Powerwall儲能','Cyberjaya總部+展示廳(2023)'],
+    ['OpenAI/Anthropic','#2E6B4E','<span class="cell-none">無設施</span>;OpenAI綁TSMC/Foxconn供應鏈','<span class="cell-none">無設施</span>']
   ];
   document.getElementById('mtxBody').innerHTML = MTX.map(function(r){
-    return '<tr><th>'+r[0]+'</th><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>';
+    return '<tr><th><span class="co-badge" style="background:'+r[1]+'"></span>'+r[0]+'</th><td>'+r[2]+'</td><td>'+r[3]+'</td></tr>';
   }).join('');
 
   function fix(){ map.invalidateSize(); setView('all'); }

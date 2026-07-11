@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台馬半導體與AI產業分工地圖</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&family=DM+Sans:wght@400;500&display=swap');
+  :root{
+    --bg:#F2F2F2;--panel:#FFFFFF;--panel-soft:#F1F1F1;
+    --ink:#333333;--ink-strong:#000000;--ink-faint:#9a9a9a;
+    --line:#dcdcdc;--tint:#D6DCE0;--accent:#b8a98c;
+    --shu:#A6392C;--shu-soft:#E7D3CC;--midori:#2E6B4E;--midori-soft:#D6DFD7;
+    --ls-wide:0.16em;--ls:0.08em;--ease:cubic-bezier(.22,.61,.36,1);
+    --gothic:"Noto Sans TC",sans-serif;
+    --body:"DM Sans","Noto Sans TC",sans-serif;
+    --latin:"Cormorant","Noto Serif TC",serif;
+    --serif:"Noto Serif TC",serif;
+    /* stage accents, muted to fit the palette */
+    --wafer:#A6392C;--pkg:#2E6B4E;--osat:#b8a98c;--design:#5a6b8c;--server:#c77b52;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);font-family:var(--gothic);line-height:1.75;min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:clamp(28px,5vw,68px) clamp(18px,3vw,44px) 90px}
+
+  .eyebrow{font-family:var(--latin);font-size:15px;letter-spacing:var(--ls-wide);
+    text-transform:uppercase;color:var(--accent);margin-bottom:22px;
+    display:flex;align-items:center;gap:15px;font-weight:600}
+  .eyebrow::before{content:"";width:38px;height:1px;background:var(--accent)}
+
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(29px,5vw,49px);
+    line-height:1.22;letter-spacing:.01em;margin-bottom:20px;color:var(--ink-strong)}
+  h1 .em{color:var(--shu);border-bottom:2px solid var(--shu-soft);padding-bottom:2px}
+
+  .sub{color:#5c5c5c;max-width:62ch;font-size:clamp(14.5px,1.6vw,16.5px);font-weight:300;line-height:1.9}
+  .sub b{color:var(--ink);font-weight:500;border-bottom:1px solid var(--tint)}
+
+  .controls{margin:34px 0 6px;padding:22px 24px;border:1px solid var(--line);border-radius:4px;
+    background:var(--panel)}
+  .controls .lbl{font-family:var(--latin);font-size:13px;letter-spacing:var(--ls-wide);
+    text-transform:uppercase;color:var(--ink-faint);margin-bottom:16px;font-weight:600}
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{display:inline-flex;align-items:center;gap:9px;cursor:pointer;user-select:none;
+    padding:9px 16px;border-radius:2px;border:1px solid var(--line);background:var(--bg);
+    font-size:14px;font-weight:400;color:var(--ink);transition:.25s var(--ease);white-space:nowrap;
+    font-family:var(--gothic)}
+  .chip:hover{border-color:var(--accent);background:var(--panel)}
+  .chip .dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .chip.off{opacity:.34}
+  .chip[data-k="all"] .dot{background:linear-gradient(120deg,var(--shu),var(--midori),var(--accent))}
+
+  .viewbtns{display:flex;gap:9px;margin:18px 0 0;flex-wrap:wrap}
+  .vbtn{font-family:var(--latin);font-size:14.5px;letter-spacing:var(--ls);cursor:pointer;font-weight:600;
+    padding:8px 18px;border-radius:2px;border:1px solid var(--line);background:var(--bg);
+    color:var(--ink-faint);transition:.25s var(--ease)}
+  .vbtn:hover{color:var(--ink);border-color:var(--accent)}
+  .vbtn.active{background:var(--ink-strong);color:var(--panel);border-color:var(--ink-strong)}
+
+  #map{height:580px;margin-top:24px;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:var(--panel-soft)}
+  @media(max-width:640px){#map{height:480px}}
+
+  /* leaflet light tuning — soft, desaturated paper feel */
+  .leaflet-container{background:var(--panel-soft);font-family:var(--gothic)}
+  .leaflet-tile{filter:grayscale(.35) brightness(1.04) contrast(.92) saturate(.7)}
+  .leaflet-control-zoom a{background:var(--panel)!important;color:var(--ink)!important;
+    border-color:var(--line)!important;font-weight:400}
+  .leaflet-control-zoom a:hover{background:var(--bg)!important}
+  .leaflet-control-attribution{background:rgba(255,255,255,.82)!important;color:var(--ink-faint)!important}
+  .leaflet-control-attribution a{color:var(--midori)!important}
+
+  /* custom markers — soft ring, no neon glow */
+  .cmark{border-radius:50%;border:2px solid var(--panel);
+    box-shadow:0 0 0 1px rgba(0,0,0,.12),0 3px 10px rgba(0,0,0,.14);
+    display:grid;place-items:center;cursor:pointer;
+    transition:transform .3s var(--ease),opacity .3s var(--ease)}
+  .cmark:hover{transform:scale(1.18)}
+  .cmark.dim{opacity:.25;filter:grayscale(1)}
+
+  /* popup */
+  .leaflet-popup-content-wrapper{background:var(--panel);color:var(--ink);border:1px solid var(--line);
+    border-radius:4px;box-shadow:0 14px 44px rgba(0,0,0,.16)}
+  .leaflet-popup-tip{background:var(--panel);border:1px solid var(--line)}
+  .leaflet-popup-content{margin:17px 19px;min-width:234px;max-width:294px}
+  .pop-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:9px}
+  .pop-head h3{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--ink-strong)}
+  .pop-tag{font-family:var(--latin);font-size:12px;letter-spacing:var(--ls);text-transform:uppercase;
+    padding:3px 10px;border-radius:2px;color:var(--panel);font-weight:600}
+  .pop-loc{font-family:var(--latin);font-size:13px;color:var(--ink-faint);letter-spacing:var(--ls);
+    margin-bottom:10px;font-weight:500}
+  .pop-body{font-size:13.5px;color:#4a4a4a;font-weight:300;line-height:1.72}
+  .pop-body b{color:var(--ink-strong);font-weight:500}
+  .pop-players{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .pop-players span{font-family:var(--body);font-size:11.5px;padding:3px 9px;border:1px solid var(--line);
+    border-radius:2px;color:#5c5c5c;background:var(--bg)}
+  .pop-stat{display:flex;flex-wrap:wrap;gap:18px;margin-top:13px}
+  .pop-stat .n{font-family:var(--serif);font-size:20px;font-weight:600;line-height:1}
+  .pop-stat .k{font-size:10.5px;color:var(--ink-faint);margin-top:3px;line-height:1.4}
+
+  .legend-role{display:flex;gap:24px;flex-wrap:wrap;margin-top:22px;font-size:13px;color:#5c5c5c}
+  .legend-role span{display:inline-flex;align-items:center;gap:8px}
+  .legend-role i{width:15px;height:15px;border-radius:50%;display:inline-block;
+    box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+
+  footer{margin-top:40px;padding-top:26px;border-top:1px solid var(--line);
+    color:var(--ink-faint);font-size:12.5px;font-weight:300;line-height:1.9}
+  footer b{color:#5c5c5c;font-weight:500}
+
+  .byline{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 20px;margin-top:24px;
+    padding:20px 24px;border:1px solid var(--line);border-radius:4px;background:var(--panel)}
+  .byline .role{font-family:var(--latin);font-size:13px;letter-spacing:var(--ls-wide);
+    text-transform:uppercase;color:var(--accent);font-weight:600}
+  .byline .names{font-family:var(--serif);font-size:17px;font-weight:500;color:var(--ink-strong);letter-spacing:.04em}
+  .byline .names .sep{color:var(--tint);margin:0 8px;font-weight:300}
+
+  /* ---- layer toggle ---- */
+  .layerbtns{display:flex;gap:9px;margin:16px 0 0;flex-wrap:wrap}
+  .lbtn{font-family:var(--gothic);font-size:13.5px;letter-spacing:var(--ls);cursor:pointer;font-weight:400;
+    padding:8px 16px;border-radius:2px;border:1px solid var(--line);background:var(--bg);
+    color:var(--ink);transition:.25s var(--ease);display:inline-flex;align-items:center;gap:8px}
+  .lbtn:hover{border-color:var(--accent)}
+  .lbtn .sw{width:22px;height:14px;border-radius:8px;background:var(--tint);position:relative;transition:.25s var(--ease);flex:none}
+  .lbtn .sw::after{content:"";position:absolute;top:2px;left:2px;width:10px;height:10px;border-radius:50%;background:#fff;transition:.25s var(--ease)}
+  .lbtn.on{border-color:var(--ink-strong)}
+  .lbtn.on .sw{background:var(--midori)}
+  .lbtn.on .sw::after{left:10px}
+
+  .hmark{border-radius:3px;border:1.5px solid var(--panel);
+    box-shadow:0 0 0 1px rgba(0,0,0,.14),0 3px 9px rgba(0,0,0,.16);
+    display:grid;place-items:center;cursor:pointer;transform:rotate(45deg);
+    transition:transform .3s var(--ease),opacity .3s var(--ease)}
+  .hmark:hover{transform:rotate(45deg) scale(1.16)}
+  .hmark b{transform:rotate(-45deg);font-family:var(--body);font-size:9px;font-weight:500;color:#fff;letter-spacing:0}
+
+  /* ---- dashboard ---- */
+  .dash{margin-top:64px}
+  .dash-eyebrow{font-family:var(--latin);font-size:15px;letter-spacing:var(--ls-wide);text-transform:uppercase;
+    color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:15px;font-weight:600}
+  .dash-eyebrow::before{content:"";width:38px;height:1px;background:var(--accent)}
+  .dash h2{font-family:var(--serif);font-weight:600;font-size:clamp(24px,4vw,36px);color:var(--ink-strong);
+    line-height:1.3;margin-bottom:16px;letter-spacing:.01em}
+  .dash-sub{color:#5c5c5c;max-width:60ch;font-size:15px;font-weight:300;line-height:1.9;margin-bottom:38px}
+  .dash-sub b{color:var(--ink);font-weight:500;border-bottom:1px solid var(--tint)}
+
+  .block{border:1px solid var(--line);border-radius:4px;background:var(--panel);padding:clamp(22px,3vw,34px);margin-bottom:26px}
+  .block-h{font-family:var(--latin);font-size:13px;letter-spacing:var(--ls-wide);text-transform:uppercase;
+    color:var(--ink-faint);font-weight:600;margin-bottom:6px}
+  .block-t{font-family:var(--serif);font-size:21px;font-weight:600;color:var(--ink-strong);margin-bottom:24px;line-height:1.35}
+
+  /* investment bars */
+  .inv-row{margin-bottom:22px}
+  .inv-row:last-child{margin-bottom:0}
+  .inv-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px;flex-wrap:wrap;gap:4px}
+  .inv-name{font-family:var(--gothic);font-size:14.5px;color:var(--ink);font-weight:500}
+  .inv-name .co{font-family:var(--body);color:var(--ink-faint);font-size:12.5px;margin-left:8px;font-weight:400}
+  .inv-bars{display:flex;flex-direction:column;gap:7px}
+  .bar-track{display:flex;align-items:center;gap:12px}
+  .bar-geo{font-family:var(--body);font-size:11px;letter-spacing:.1em;color:var(--ink-faint);width:34px;flex:none;text-transform:uppercase}
+  .bar-outer{flex:1;height:22px;background:var(--bg);border-radius:2px;overflow:hidden;position:relative}
+  .bar-fill{height:100%;border-radius:2px;transition:width 1s var(--ease);min-width:2px}
+  .bar-tw{background:var(--shu)}
+  .bar-my{background:var(--midori)}
+  .bar-val{font-family:var(--serif);font-size:13.5px;font-weight:600;color:var(--ink);width:76px;flex:none;text-align:right}
+
+  /* matrix */
+  .mtx-scroll{overflow-x:auto;margin:0 -6px;padding:0 6px}
+  table.mtx{border-collapse:collapse;width:100%;min-width:560px;font-size:13px}
+  table.mtx th,table.mtx td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.mtx thead th{font-family:var(--latin);font-size:12px;letter-spacing:var(--ls);text-transform:uppercase;
+    color:var(--ink-faint);font-weight:600;border-bottom:1.5px solid var(--tint)}
+  table.mtx tbody th{font-family:var(--gothic);font-weight:500;color:var(--ink-strong);white-space:nowrap;font-size:13.5px}
+  .co-badge{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:8px;vertical-align:middle;
+    box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+  table.mtx td{color:#4a4a4a;font-weight:300;line-height:1.6}
+  table.mtx td b{color:var(--ink);font-weight:500}
+  table.mtx tr:last-child td,table.mtx tr:last-child th{border-bottom:none}
+  .cell-none{color:var(--ink-faint);font-style:italic}
+  .dot-tw{color:var(--shu)}.dot-my{color:var(--midori)}
+
+  /* risk indicators */
+  .risk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+  .risk-card{border:1px solid var(--line);border-radius:4px;padding:20px 22px;background:var(--bg)}
+  .risk-geo{font-family:var(--latin);font-size:12px;letter-spacing:var(--ls-wide);text-transform:uppercase;font-weight:600;margin-bottom:14px}
+  .risk-geo.tw{color:var(--shu)}.risk-geo.my{color:var(--midori)}
+  .risk-metric{margin-bottom:16px}
+  .risk-metric:last-child{margin-bottom:0}
+  .risk-mtop{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;gap:8px}
+  .risk-mname{font-size:13px;color:var(--ink);font-weight:500}
+  .risk-mval{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--ink-strong)}
+  .risk-meter{height:6px;background:#e4e4e4;border-radius:3px;overflow:hidden}
+  .risk-meterfill{height:100%;border-radius:3px}
+  .risk-note{font-size:11.5px;color:var(--ink-faint);font-weight:300;margin-top:6px;line-height:1.5}
+
+  .dash-caveat{font-size:12px;color:var(--ink-faint);font-weight:300;line-height:1.8;margin-top:6px;
+    padding:16px 20px;background:var(--panel-soft);border-radius:4px;border-left:2px solid var(--tint)}
+  .dash-caveat b{color:#5c5c5c;font-weight:500}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Semiconductor &middot; AI Supply Chain</div>
+  <h1>台灣與馬來西亞的<span class="em">產業分工地圖</span></h1>
+  <p class="sub">半導體與AI硬體供應鏈的聚落,標在真實的<b>OpenStreetMap</b>底圖上。點擊任一標記查看其供應鏈角色;用上方色票篩選<b>製程環節</b>,或用下方按鈕在<b>台灣</b>、<b>馬來西亞</b>與<b>全區</b>視角間切換。</p>
+
+  <div class="controls">
+    <div class="lbl">Filter by stage &middot; 篩選製程環節</div>
+    <div class="chips" id="chips">
+      <div class="chip" data-k="all"><span class="dot"></span>全部顯示</div>
+      <div class="chip" data-k="wafer"><span class="dot" style="background:var(--wafer)"></span>前段&middot;先進邏輯製程</div>
+      <div class="chip" data-k="pkg"><span class="dot" style="background:var(--pkg)"></span>先進封裝 CoWoS/SoIC</div>
+      <div class="chip" data-k="osat"><span class="dot" style="background:var(--osat)"></span>後段封測 OSAT/ATP</div>
+      <div class="chip" data-k="design"><span class="dot" style="background:var(--design)"></span>IC設計</div>
+      <div class="chip" data-k="server"><span class="dot" style="background:var(--server)"></span>AI伺服器&middot;資料中心</div>
+    </div>
+    <div class="viewbtns" id="viewbtns">
+      <div class="vbtn active" data-v="all">全區視角</div>
+      <div class="vbtn" data-v="tw">🇹🇼 台灣 Taiwan</div>
+      <div class="vbtn" data-v="my">🇲🇾 馬來西亞 Malaysia</div>
+    </div>
+    <div class="layerbtns">
+      <div class="lbtn on" id="layer-cluster"><span class="sw"></span>產業聚落</div>
+      <div class="lbtn" id="layer-hyper"><span class="sw"></span>國際科技巨頭 · 資料中心</div>
+    </div>
+  </div>
+
+  <div id="map"></div>
+
+  <div class="legend-role">
+    <span><i style="background:var(--wafer)"></i>前段製造</span>
+    <span><i style="background:var(--pkg)"></i>先進封裝</span>
+    <span><i style="background:var(--osat)"></i>後段封測</span>
+    <span><i style="background:var(--design)"></i>IC設計</span>
+    <span><i style="background:var(--server)"></i>AI伺服器&middot;資料中心</span>
+  </div>
+
+  <footer>
+    <b>閱讀方式:</b> 標記大小約略反映該聚落在供應鏈中的份量;顏色對應製程環節。台灣集中於價值鏈上游(先進邏輯製程、先進封裝、IC設計),馬來西亞集中於下游(後段封測、成熟製程、資料中心)。<br>
+    <b>底圖:</b> © OpenStreetMap 貢獻者。<b>資料時點:</b> 2025–26年,市占與產能為指示性,取自TrendForce、MIDA、公司公告與產業報導;座標為聚落概略中心點,發表前建議對照一手統計重新查證。
+  </footer>
+
+  <div class="byline">
+    <span class="role">Researchers &middot; 研究者</span>
+    <span class="names">吳昀慶<span class="sep">·</span>顏聖錝</span>
+  </div>
+
+  <!-- ============ DASHBOARD ============ -->
+  <div class="dash">
+    <div class="dash-eyebrow">Global Tech Footprint</div>
+    <h2>國際科技巨頭在兩國的佈局</h2>
+    <p class="dash-sub">同一組供應鏈,換一個提問:當Google、AWS、Nvidia、Intel這些巨頭選擇落腳時,<b>台灣拿到的是設計與製造的腦</b>,<b>馬來西亞接到的是土地與電力充裕的算力工廠</b>。以下三個區塊依序呈現投資金額對照、公司×國家佈局矩陣,以及電力與水資源的瓶頸風險。</p>
+
+    <!-- BLOCK 1: investment -->
+    <div class="block">
+      <div class="block-h">01 · Investment Comparison</div>
+      <div class="block-t">重大資料中心與半導體投資金額對照(US$)</div>
+      <p style="font-size:12.5px;color:#5c5c5c;font-weight:300;margin:-14px 0 22px;line-height:1.7">
+        每家公司以其<b style="font-weight:500">品牌代表色</b>呈現;上排 🇹🇼 為台灣、下排 🇲🇾 為馬來西亞。長條長度對應投資金額(以最大值Intel US$7bn為滿刻度)。</p>
+      <div class="inv-bars" id="invBars"></div>
+      <p class="dash-caveat" style="margin-top:26px"><b>注:</b> 多為「宣布/承諾」金額而非實際落地支出;Nvidia台灣「US$150bn/年」為在台年度採購承諾規模,非單一設施投資,為維持比例可讀性未完整入圖。台灣長條多為晶片設計/製造/R&D投資,馬來西亞多為hyperscaler資料中心:兩者性質不同,對照時應留意。</p>
+    </div>
+
+    <!-- BLOCK 2: matrix -->
+    <div class="block">
+      <div class="block-h">02 · Company × Country Matrix</div>
+      <div class="block-t">誰在哪、做什麼</div>
+      <div class="mtx-scroll">
+        <table class="mtx">
+          <thead><tr><th>公司</th><th>🇹🇼 台灣 Taiwan</th><th>🇲🇾 馬來西亞 Malaysia</th></tr></thead>
+          <tbody id="mtxBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- BLOCK 3: risk -->
+    <div class="block">
+      <div class="block-h">03 · Resource Bottlenecks</div>
+      <div class="block-t">電力與水資源的瓶頸風險</div>
+      <div class="risk-grid">
+        <div class="risk-card">
+          <div class="risk-geo tw">🇹🇼 台灣 Taiwan</div>
+          <div class="risk-metric">
+            <div class="risk-mtop"><span class="risk-mname">北部電網餘裕</span><span class="risk-mval">受限</span></div>
+            <div class="risk-meter"><div class="risk-meterfill" style="width:78%;background:var(--shu)"></div></div>
+            <div class="risk-note">Taipower對桃園以北5MW以上新資料中心設限(除非自建電力);「南電北送」壅塞。</div>
+          </div>
+          <div class="risk-metric">
+            <div class="risk-mtop"><span class="risk-mname">LNG進口依賴</span><span class="risk-mval">~50%</span></div>
+            <div class="risk-meter"><div class="risk-meterfill" style="width:50%;background:var(--shu)"></div></div>
+            <div class="risk-note">約半數電力仰賴進口LNG(其中約1/3來自Qatar,經Hormuz海峽),地緣供應風險。</div>
+          </div>
+          <div class="risk-metric">
+            <div class="risk-mtop"><span class="risk-mname">效率管制</span><span class="risk-mval">PUE 1.5</span></div>
+            <div class="risk-meter"><div class="risk-meterfill" style="width:60%;background:var(--accent)"></div></div>
+            <div class="risk-note">2025/11起hyperscale須符PUE 1.5上限;2026/1起分級電價,低效設施加價最高20%。</div>
+          </div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-geo my">🇲🇾 馬來西亞 Malaysia</div>
+          <div class="risk-metric">
+            <div class="risk-mtop"><span class="risk-mname">化石燃料發電佔比</span><span class="risk-mval">88–92%</span></div>
+            <div class="risk-meter"><div class="risk-meterfill" style="width:90%;background:var(--midori)"></div></div>
+            <div class="risk-note">據TransitionZero,再生能源(含水力)滲透率僅約12%;綠電需求(RE100)靠CRESS直購機制補。</div>
+          </div>
+          <div class="risk-metric">
+            <div class="risk-mtop"><span class="risk-mname">資料中心用電佔比(2030預估)</span><span class="risk-mval">~30%</span></div>
+            <div class="risk-meter"><div class="risk-meterfill" style="width:30%;background:var(--midori)"></div></div>
+            <div class="risk-note">據Ember,用電由2024年8.5 TWh增至2030年68 TWh(近七倍,ASEAN增幅最陡)。</div>
+          </div>
+          <div class="risk-metric">
+            <div class="risk-mtop"><span class="risk-mname">核准產能利用率(2026/4)</span><span class="risk-mval">~54%</span></div>
+            <div class="risk-meter"><div class="risk-meterfill" style="width:54%;background:var(--accent)"></div></div>
+            <div class="risk-note">實際用電1,102MW僅為核准2,050MW約54%;政府要求前四年達85%,否則每kW缺口罰RM8.50。「phantom demand」風險。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="dash-caveat"><b>資料來源與時點:</b> 2024–2026年,取自公司公告、Taiwan MOEA/InvesTaiwan、Malaysia MIDA/MITI、Nikkei Asia、Reuters、DigiTimes、The Edge Malaysia、Ember、TransitionZero等。部分為宣布未落地之承諾值;環境數據在政府與環團間存在詮釋爭議;OpenAI/Anthropic在兩國均無實體設施,僅間接供應鏈關係。發表前建議對照一手統計重新查證。</p>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function(){
+  var COL = {wafer:'#A6392C',pkg:'#2E6B4E',osat:'#b8a98c',design:'#5a6b8c',server:'#c77b52'};
+
+  var DATA = [
+    // ---- TAIWAN ----
+    {id:'hsinchu-fab', ll:[24.7745,121.0055], r:24, k:'wafer', region:'tw',
+      name:'新竹科學園區', en:'Hsinchu Science Park', loc:'先進邏輯製程 · 3nm/2nm',
+      tag:'前段·先進製程',
+      body:'台灣晶圓代工的心臟。工研院1980年設立、衍生出<b>聯電(1980)</b>與<b>台積電(1987)</b>的發源地,錨定大學為交大與清大。',
+      players:['台積電 TSMC','聯電 UMC','聯發科','力積電'],
+      stats:[['69.9%','台積電全球代工營收占比(2025)'],['3/2nm','量產先進節點']]},
+    {id:'hsinchu-design', ll:[24.7960,120.9960], r:16, k:'design', region:'tw',
+      name:'新竹·IC設計聚落', en:'IC Design Cluster', loc:'IC設計 · Fabless',
+      tag:'IC設計',
+      body:'台灣fabless設計業核心,為代工廠提供源源不絕的本土訂單需求:這正是SilTerra所欠缺、卻讓台積電得以起飛的關鍵條件。',
+      players:['聯發科 MediaTek','聯詠 Novatek','瑞昱 Realtek'],
+      stats:[['全球第2','大IC設計聚落']]},
+    {id:'taoyuan-server', ll:[24.9936,121.3010], r:20, k:'server', region:'tw',
+      name:'桃園·北台伺服器帶', en:'AI Server Belt', loc:'AI伺服器 · ODM',
+      tag:'AI伺服器',
+      body:'全球AI伺服器組裝中樞。台灣ODM掌握AI硬體幾乎整個後段整合:但毛利率僅個位數,凸顯<b>「組裝」而非「價值捕獲」</b>的內部不對稱。',
+      players:['鴻海 Foxconn','廣達 Quanta','緯創·緯穎','英業達'],
+      stats:[['~40%','鴻海全球AI伺服器市占'],['>NT$2兆','2026 Q1五大ODM營收']]},
+    {id:'tainan-fab', ll:[23.1000,120.2860], r:22, k:'wafer', region:'tw',
+      name:'台南科學園區', en:'Tainan / STSP', loc:'先進邏輯製程 · 先進封裝',
+      tag:'前段+先進封裝',
+      body:'台積電先進製程與先進封裝的擴張重鎮。晶圓廠擴張帶動土地徵收、房價與水電需求:也是<b>都市空間衝擊</b>研究缺口最值得著力之處。',
+      players:['台積電 Fab 18','南科封裝廠'],
+      stats:[['2nm','南科量產布局'],['圈地','土地徵收爭議']]},
+    {id:'tainan-pkg', ll:[23.0470,120.2300], r:18, k:'pkg', region:'tw',
+      name:'南台先進封裝走廊', en:'Adv. Packaging', loc:'CoWoS · SoIC',
+      tag:'先進封裝',
+      body:'<b>CoWoS</b>是Nvidia/AMD GPU的瓶頸環節,近乎由台積電壟斷。產能預估2025–26年由每月約7萬片擴至11.5萬片。日月光、矽品、京元電構成OSAT支援。',
+      players:['台積電 CoWoS','日月光 ASE','矽品 SPIL','京元電'],
+      stats:[['~115k','2026 CoWoS月產能(片)'],['近乎壟斷','先進封裝供給']]},
+
+    // ---- MALAYSIA ----
+    {id:'penang-osat', ll:[5.3410,100.3090], r:24, k:'osat', region:'my',
+      name:'檳城電子聚落', en:'Penang E&E Cluster', loc:'後段封測 ATP · OSAT',
+      tag:'後段封測',
+      body:'自<b>1972年自由貿易區</b>起,由Intel、AMD、HP等跨國企業建構的後段重鎮:電子FDI起步比台灣晶圓代工更早,卻始終由跨國企業主導、本土研發薄弱,未上移至晶圓製造。',
+      players:['Intel','AMD','Inari','ASE Malaysia'],
+      stats:[['~13%','全球封裝測試量占比'],['第6大','全球半導體出口國(2023)']]},
+    {id:'penang-adv', ll:[5.4140,100.3280], r:16, k:'pkg', region:'my',
+      name:'檳城·先進封裝', en:'Adv. Pkg (aspiring)', loc:'先進封裝 · NSS第一階段',
+      tag:'先進封裝(升級中)',
+      body:'2023年吸引創紀錄<b>610億馬幣</b>半導體FDI(含Intel 300億馬幣先進封裝廠)。NSS第一階段目標:從OSAT升級至先進封裝:正好<b>直取台灣OSAT的地盤</b>。',
+      players:['Intel 先進封裝','檳城科學園'],
+      stats:[['RM61bn','2023檳城半導體FDI'],['NSS','先進封裝為第一階段']]},
+    {id:'kulim-fab', ll:[5.3650,100.5620], r:17, k:'wafer', region:'my',
+      name:'居林高科技園區', en:'Kulim Hi-Tech Park', loc:'成熟製程 · 台商合資',
+      tag:'成熟製程晶圓廠',
+      body:'<b>鴻海-DNeX</b>合資的12吋晶圓廠(28/40nm,月產4萬片)所在:台灣資本間接持有SilTerra曝險。英飛凌亦於此投入250億馬幣(碳化矽)。',
+      players:['鴻海-DNeX','SilTerra','Infineon'],
+      stats:[['28/40nm','成熟製程定位'],['40k/月','規劃晶圓產能']]},
+    {id:'selangor-design', ll:[3.0730,101.5910], r:14, k:'design', region:'my',
+      name:'雪蘭莪·IC設計', en:'Selangor Design', loc:'IC設計(新生) · ARM授權',
+      tag:'IC設計(新生)',
+      body:'馬來西亞新生的IC設計企圖,2025年取得<b>ARM授權</b>。但本土設計需求基礎薄弱,正是SilTerra失敗、也是NSS須補的一課。',
+      players:['ARM 授權','本土設計新創'],
+      stats:[['2025','ARM授權協議'],['薄弱','本土設計需求']]},
+    {id:'johor-dc', ll:[1.4927,103.7414], r:22, k:'server', region:'my',
+      name:'柔佛·資料中心', en:'Johor Data Centres', loc:'AI資料中心 · JS-SEZ',
+      tag:'AI資料中心',
+      body:'東南亞資料中心熱潮的震央。YTL-Nvidia <b>43億美元</b>AI基礎設施;預計2030年占全國約60%產能。但就業承諾受質疑,並受<b>美國AI晶片出口管制</b>威脅。',
+      players:['YTL-Nvidia','柔新特區 JS-SEZ','各大雲端商'],
+      stats:[['$4.3bn','YTL-Nvidia AI投資'],['~60%','2030全國資料中心產能占比']]},
+  ];
+
+  if(typeof L === 'undefined'){
+    document.getElementById('map').innerHTML =
+      '<div style="padding:40px;color:#9a9a9a;font-weight:300;text-align:center">'+
+      '無法載入地圖函式庫(Leaflet)。<br>此頁需要連線至 unpkg.com 與 openstreetmap.org,'+
+      '請在一般瀏覽器(Safari/Chrome)開啟,或確認網路連線後重新整理。</div>';
+    return;
+  }
+
+  var map = L.map('map',{zoomControl:true,scrollWheelZoom:true,minZoom:3,maxZoom:12}).setView([13,110],4);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> 貢獻者',
+    maxZoom:19, crossOrigin:true
+  }).addTo(map);
+
+  var markers = {};
+  DATA.forEach(function(n){
+    var c = COL[n.k];
+    var d = n.r*2;
+    var icon = L.divIcon({
+      className:'',
+      html:'<div class="cmark" data-id="'+n.id+'" style="width:'+d+'px;height:'+d+'px;background:'+c+'"></div>',
+      iconSize:[d,d], iconAnchor:[n.r,n.r]
+    });
+    var players = n.players.map(function(p){return '<span>'+p+'</span>';}).join('');
+    var stats = n.stats.map(function(s){return '<div><div class="n" style="color:'+c+'">'+s[0]+'</div><div class="k">'+s[1]+'</div></div>';}).join('');
+    var popup = '<div class="pop-head"><h3>'+n.name+'</h3><span class="pop-tag" style="background:'+c+'">'+n.tag+'</span></div>'+
+      '<div class="pop-loc">'+n.en+' · '+n.loc+'</div>'+
+      '<div class="pop-body">'+n.body+'</div>'+
+      '<div class="pop-players">'+players+'</div>'+
+      '<div class="pop-stat">'+stats+'</div>';
+    var m = L.marker(n.ll,{icon:icon}).addTo(map).bindPopup(popup,{maxWidth:300});
+    m._k = n.k;
+    markers[n.id] = m;
+  });
+
+  // ---- views ----
+  var bounds = {
+    tw: L.latLngBounds([21.8,119.3],[25.4,122.2]),
+    my: L.latLngBounds([1.0,99.4],[6.2,104.6]),
+    all: L.latLngBounds([0.4,98.5],[26.2,123.5])
+  };
+  function setView(v){
+    map.fitBounds(bounds[v],{padding:[30,30]});
+    document.querySelectorAll('.vbtn').forEach(function(b){b.classList.toggle('active',b.dataset.v===v);});
+  }
+  document.querySelectorAll('.vbtn').forEach(function(b){b.addEventListener('click',function(){setView(b.dataset.v);});});
+
+  // ---- filter ----
+  var chips = document.getElementById('chips');
+  var currentK = 'all';
+  function paintDim(){
+    DATA.forEach(function(n){
+      var elm = markers[n.id].getElement();
+      var el = elm ? elm.querySelector('.cmark') : null;
+      if(el) el.classList.toggle('dim', !(currentK==='all'||n.k===currentK));
+    });
+  }
+  function applyFilter(k){
+    currentK = k;
+    chips.querySelectorAll('.chip').forEach(function(ch){
+      ch.classList.toggle('off', k!=='all' && ch.dataset.k!==k && ch.dataset.k!=='all');
+    });
+    if(k==='all') chips.querySelectorAll('.chip').forEach(function(ch){ch.classList.remove('off');});
+    paintDim();
+  }
+  chips.querySelectorAll('.chip').forEach(function(ch){
+    ch.addEventListener('click',function(){applyFilter(ch.dataset.k);});
+  });
+
+  map.on('zoomend moveend', paintDim);
+
+  // ================= HYPERSCALER LAYER =================
+  var HYPER = [
+    // TAIWAN
+    {ll:[24.0810,120.5150], co:'Google', region:'tw', c:'#4285F4', ab:'G',
+      name:'Google 彰化資料中心', loc:'Changhua · 2013啟用',
+      body:'Google在亞洲首座資料中心(初始US$600m,15公頃填海地);在台累計投資逾<b>US$1.6bn</b>。台南第二座已核准、雲林第三座規劃中。',
+      stat:[['US$1.6bn+','在台累計投資'],['2013','亞洲首座啟用']]},
+    {ll:[25.0330,121.5654], co:'Nvidia', region:'tw', c:'#76B900', ab:'N',
+      name:'Nvidia Constellation 全球總部', loc:'Beitou-Shilin, 台北 · 2030',
+      body:'Nvidia首座<b>美國以外全球總部</b>(北投士林,約3.9公頃,規劃4,000人)。黃仁勳宣示在台年度投資由過去US$10–15bn增至約US$150bn。並與Foxconn/TSMC共建國家AI超級電腦(10,000顆Blackwell)。',
+      stat:[['~US$150bn/yr','在台年度採購承諾'],['2030','總部啟用']]},
+    {ll:[25.0630,121.2700], co:'Microsoft', region:'tw', c:'#00A4EF', ab:'M',
+      name:'Microsoft Azure「Taiwan North」', loc:'傳桃園 · 2026全面上線',
+      body:'2020宣布,原訂2024、延至<b>2026</b>全面上線(落後AWS與Google);US$308m基金。2025/9提「three-plus-one」擴建。確切地點(桃園)為媒體推測。',
+      stat:[['2026','全面上線(延後)'],['US$308m','投資基金']]},
+    {ll:[25.0770,121.2260], co:'AWS', region:'tw', c:'#FF9900', ab:'A',
+      name:'AWS Asia Pacific (Taipei)', loc:'台北區域 · 2025/6啟用',
+      body:'AWS台北區域2025年6月啟用,承諾<b>US$5bn</b>,3個可用區(AZ)。',
+      stat:[['US$5bn','投資承諾'],['3 AZ','可用區']]},
+    {ll:[22.9910,120.2210], co:'AMD', region:'tw', c:'#ED1C24', ab:'A',
+      name:'AMD 台南/高雄 R&D中心', loc:'Shalun 歸仁 · 2025/3',
+      body:'台南(與成大合作)與高雄兩座R&D中心,計畫<b>US$270m</b>,政府A+補助約38%;聚焦AI、矽光子、異質整合。CEO蘇姿丰為台南出生。',
+      stat:[['US$270m','R&D投資'],['~33家','參與台廠']]},
+
+    // MALAYSIA
+    {ll:[1.5530,103.6300], co:'Nvidia', region:'my', c:'#76B900', ab:'N',
+      name:'Nvidia–YTL AI資料中心', loc:'Kulai, Johor · 2025/11營運',
+      body:'YTL Power合建<b>US$4.3bn</b> AI DC(GB200 NVL72液冷,500MW太陽能+600MW電網備援)。屬sovereign AI;錨定租戶含Sea(72MW)、GDS(168MW)。',
+      stat:[['US$4.3bn','YTL-Nvidia投資'],['600MW','園區總量']]},
+    {ll:[2.9260,101.6420], co:'AWS', region:'my', c:'#FF9900', ab:'A',
+      name:'AWS Asia Pacific (Malaysia)', loc:'Cyberjaya · 2024/8啟用',
+      body:'2024年8月啟用,承諾<b>US$6.2bn</b>至2038,3 AZ;預計2038前貢獻US$12.1bn GDP、每年3,500全職工作。',
+      stat:[['US$6.2bn','投資承諾'],['2024','已啟用']]},
+    {ll:[3.2100,101.6800], co:'Microsoft', region:'my', c:'#00A4EF', ab:'M',
+      name:'Microsoft Malaysia West', loc:'Greater KL · 2025上線',
+      body:'US$2.2bn(4年);2025上線,3 AZ,PETRONAS為關鍵夥伴。2025/2在Johor購第二座地塊;計畫第二region。',
+      stat:[['US$2.2bn','投資承諾'],['80萬','AI人才培訓目標']]},
+    {ll:[3.1830,101.5250], co:'Google', region:'my', c:'#4285F4', ab:'G',
+      name:'Google Elmina 資料中心', loc:'Selangor · 2024動工',
+      body:'US$2bn,Elmina Business Park(透過Pearl Computing);東南亞繼新加坡第二座Google DC。2026完工,水冷技術。',
+      stat:[['US$2bn','投資承諾'],['2026','完工']]},
+    {ll:[5.2860,100.4770], co:'Intel', region:'my', c:'#0071C5', ab:'I',
+      name:'Intel Penang/Kulim 先進封裝', loc:'Penang · 1972起',
+      body:'馬來西亞最大海外據點(逾10,000員工)。2021承諾<b>US$7bn</b>建先進封裝(3D Foveros);2025/12再加碼US$208m。Penang先進封裝廠已99%完工,2026投產。',
+      stat:[['US$7bn','先進封裝投資'],['~13%','全球封測占比']]},
+    {ll:[5.3300,100.3070], co:'AMD', region:'my', c:'#ED1C24', ab:'A',
+      name:'AMD Penang 封測 + GBS', loc:'Bayan Lepas · 1972起',
+      body:'Penang assembly/test廠逾50年;2025/8於Bayan Lepas啟用「GBS by the Sea」(209,000 sq ft,逾1,200員工,含IC設計實驗室)。',
+      stat:[['50年+','Penang封測歷史'],['1,200+','GBS員工']]},
+    {ll:[2.9200,101.6560], co:'Tesla', region:'my', c:'#CC0000', ab:'T',
+      name:'Tesla Malaysia 總部', loc:'Cyberjaya · 2023/10',
+      body:'2023/10首座Tesla Centre(總部+體驗中心,55,000 sq ft,8座Supercharger)。已推Model Y/3;<b>無製造</b>。屬NIMP 2030成果。',
+      stat:[['2023/10','總部開幕'],['無製造','僅銷售/服務']]}
+  ];
+
+  var hyperMarkers = [];
+  HYPER.forEach(function(h){
+    var icon = L.divIcon({className:'',
+      html:'<div class="hmark" style="width:26px;height:26px;background:'+h.c+'"><b>'+h.ab+'</b></div>',
+      iconSize:[26,26], iconAnchor:[13,13]});
+    var stats = h.stat.map(function(s){return '<div><div class="n" style="color:'+h.c+'">'+s[0]+'</div><div class="k">'+s[1]+'</div></div>';}).join('');
+    var popup = '<div class="pop-head"><h3>'+h.name+'</h3><span class="pop-tag" style="background:'+h.c+'">'+h.co+'</span></div>'+
+      '<div class="pop-loc">'+h.loc+'</div>'+
+      '<div class="pop-body">'+h.body+'</div>'+
+      '<div class="pop-stat">'+stats+'</div>';
+    var m = L.marker(h.ll,{icon:icon}).bindPopup(popup,{maxWidth:300});
+    m._region = h.region;
+    hyperMarkers.push(m);
+  });
+
+  var clusterOn = true, hyperOn = false;
+  function syncClusterLayer(){
+    Object.keys(markers).forEach(function(id){
+      var m = markers[id];
+      if(clusterOn){ if(!map.hasLayer(m)) m.addTo(map); }
+      else{ if(map.hasLayer(m)) map.removeLayer(m); }
+    });
+    if(clusterOn) paintDim();
+  }
+  function syncHyperLayer(){
+    hyperMarkers.forEach(function(m){
+      if(hyperOn){ if(!map.hasLayer(m)) m.addTo(map); }
+      else{ if(map.hasLayer(m)) map.removeLayer(m); }
+    });
+  }
+  document.getElementById('layer-cluster').addEventListener('click',function(){
+    clusterOn=!clusterOn; this.classList.toggle('on',clusterOn); syncClusterLayer();
+  });
+  document.getElementById('layer-hyper').addEventListener('click',function(){
+    hyperOn=!hyperOn; this.classList.toggle('on',hyperOn); syncHyperLayer();
+  });
+
+  // ================= DASHBOARD: investment bars =================
+  // [name, company, TW value (US$bn), MY value (US$bn), brandColor]
+  var INV = [
+    ['資料中心 · 雲端','AWS',5.0,6.2,'#FF9900'],
+    ['資料中心','Microsoft',0.31,2.2,'#00A4EF'],
+    ['資料中心','Google',1.6,2.0,'#4285F4'],
+    ['AI資料中心','Nvidia–YTL',0,4.3,'#76B900'],
+    ['先進封裝/半導體','Intel',0,7.0,'#0071C5'],
+    ['R&D中心','AMD',0.27,0,'#ED1C24']
+  ];
+  var maxInv = 7.0;
+  var invHtml = INV.map(function(r){
+    var tw = (r[2]/maxInv*100), my=(r[3]/maxInv*100), col=r[4];
+    function bar(geo,pct,val,shade){
+      return '<div class="bar-track"><span class="bar-geo">'+geo+'</span>'+
+        '<span class="bar-outer"><span class="bar-fill" style="width:'+(val>0?pct:0)+'%;background:'+shade+'"></span></span>'+
+        '<span class="bar-val">'+(val>0?('$'+val+'bn'):'—')+'</span></div>';
+    }
+    // TW = full brand color, MY = a lighter tint of the same brand color, so each company reads as one hue
+    return '<div class="inv-row"><div class="inv-label"><span class="inv-name">'+r[0]+
+      '<span class="co" style="color:'+col+';font-weight:600">'+r[1]+'</span></span></div><div class="inv-bars">'+
+      bar('🇹🇼',tw,r[2],col)+bar('🇲🇾',my,r[3],col)+'</div></div>';
+  }).join('');
+  document.getElementById('invBars').innerHTML = invHtml;
+
+  // ================= DASHBOARD: matrix =================
+  var MTX = [
+    ['Google','#4285F4','彰化/台南/雲林資料中心;台北AI硬體工程中心(美國外最大)','Elmina, Selangor(US$2bn,2026完工)'],
+    ['Microsoft','#00A4EF','Azure Taiwan North(傳桃園,2026)','Malaysia West(US$2.2bn,2025)'],
+    ['AWS','#FF9900','Asia Pacific Taipei(US$5bn,2025)','Asia Pacific Malaysia(US$6.2bn,2024)'],
+    ['Nvidia','#76B900','Constellation全球總部;國家AI超級電腦','YTL AI DC(US$4.3bn,Johor)'],
+    ['Intel','#0071C5','<span class="cell-none">少量業務</span>','Penang先進封裝(US$7bn,逾萬人)'],
+    ['AMD','#ED1C24','台南/高雄R&D(US$270m)','Penang封測 + GBS(1,200+)'],
+    ['Apple/TSMC','#A6392C','TSMC主要晶片供應(2nm);R&D','<span class="cell-none">無製造</span>;19家供應商廠'],
+    ['Tesla','#CC0000','<span class="cell-none">無製造</span>;Powerwall儲能','Cyberjaya總部+展示廳(2023)'],
+    ['OpenAI/Anthropic','#2E6B4E','<span class="cell-none">無設施</span>;OpenAI綁TSMC/Foxconn供應鏈','<span class="cell-none">無設施</span>']
+  ];
+  document.getElementById('mtxBody').innerHTML = MTX.map(function(r){
+    return '<tr><th><span class="co-badge" style="background:'+r[1]+'"></span>'+r[0]+'</th><td>'+r[2]+'</td><td>'+r[3]+'</td></tr>';
+  }).join('');
+
+  function fix(){ map.invalidateSize(); setView('all'); }
+  window.addEventListener('load', function(){ setTimeout(fix,150); setTimeout(fix,600); });
+  window.addEventListener('resize', fix);
+  window.addEventListener('orientationchange', function(){ setTimeout(fix,300); });
+})();
+</script>
+</body>
+</html>

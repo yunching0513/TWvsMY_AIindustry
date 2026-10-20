@@ -256,6 +256,18 @@
   .essay.e-my ul li::before{background:var(--midori-soft)}
   .essay ul li b{color:var(--ink);font-weight:500}
   .essay .mtx-scroll{margin:14px -6px 20px}
+
+  /* ---- story map entry ---- */
+  .story-cta{display:block;max-width:760px;margin:24px 0 4px;padding:18px 22px;border:1px solid var(--line);
+    border-left:3px solid var(--shu);border-radius:4px;background:var(--panel);text-decoration:none;color:var(--ink);
+    transition:border-color .25s var(--ease)}
+  .story-cta:hover{border-color:var(--ink-strong)}
+  .story-cta .sc-k{display:block;font-family:var(--latin);font-size:13px;letter-spacing:var(--ls-wide);
+    text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:4px}
+  .story-cta .sc-t{display:block;font-family:var(--serif);font-size:clamp(17px,2vw,20px);font-weight:600;
+    color:var(--ink-strong);line-height:1.5}
+  .story-cta .sc-d{display:block;font-size:13.5px;color:#5c5c5c;font-weight:300;margin-top:4px;line-height:1.8}
+  .story-cta .sc-d::after{content:"  →";color:var(--shu)}
 </style>
 </head>
 <body>
@@ -263,6 +275,12 @@
   <div class="eyebrow">Semiconductor &middot; AI Supply Chain</div>
   <h1>台灣與馬來西亞的<span class="em">產業分工地圖</span></h1>
   <p class="sub">半導體與AI硬體供應鏈的聚落,標在真實的<b>OpenStreetMap</b>底圖上。點擊任一標記查看其供應鏈角色;用上方色票篩選<b>製程環節</b>,或用下方按鈕在<b>台灣</b>、<b>馬來西亞</b>與<b>全區</b>視角間切換。</p>
+
+  <a class="story-cta" href="story.html">
+    <span class="sc-k">Story Map &middot; 故事地圖</span>
+    <span class="sc-t">晶片島與雲端飛地：誰為臺馬的國家技術空間付出代價？</span>
+    <span class="sc-d">跟著論文的三個階段，從加工出口區走到電廠周邊與柔佛海峽</span>
+  </a>
 
   <div class="controls">
     <div class="lbl">Filter by stage &middot; 篩選製程環節</div>

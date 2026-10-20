@@ -105,7 +105,15 @@
   .map-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px;
     box-shadow:0 0 0 1px rgba(0,0,0,.12)}
   .leaflet-container{font-family:var(--gothic)}
-  .leaflet-tile{filter:grayscale(.35) brightness(1.04) contrast(.92) saturate(.7)}
+  .tiles-osm{filter:grayscale(.35) brightness(1.04) contrast(.92) saturate(.7)}
+  #map.is-sat{background:#1d2226}
+  .base-switch{display:flex;background:var(--panel);border:1px solid var(--ink-strong);border-radius:2px;overflow:hidden;
+    box-shadow:0 1px 4px rgba(0,0,0,.18)}
+  .base-switch button{font-family:var(--gothic);font-size:12.5px;line-height:1.4;padding:6px 11px;border:0;margin:0;
+    background:var(--panel);color:var(--ink);cursor:pointer;letter-spacing:.04em}
+  .base-switch button + button{border-left:1px solid var(--line)}
+  .base-switch button[aria-pressed="true"]{background:var(--ink-strong);color:#fff}
+  .base-switch button:focus-visible{outline:2px solid var(--shu);outline-offset:-2px}
   .leaflet-control-zoom a{background:var(--panel)!important;color:var(--ink)!important;border-color:var(--line)!important}
   .leaflet-control-attribution{background:rgba(255,255,255,.82)!important;color:var(--ink-soft)!important}
   .leaflet-control-attribution a{color:var(--midori)!important}
@@ -194,6 +202,7 @@
   .end footer{padding-top:24px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:12.5px;
     font-weight:300;line-height:1.9}
   .end footer b{color:var(--ink);font-weight:500}
+  .end footer a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--tint);text-underline-offset:3px}
   .byline{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 20px;margin-top:22px;
     padding:18px 22px;border:1px solid var(--line);border-radius:4px;background:var(--panel)}
   .byline .role{font-family:var(--latin);font-size:13px;letter-spacing:var(--ls-wide);text-transform:uppercase;
@@ -525,7 +534,7 @@
   </section>
   <footer>
     <b>關於本頁：</b>依據研討會論文〈晶片島與雲端飛地：誰為臺馬的國家技術空間付出代價？〉（2026年臺灣東南亞學會年會）整理，為初步研究成果，數據與論點仍在修訂中，請勿引用。<br>
-    <b>地圖：</b>地點標記為概略位置，圓圈、虛線與實線均為示意，不代表實際範圍或管線路徑。底圖：© OpenStreetMap貢獻者。<br>
+    <b>地圖：</b>地點標記為概略位置，圓圈、虛線與實線均為示意，不代表實際範圍或管線路徑。底圖：預設為<a href="https://cloudless.eox.at" target="_blank" rel="noopener">EOxCloudless</a>衛星影像（EOX IT Services GmbH，含經修改的Copernicus Sentinel 2025年資料，依<a href="https://cloudless.eox.at/documentation/license" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>供非商業使用），可用地圖右上角的按鈕切換為OpenStreetMap街道地圖（© OpenStreetMap貢獻者）。<br>
     <b>照片：</b>均取自Wikimedia Commons，採創用CC（CC BY、CC BY-SA）或政府網站資料開放宣告等開放授權；作者與授權標示於各圖說，點選照片可開啟原始頁面。
   </footer>
   <div class="byline">
@@ -600,10 +609,55 @@
     minZoom:3, maxZoom:14
   });
   L.control.zoom({position:'topright'}).addTo(map);
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>貢獻者',
-    maxZoom:19
-  }).addTo(map);
+  var EOX = 'https://tiles.maps.eox.at/wmts/1.0.0/';
+  var BASES = {
+    sat: L.layerGroup([
+      L.tileLayer(EOX + 's2cloudless-2025_3857/default/g/{z}/{y}/{x}.jpg', {
+        attribution:'<a href="https://cloudless.eox.at" target="_blank" rel="noopener">EOxCloudless</a> by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2025)',
+        maxZoom:14, zIndex:1
+      }),
+      L.tileLayer(EOX + 'overlay_bright_3857/default/g/{z}/{y}/{x}.png', {
+        attribution:'標註：© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>貢獻者、EOX',
+        maxZoom:14, zIndex:2, opacity:.9
+      })
+    ]),
+    osm: L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>貢獻者',
+      maxZoom:19, className:'tiles-osm'
+    })
+  };
+  var baseNow = null;
+  function setBase(b){
+    if (!BASES[b] || b === baseNow) return;
+    if (baseNow) map.removeLayer(BASES[baseNow]);
+    BASES[b].addTo(map);
+    baseNow = b;
+    map.getContainer().classList.toggle('is-sat', b === 'sat');
+    Array.prototype.forEach.call(document.querySelectorAll('.base-switch button'), function(btn){
+      btn.setAttribute('aria-pressed', String(btn.getAttribute('data-b') === b));
+    });
+    try { localStorage.setItem('storyBase', b); } catch (e) {}
+  }
+  var BaseSwitch = L.Control.extend({
+    options:{position:'topright'},
+    onAdd:function(){
+      var div = L.DomUtil.create('div', 'base-switch');
+      div.setAttribute('role', 'group');
+      div.setAttribute('aria-label', '切換底圖');
+      div.innerHTML = '<button type="button" data-b="sat" aria-pressed="false">衛星</button>' +
+                      '<button type="button" data-b="osm" aria-pressed="false">街道</button>';
+      L.DomEvent.disableClickPropagation(div);
+      div.addEventListener('click', function(e){
+        var b = e.target && e.target.getAttribute ? e.target.getAttribute('data-b') : null;
+        if (b) setBase(b);
+      });
+      return div;
+    }
+  });
+  map.addControl(new BaseSwitch());
+  var savedBase = null;
+  try { savedBase = localStorage.getItem('storyBase'); } catch (e) {}
+  setBase(savedBase === 'osm' ? 'osm' : 'sat');
   map.fitBounds(OVERVIEW, {padding:[30,30]});
 
   function label(p){ return '<b>' + p.name + '</b><span>' + p.note + '</span>'; }
@@ -614,6 +668,8 @@
       .bindTooltip(txt, {permanent:true, direction:dir, offset:off, className:'lbl line'});
   }
   function mid(a, b){ return [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]; }
+  // A white casing under a line so it reads on dark imagery as well as on the street map.
+  function casing(lls){ return L.polyline(lls, {color:'#ffffff', weight:7, opacity:.85, interactive:false}); }
   function isSmall(){ return !!(window.matchMedia && window.matchMedia('(max-width: 900px)').matches); }
 
   var EXTRA = {
@@ -625,7 +681,7 @@
         {ll:[24.22,120.62], t:'臺中灌區', d:'right'},
         {ll:[23.32,120.27], t:'嘉南灌區', d:'right'}
       ].forEach(function(d){
-        L.circle(d.ll, {radius:15000, color:COL.tw, weight:1, fillColor:COL.tw, fillOpacity:.18})
+        L.circle(d.ll, {radius:15000, color:'#ffffff', weight:2, fillColor:COL.tw, fillOpacity:.38})
           .bindTooltip('<b>' + d.t + '</b><span>2021年一期稻作停灌（示意）</span>',
             {permanent:true, direction:d.d, offset: d.d === 'left' ? [-14,0] : [14,0], className:'lbl'})
           .addTo(g);
@@ -634,6 +690,7 @@
     },
     diversion: function(){
       var g = L.layerGroup();
+      casing([P.xizhou.ll, P.erlin.ll]).addTo(g);
       L.polyline([P.xizhou.ll, P.erlin.ll], {color:COL.tw, weight:3, dashArray:'7 7'}).addTo(g);
       if (isSmall()) tag(mid(P.xizhou.ll, P.erlin.ll), '引水計畫：每日6.5萬噸以上（示意）', 'bottom', [0,16]).addTo(g);
       else tag(mid(P.xizhou.ll, P.erlin.ll), '引水計畫：每日6.5萬噸以上（示意）', 'left', [-16,8]).addTo(g);
@@ -642,8 +699,10 @@
     crossborder: function(){
       var g = L.layerGroup();
       var bend = [1.56,103.80];
+      casing([P.sg.ll, P.jb.ll, P.kulai.ll]).addTo(g);
+      casing([P.jriver.ll, bend, [1.4555,103.769], [1.40,103.79]]).addTo(g);
       L.polyline([P.sg.ll, P.jb.ll, P.kulai.ll], {color:'#333333', weight:3, dashArray:'7 7'}).addTo(g);
-      L.polyline([P.jriver.ll, bend, [1.4555,103.769], [1.40,103.79]], {color:'#5a6b8c', weight:3}).addTo(g);
+      L.polyline([P.jriver.ll, bend, [1.4555,103.769], [1.40,103.79]], {color:'#3d5a99', weight:3}).addTo(g);
       tag(mid(P.jb.ll, P.kulai.ll), '需求北移', 'left', [-14,0]).addTo(g);
       tag(mid(P.jriver.ll, bend), '原水南流（示意）', 'right', [14,0]).addTo(g);
       return g;

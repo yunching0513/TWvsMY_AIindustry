@@ -54,7 +54,7 @@
   .cue::after{content:"  ↓";color:var(--shu)}
 
   /* ---- story layout ---- */
-  .story{position:relative;display:grid;grid-template-columns:minmax(340px,460px) 1fr;
+  .story{position:relative;display:grid;grid-template-columns:minmax(360px,520px) 1fr;
     border-top:1px solid var(--line)}
   .mapcol{grid-column:2;grid-row:1;position:sticky;top:0;height:100vh;align-self:start}
   #map{position:absolute;inset:0;background:var(--panel-soft)}
@@ -77,6 +77,23 @@
     border-top:1px solid var(--line);font-weight:400}
   .card .mapnote{font-size:12.5px;color:var(--ink-soft);margin-top:6px}
   .num{font-family:var(--serif);font-weight:600;color:var(--ink-strong)}
+  .card .src a, .refs a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--tint);text-underline-offset:3px}
+  .card .src a:hover, .refs a:hover{color:var(--ink-strong);text-decoration-color:var(--ink-strong)}
+  .card .src a[href^="#"]{text-decoration-style:dotted}
+  .photo{margin:4px 0 16px}
+  .photo .ph{display:block;background:var(--panel-soft)}
+  .photo img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;background:var(--panel-soft)}
+  .photo.two .ph-row{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .photo.two img{aspect-ratio:4/3}
+  .photo figcaption{font-size:12.5px;color:#4a4a4a;line-height:1.7;margin-top:8px}
+  .photo .credit{display:block;color:var(--ink-soft);font-size:11.5px;margin-top:2px}
+  .photo .credit a{color:var(--ink-soft);text-decoration:underline;text-decoration-color:var(--tint);text-underline-offset:2px}
+  .refs{padding:8px 0 28px}
+  .refs h2{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink-strong);margin-bottom:6px}
+  .refs-note{font-size:13px;color:var(--ink-soft);margin-bottom:12px}
+  .refs ol{padding-left:22px}
+  .refs li{font-size:13px;color:#4a4a4a;line-height:1.8;margin-bottom:6px;overflow-wrap:anywhere;scroll-margin-top:20px}
+  .refs li:target{background:#fff6d6}
 
   /* map overlays */
   .map-chip{position:absolute;top:14px;left:14px;z-index:1000;background:var(--panel);
@@ -242,10 +259,11 @@
       <div class="card">
         <div class="kicker"><span class="zh tw">場景一｜臺灣，2021</span></div>
         <h2>停灌逾<span class="num">7.4萬</span>公頃</h2>
+        <figure class="photo"><a class="ph" href="https://commons.wikimedia.org/wiki/File:%E6%B5%AA%E6%BC%AB%E5%8F%B0%E4%B8%89%E7%B7%9A-%E8%8B%97%E6%A0%97%E5%A4%A7%E6%B9%96-2021%E5%A4%A7%E6%97%B1%E9%AF%89%E9%AD%9A%E6%BD%AD%E6%B0%B4%E5%BA%AB-06.jpg" target="_blank" rel="noopener" aria-label="在Wikimedia Commons開啟原圖：2021年大旱期間的苗栗鯉魚潭水庫，庫底裸露"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/%E6%B5%AA%E6%BC%AB%E5%8F%B0%E4%B8%89%E7%B7%9A-%E8%8B%97%E6%A0%97%E5%A4%A7%E6%B9%96-2021%E5%A4%A7%E6%97%B1%E9%AF%89%E9%AD%9A%E6%BD%AD%E6%B0%B4%E5%BA%AB-06.jpg?width=960" alt="2021年大旱期間的苗栗鯉魚潭水庫，庫底裸露" width="960" height="540" loading="lazy" decoding="async"></a><figcaption>2021年4月大旱期間的苗栗鯉魚潭水庫，庫底大面積裸露。<span class="credit">Mingwu1977｜<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>｜<a href="https://commons.wikimedia.org/wiki/File:%E6%B5%AA%E6%BC%AB%E5%8F%B0%E4%B8%89%E7%B7%9A-%E8%8B%97%E6%A0%97%E5%A4%A7%E6%B9%96-2021%E5%A4%A7%E6%97%B1%E9%AF%89%E9%AD%9A%E6%BD%AD%E6%B0%B4%E5%BA%AB-06.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
         <p>在被稱為「百年大旱」的乾旱中，政府對全臺一期稻作實施大規模停灌，涵蓋桃竹苗、臺中與嘉南灌區，約占總灌區面積的<b>24%</b>；同一時期，台積電等半導體廠以水車載水維持生產。</p>
         <p>兩年後南部再度乾旱，國際媒體指出，南部稻農已連續第三年未能種植。</p>
         <p class="mapnote">地圖上的圓圈為停灌灌區的示意位置。</p>
-        <p class="src">資料來源：中央通訊社（2021）；Feng（2023）</p>
+        <p class="src">資料來源：<a href="https://www.cna.com.tw/news/afe/202111270016.aspx" target="_blank" rel="noopener">中央通訊社（2021）</a>；<a href="https://www.kunc.org/npr-news/npr-news/2023-04-19/epic-drought-in-taiwan-pits-farmers-against-high-tech-factories-for-water" target="_blank" rel="noopener">Feng（2023）</a></p>
       </div>
     </section>
 
@@ -253,9 +271,10 @@
       <div class="card">
         <div class="kicker"><span class="zh my">場景二｜柔佛，2025</span></div>
         <h2>停批理由：用水量約<span class="num">200</span>倍</h2>
+        <figure class="photo"><a class="ph" href="https://commons.wikimedia.org/wiki/File:Johor_Bahru_Skyline_(17300534739).jpg" target="_blank" rel="noopener" aria-label="在Wikimedia Commons開啟原圖：從新加坡兀蘭海濱望向柔佛新山的天際線"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Johor_Bahru_Skyline_(17300534739).jpg?width=960" alt="從新加坡兀蘭海濱望向柔佛新山的天際線" width="960" height="640" loading="lazy" decoding="async"></a><figcaption>從新加坡兀蘭海濱望向柔佛新山（2015年），兩地僅隔一道柔佛海峽。<span class="credit">aamanatullah｜<a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener">CC BY 2.0</a>｜<a href="https://commons.wikimedia.org/wiki/File:Johor_Bahru_Skyline_(17300534739).jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
         <p>2025年11月，柔佛州政府宣布不再核准Tier 1與Tier 2資料中心，理由是這類設施的用水量約為Tier 3與Tier 4的200倍；新設資料中心須改用再生水，並集中於指定的工業區。</p>
         <p>兩起管制分別發生在全球半導體製造與AI雲端基礎設施的核心節點。它們不是孤立的偶發事件，而是同一道問題：國家傾全力為技術資本生產專屬空間時，代價由誰承擔？</p>
-        <p class="src">資料來源：New Straits Times（2025）</p>
+        <p class="src">資料來源：<a href="https://www.nst.com.my/news/nation/2025/11/1324188/johor-tightens-approvals-data-centres" target="_blank" rel="noopener">New Straits Times（2025）</a></p>
       </div>
     </section>
 
@@ -281,7 +300,7 @@
           <li><b>第二階段</b>2000–2010年代<em>土地與水</em></li>
           <li class="now"><b>第三階段</b>2020–2026<em>水與電</em></li>
         </ol>
-        <p class="src">資料來源：本研究整理；Brenner（2004）；Ong（2000）；Levien（2013）；Kapp（1950）；Moore（2015）；Kollar（2026）</p>
+        <p class="src">資料來源：本研究整理；<a href="#ref-brenner2004">Brenner（2004）</a>；<a href="#ref-ong2000">Ong（2000）</a>；<a href="https://doi.org/10.1111/dech.12012" target="_blank" rel="noopener">Levien（2013）</a>；<a href="#ref-kapp1950">Kapp（1950）</a>；<a href="#ref-moore2015">Moore（2015）</a>；<a href="https://doi.org/10.1177/25148486251406484" target="_blank" rel="noopener">Kollar（2026）</a></p>
       </div>
     </section>
 
@@ -289,9 +308,10 @@
       <div class="card">
         <div class="kicker"><span class="zh">前史｜1960–1980年代</span></div>
         <h2>飛地是兩國共同的起點</h2>
+        <figure class="photo two"><div class="ph-row"><a class="ph" href="https://commons.wikimedia.org/wiki/File:Factory_building_of_Orient_Semiconductor_Electronics_Limited_in_Nanzih_Export_Processing_Zone.jpg" target="_blank" rel="noopener" aria-label="在Wikimedia Commons開啟原圖：高雄楠梓加工出口區內的華泰電子廠房"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Factory_building_of_Orient_Semiconductor_Electronics_Limited_in_Nanzih_Export_Processing_Zone.jpg?width=960" alt="高雄楠梓加工出口區內的華泰電子廠房" width="960" height="638" loading="lazy" decoding="async"></a><a class="ph" href="https://commons.wikimedia.org/wiki/File:Bayan_Lepas_Free_Industrial_Zone_2023.jpg" target="_blank" rel="noopener" aria-label="在Wikimedia Commons開啟原圖：檳城峇六拜自由工業區空拍"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Bayan_Lepas_Free_Industrial_Zone_2023.jpg?width=960" alt="檳城峇六拜自由工業區空拍" width="960" height="540" loading="lazy" decoding="async"></a></div><figcaption>左：高雄楠梓加工出口區內的華泰電子（OSE）廠房（2008年）；右：檳城峇六拜自由工業區空拍（2023年）<span class="credit">左：Joe Lewis｜<a href="https://creativecommons.org/licenses/by-sa/2.0/" target="_blank" rel="noopener">CC BY-SA 2.0</a>｜<a href="https://commons.wikimedia.org/wiki/File:Factory_building_of_Orient_Semiconductor_Electronics_Limited_in_Nanzih_Export_Processing_Zone.jpg" target="_blank" rel="noopener">Wikimedia Commons</a><br>右：HundenvonPenang｜<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>｜<a href="https://commons.wikimedia.org/wiki/File:Bayan_Lepas_Free_Industrial_Zone_2023.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
         <p>1960年代，美國電子企業已進駐臺灣南部的加工出口區，從事封裝、測試與組裝；1972年檳城峇六拜自由貿易區啟用，歌樂與國家半導體隨即開始生產。</p>
         <p>此時被廉價化的是<b>勞動</b>：1970年代馬來西亞半導體廠的直接生產工作全由女工擔任，每台接合機由一名女工在嚴密監督下操作；臺灣則有「客廳即工廠」的家庭代工體系。</p>
-        <p class="src">資料來源：Amsden &amp; Chu（2003）；Rasiah（2010）；Ong（1987）；Hsiung（1996）</p>
+        <p class="src">資料來源：<a href="#ref-amsden2003">Amsden &amp; Chu（2003）</a>；<a href="https://doi.org/10.1080/13547860.2010.494910" target="_blank" rel="noopener">Rasiah（2010）</a>；<a href="#ref-ong1987">Ong（1987）</a>；<a href="#ref-hsiung1996">Hsiung（1996）</a></p>
       </div>
     </section>
 
@@ -299,9 +319,10 @@
       <div class="card">
         <div class="kicker"><span class="zh tw">前史至第一階段｜臺灣</span></div>
         <h2>先成立園區，再購置土地</h2>
+        <figure class="photo"><a class="ph" href="https://commons.wikimedia.org/wiki/File:TSMC_Fab_18_and_fields_May_2025.jpg" target="_blank" rel="noopener" aria-label="在Wikimedia Commons開啟原圖：南部科學園區的台積電18廠與前方的農田"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/TSMC_Fab_18_and_fields_May_2025.jpg?width=960" alt="南部科學園區的台積電18廠與前方的農田" width="960" height="640" loading="lazy" decoding="async"></a><figcaption>南部科學園區的台積電18廠與前方的農田（2025年5月）。<span class="credit">4300streetcar｜<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>｜<a href="https://commons.wikimedia.org/wiki/File:TSMC_Fab_18_and_fields_May_2025.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
         <p>新竹科學工業園區（1980年設立，本文列為前史）依1979年公布的《科學工業園區設置管理條例》設立，「先以行政實體成立，再購置土地」；進駐廠商享有低於市價的廠房與廠址租金，<b>土地本身就是國家補貼的一部分</b>。</p>
         <p>1990年代中期以後，新竹模式被複製到臺南，這是臺灣的第一階段。科學園區的擴張，意味著國家必須持續把農地轉為工業用地：農地變更、浮動分區與區段徵收。</p>
-        <p class="src">資料來源：Mathews（1997）；Amsden &amp; Chu（2003）</p>
+        <p class="src">資料來源：<a href="https://doi.org/10.2307/41165909" target="_blank" rel="noopener">Mathews（1997）</a>；<a href="#ref-amsden2003">Amsden &amp; Chu（2003）</a></p>
       </div>
     </section>
 
@@ -309,9 +330,10 @@
       <div class="card">
         <div class="kicker"><span class="zh my">第一階段｜馬來西亞</span></div>
         <h2>建在油棕園上的賽城</h2>
+        <figure class="photo two"><div class="ph-row"><a class="ph" href="https://commons.wikimedia.org/wiki/File:Oil_Palm_Plantations_in_Melaka.jpg" target="_blank" rel="noopener" aria-label="在Wikimedia Commons開啟原圖：馬六甲的油棕園"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Oil_Palm_Plantations_in_Melaka.jpg?width=960" alt="馬六甲的油棕園" width="960" height="720" loading="lazy" decoding="async"></a><a class="ph" href="https://commons.wikimedia.org/wiki/File:Skylines_of_Cyberjaya_(221225)_05.jpg" target="_blank" rel="noopener" aria-label="在Wikimedia Commons開啟原圖：賽城的天際線與前方整地中的土地"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Skylines_of_Cyberjaya_(221225)_05.jpg?width=960" alt="賽城的天際線與前方整地中的土地" width="960" height="720" loading="lazy" decoding="async"></a></div><figcaption>左：馬來西亞半島的油棕園（馬六甲，2015年；示意，並非Prang Besar園區）；右：今日的賽城天際線（2022年）<span class="credit">左：Chongkian｜<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>｜<a href="https://commons.wikimedia.org/wiki/File:Oil_Palm_Plantations_in_Melaka.jpg" target="_blank" rel="noopener">Wikimedia Commons</a><br>右：*angys*｜<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>｜<a href="https://commons.wikimedia.org/wiki/File:Skylines_of_Cyberjaya_(221225)_05.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
         <p>1990年代中期推出的多媒體超級走廊，核心城市賽城（Cyberjaya）建於國聯企業Golden Hope持有的原Prang Besar油棕種植園之上，1997年啟用；定居數代的<b>印裔園丘工人</b>因而被迫遷離。</p>
         <p>種植園既是殖民經濟的遺產，也是後殖民國家與國聯企業可以直接調度的土地庫存。本文以<b>差別可徵收性</b>追問：哪些土地、哪些社群，最容易被劃為可徵用的對象？</p>
-        <p class="src">資料來源：Bunnell（2004）；顏聖錝（2021b）；Edwards &amp; Jomo（1993）</p>
+        <p class="src">資料來源：<a href="#ref-bunnell2004">Bunnell（2004）</a>；<a href="#ref-yan2021b">顏聖錝（2021b）</a>；<a href="#ref-edwards1993">Edwards &amp; Jomo（1993）</a></p>
       </div>
     </section>
 
@@ -319,10 +341,11 @@
       <div class="card">
         <div class="kicker"><span class="zh tw">第二階段｜2000–2010年代</span></div>
         <h2>水首次與土地並列為公共爭議</h2>
+        <figure class="photo"><a class="ph" href="https://commons.wikimedia.org/wiki/File:%E8%BE%B2%E6%B0%91%E6%8A%97%E8%AD%B0%E6%90%B6%E6%B0%B4%E5%B7%A5%E7%A8%8B%E8%A1%8C%E5%8B%95%E5%8A%87.jpg" target="_blank" rel="noopener" aria-label="在Wikimedia Commons開啟原圖：農民在凱達格蘭大道以行動劇抗議中科四期搶水工程"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/%E8%BE%B2%E6%B0%91%E6%8A%97%E8%AD%B0%E6%90%B6%E6%B0%B4%E5%B7%A5%E7%A8%8B%E8%A1%8C%E5%8B%95%E5%8A%87.jpg?width=960" alt="農民在凱達格蘭大道以行動劇抗議中科四期搶水工程" width="960" height="640" loading="lazy" decoding="async"></a><figcaption>2012年3月，台灣農村陣線與彰化農民在凱達格蘭大道以行動劇抗議中科四期搶水工程：剪開象徵引水工程的水管。<span class="credit">Mingwangx｜<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>｜<a href="https://commons.wikimedia.org/wiki/File:%E8%BE%B2%E6%B0%91%E6%8A%97%E8%AD%B0%E6%90%B6%E6%B0%B4%E5%B7%A5%E7%A8%8B%E8%A1%8C%E5%8B%95%E5%8A%87.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
         <p>中科四期二林園區規劃每日需要<b>15.5萬噸</b>工業用水。2011年8月，數百名彰化農民與運動者在溪州鄉的水門集會，反對中科從以濁水溪為水源的莿仔埤圳引水，引水計畫為每日<b>6.5萬噸以上</b>。</p>
         <p>水首次與土地並列，成為技術空間的關鍵成本；承擔者也由徵收區的地主與居民，擴大到整個灌區的農民與沿海的生態。同一時期，馬來西亞的國營晶圓廠Silterra於2000年在居林投產，長期停留在成熟製程。</p>
         <p class="mapnote">地圖上的虛線為引水方向的示意。</p>
-        <p class="src">資料來源：今周刊（2010）；Taipei Times（2011）；Rasiah（2015）；Lee &amp; Hutchinson（2026）</p>
+        <p class="src">資料來源：<a href="https://www.businesstoday.com.tw/article/category/80392/post/201008120020/" target="_blank" rel="noopener">今周刊（2010）</a>；<a href="https://www.taipeitimes.com/News/front/archives/2011/08/08/2003510205" target="_blank" rel="noopener">Taipei Times（2011）</a>；<a href="https://doi.org/10.35188/UNU-WIDER/2015/012-6" target="_blank" rel="noopener">Rasiah（2015）</a>；<a href="https://bookshop.iseas.edu.sg/publication/8011" target="_blank" rel="noopener">Lee &amp; Hutchinson（2026）</a></p>
       </div>
     </section>
 
@@ -330,9 +353,10 @@
       <div class="card">
         <div class="kicker"><span class="zh tw">第三階段｜臺灣</span></div>
         <h2>水移向工業，電綁定電廠</h2>
+        <figure class="photo"><a class="ph" href="https://commons.wikimedia.org/wiki/File:Tatan_Power_Plant_20190606.jpg" target="_blank" rel="noopener" aria-label="在Wikimedia Commons開啟原圖：桃園觀音的台電大潭發電廠"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Tatan_Power_Plant_20190606.jpg?width=960" alt="桃園觀音的台電大潭發電廠" width="960" height="641" loading="lazy" decoding="async"></a><figcaption>桃園觀音的台電大潭發電廠（2019年）。<span class="credit">台灣電力公司｜政府網站資料開放宣告｜<a href="https://commons.wikimedia.org/wiki/File:Tatan_Power_Plant_20190606.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
         <p>2020年農田水利會改制為公務機關；2021年停灌之後推動「大區輪作」，每年輪作約2.6至3.1萬公頃，若轉作申報率達100%，每年可節水1.8至2.2億噸，「相當於一座石門水庫」。</p>
         <p>2024年8月，台電表示桃園以北不再核供5MW以上的資料中心，經濟部直言「要AI大廠，請支持台電電廠」；2026年7月，台電點名<b>大潭與協和電廠</b>周邊，可規劃AI資料中心專區。技術空間開始直接與發電廠綁定（infrastructure anchoring）。</p>
-        <p class="src">資料來源：中央通訊社（2020, 2021）；科技新報（2024a）；聯合報（2026）</p>
+        <p class="src">資料來源：<a href="https://www.cna.com.tw/news/aipl/202004090157.aspx" target="_blank" rel="noopener">中央通訊社（2020）</a>；<a href="https://www.cna.com.tw/news/afe/202111270016.aspx" target="_blank" rel="noopener">中央通訊社（2021）</a>；<a href="https://finance.technews.tw/2024/08/12/want-big-ai-companies-to-invest-please-support-building-power-plants/" target="_blank" rel="noopener">科技新報（2024a）</a>；<a href="https://udn.com/news/story/7238/9629060" target="_blank" rel="noopener">聯合報（2026）</a></p>
       </div>
     </section>
 
@@ -340,10 +364,11 @@
       <div class="card">
         <div class="kicker"><span class="zh my">第三階段｜馬來西亞</span></div>
         <h2>新加坡的需求越過柔佛海峽</h2>
+        <figure class="photo"><a class="ph" href="https://commons.wikimedia.org/wiki/File:Water_pipes_from_Johor_Bahru_to_Singapore.jpg" target="_blank" rel="noopener" aria-label="在Wikimedia Commons開啟原圖：沿新柔長堤鋪設、連接柔佛與新加坡的輸水管"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Water_pipes_from_Johor_Bahru_to_Singapore.jpg?width=960" alt="沿新柔長堤鋪設、連接柔佛與新加坡的輸水管" width="960" height="540" loading="lazy" decoding="async"></a><figcaption>沿新柔長堤鋪設、連接柔佛新山與新加坡的輸水管（2023年）。<span class="credit">Ryuch｜<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>｜<a href="https://commons.wikimedia.org/wiki/File:Water_pipes_from_Johor_Bahru_to_Singapore.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
         <p>新加坡自2019年起未再核准新的資料中心，直到2022年才開始解除，需求北移至柔佛。DC Byte估計柔佛容量由2021年初的10MW增至2024年的1,500MW，但這包含興建中與規劃中的容量；2025年7月實際運轉為<b>487MW</b>。</p>
         <p>國家以TNB的「綠色通道」把供電時程由36至48個月縮短至12個月，並於2025年成立柔新經濟特區。跨境的水則早已存在：依1962年協定，新加坡每日可從柔佛河抽取2.5億加侖原水。本土資本也參與其中，YTL Power與NVIDIA在古來的資料中心，以「主權AI」為號召。</p>
         <p class="mapnote">虛線為需求北移、實線為原水南流的示意。</p>
-        <p class="src">資料來源：W.Media（2024）；DatacenterDynamics（2025）；Tenaga Nasional Berhad（2023）；Ministry of Foreign Affairs Singapore（n.d.）；Kadir, Andri &amp; Partners（2025）</p>
+        <p class="src">資料來源：<a href="https://w.media/johor-from-10mw-to-1500mw-in-three-years/" target="_blank" rel="noopener">W.Media（2024）</a>；<a href="https://www.datacenterdynamics.com/en/analysis/the-past-present-and-future-of-johor/" target="_blank" rel="noopener">DatacenterDynamics（2025）</a>；<a href="https://www.tnb.com.my/assets/press_releases/2023080944_ENG.pdf" target="_blank" rel="noopener">Tenaga Nasional Berhad（2023）</a>；<a href="https://www.mfa.gov.sg/about-mfa/key-issues/water-agreements/" target="_blank" rel="noopener">Ministry of Foreign Affairs Singapore（n.d.）</a>；<a href="https://www.kaaplaw.com" target="_blank" rel="noopener">Kadir, Andri &amp; Partners（2025）</a></p>
       </div>
     </section>
 
@@ -351,6 +376,7 @@
       <div class="card">
         <div class="kicker"><span class="zh my">路徑分歧</span></div>
         <h2>招商在聯邦，水與土地的代價在州</h2>
+        <figure class="photo"><a class="ph" href="https://commons.wikimedia.org/wiki/File:Putrajaya_Malaysia_Perdana-Putra-01.jpg" target="_blank" rel="noopener" aria-label="在Wikimedia Commons開啟原圖：布城的首相署大樓"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Putrajaya_Malaysia_Perdana-Putra-01.jpg?width=960" alt="布城的首相署大樓" width="960" height="460" loading="lazy" decoding="async"></a><figcaption>布城的首相署（Perdana Putra），聯邦政府的行政中心（2014年）。<span class="credit">CEphoto, Uwe Aranas｜<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>｜<a href="https://commons.wikimedia.org/wiki/File:Putrajaya_Malaysia_Perdana-Putra-01.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
         <div class="fedfig" role="img" aria-label="聯邦推動招商，水與土地的代價落在州">
           <div class="lv">聯邦</div>
           <div class="items"><span>綠色通道</span><span>租稅優惠</span><span>柔新經濟特區</span><span>500kV電網擴建</span></div>
@@ -360,7 +386,7 @@
         </div>
         <p>依聯邦憲法，水資源屬州政府管轄，土地取得也須經州政府核准。於是停批資料中心的是柔佛州，訂定資料中心專屬水價（每立方公尺RM5.31，家戶最低級距RM0.65）的是雪蘭莪州。</p>
         <p>對照臺灣的單一國家體制，中央同時招商並調度水電：這是兩國外部化路徑分歧的重要制度條件。</p>
-        <p class="src">資料來源：Piarapakaran（n.d.）；Kadir, Andri &amp; Partners（2025）；New Straits Times（2025）；Malay Mail（2025）；DatacenterDynamics（2025）；Tenaga Nasional Berhad（2023, 2025）</p>
+        <p class="src">資料來源：<a href="https://www.thesundaily.my/home/green-equilibrium-water-resources-are-under-state-govt-purview-NM9907197" target="_blank" rel="noopener">Piarapakaran（n.d.）</a>；<a href="https://www.kaaplaw.com" target="_blank" rel="noopener">Kadir, Andri &amp; Partners（2025）</a>；<a href="https://www.nst.com.my/news/nation/2025/11/1324188/johor-tightens-approvals-data-centres" target="_blank" rel="noopener">New Straits Times（2025）</a>；<a href="https://www.malaymail.com/news/malaysia/2025/08/01/selangor-water-tariffs-to-rise-from-sept-1-no-changes-for-low-use-domestic-users-new-rate-introduced-for-data-centres/186146" target="_blank" rel="noopener">Malay Mail（2025）</a>；<a href="https://www.datacenterdynamics.com/en/analysis/the-past-present-and-future-of-johor/" target="_blank" rel="noopener">DatacenterDynamics（2025）</a>；<a href="https://www.tnb.com.my/assets/press_releases/2023080944_ENG.pdf" target="_blank" rel="noopener">Tenaga Nasional Berhad（2023）</a>；<a href="https://www.tnb.com.my/assets/quarterly_results/Analyst_Briefing_4QFY2024_for_Website.pdf" target="_blank" rel="noopener">Tenaga Nasional Berhad（2025）</a></p>
       </div>
     </section>
 
@@ -379,7 +405,7 @@
         </div>
         <p class="fig-note">長條長度與GW成正比；兩組數據統計基礎不同，前者為TNB併網契約，後者為申報需量。</p>
         <p>2024年12月的實際負載僅<b>405MW</b>，約為已併網容量的21%；2025年6月全國資料中心實際負載603MW，約為申報最大需量的<b>47%</b>。國家承諾的，恐怕是<b>預留容量</b>：比實際耗用更早發生、也更不易被看見的外部化。這些投資如何進入費率基礎、由誰負擔，仍待檢驗。</p>
-        <p class="src">資料來源：Tenaga Nasional Berhad（2025, pp. 13, 17）；W.Media（2025）</p>
+        <p class="src">資料來源：<a href="https://www.tnb.com.my/assets/quarterly_results/Analyst_Briefing_4QFY2024_for_Website.pdf" target="_blank" rel="noopener">Tenaga Nasional Berhad（2025, pp. 13, 17）</a>；<a href="https://w.media/data-centers-in-malaysia-consume-50-of-declared-demand-risks-stranded-assets/" target="_blank" rel="noopener">W.Media（2025）</a></p>
       </div>
     </section>
 
@@ -387,6 +413,7 @@
       <div class="card">
         <div class="kicker"><span class="zh">2024年後的管制轉折</span></div>
         <h2>再內部化，還是空間重置？</h2>
+        <figure class="photo"><a class="ph" href="https://commons.wikimedia.org/wiki/File:%E5%8D%94%E5%92%8C%E7%99%BC%E9%9B%BB%E5%BB%A0FUJI8449.jpg" target="_blank" rel="noopener" aria-label="在Wikimedia Commons開啟原圖：基隆的台電協和發電廠"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/%E5%8D%94%E5%92%8C%E7%99%BC%E9%9B%BB%E5%BB%A0FUJI8449.jpg?width=960" alt="基隆的台電協和發電廠" width="960" height="640" loading="lazy" decoding="async"></a><figcaption>基隆的台電協和發電廠（2015年）；台電於2026年點名其周邊可規劃資料中心專區。<span class="credit">Taiwankengo｜<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>｜<a href="https://commons.wikimedia.org/wiki/File:%E5%8D%94%E5%92%8C%E7%99%BC%E9%9B%BB%E5%BB%A0FUJI8449.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
         <p>判準是成本<b>由誰負擔</b>、<b>在何處負擔</b>。</p>
         <div class="twocol">
           <div>
@@ -408,7 +435,7 @@
           </div>
         </div>
         <p class="verdict">本文因此修正H3：價格化的部分再內部化，與空間重置並存。</p>
-        <p class="src">資料來源：中央通訊社（2024）；經濟部（2023）；Bernama（2025）；Malay Mail（2025）；聯合報（2026）；New Straits Times（2025）</p>
+        <p class="src">資料來源：<a href="https://www.cna.com.tw/news/afe/202403220343.aspx" target="_blank" rel="noopener">中央通訊社（2024）</a>；<a href="https://gazette2.nat.gov.tw/EG_FileManager/eguploadpub/eg029004/ch04/type1/gov31/num5/images/AA.pdf" target="_blank" rel="noopener">經濟部（2023）</a>；<a href="https://www.bernama.com/en/news.php?id=2436381" target="_blank" rel="noopener">Bernama（2025）</a>；<a href="https://www.malaymail.com/news/malaysia/2025/08/01/selangor-water-tariffs-to-rise-from-sept-1-no-changes-for-low-use-domestic-users-new-rate-introduced-for-data-centres/186146" target="_blank" rel="noopener">Malay Mail（2025）</a>；<a href="https://udn.com/news/story/7238/9629060" target="_blank" rel="noopener">聯合報（2026）</a>；<a href="https://www.nst.com.my/news/nation/2025/11/1324188/johor-tightens-approvals-data-centres" target="_blank" rel="noopener">New Straits Times（2025）</a></p>
       </div>
     </section>
 
@@ -428,7 +455,7 @@
         </div>
         <p class="fig-note">面積與數值成正比。</p>
         <p>兩國型態的差異，可能有相當部分來自產業別與規模，而非國家與資本關係本身；柔佛緊鄰新加坡，則是地理上的範圍條件。水的跨境外部化主要是1962年協定的歷史結構，資料中心目前只是邊際增量；跨境外溢較能成立的，恐怕是土地與電網容量。</p>
-        <p class="src">資料來源：自由時報（2025）；Tenaga Nasional Berhad（2025）；Business Today（2025b）；Ministry of Foreign Affairs Singapore（n.d.）</p>
+        <p class="src">資料來源：<a href="https://ec.ltn.com.tw/article/paper/1725922" target="_blank" rel="noopener">自由時報（2025）</a>；<a href="https://www.tnb.com.my/assets/quarterly_results/Analyst_Briefing_4QFY2024_for_Website.pdf" target="_blank" rel="noopener">Tenaga Nasional Berhad（2025）</a>；<a href="https://www.businesstoday.com.my/2025/11/05/malaysia-records-143-data-centre-projects-since-2021-valued-at-rm144-billion/" target="_blank" rel="noopener">Business Today（2025b）</a>；<a href="https://www.mfa.gov.sg/about-mfa/key-issues/water-agreements/" target="_blank" rel="noopener">Ministry of Foreign Affairs Singapore（n.d.）</a></p>
       </div>
     </section>
 
@@ -436,6 +463,7 @@
       <div class="card">
         <div class="kicker"><span class="zh">結語</span></div>
         <h2>國家能力的另一面</h2>
+        <figure class="photo"><a class="ph" href="https://commons.wikimedia.org/wiki/File:%E5%8F%B0%E9%9B%BB%E5%8F%B0%E5%8D%97%E9%B9%BD%E7%94%B0%E5%85%89%E9%9B%BB%E5%A0%B4.jpg" target="_blank" rel="noopener" aria-label="在Wikimedia Commons開啟原圖：設置於臺南鹽田的台電太陽光電場"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/%E5%8F%B0%E9%9B%BB%E5%8F%B0%E5%8D%97%E9%B9%BD%E7%94%B0%E5%85%89%E9%9B%BB%E5%A0%B4.jpg?width=960" alt="設置於臺南鹽田的台電太陽光電場" width="960" height="516" loading="lazy" decoding="async"></a><figcaption>設置於臺南鹽田的台電太陽光電場（2020年）。<span class="credit">台灣電力公司｜政府網站資料開放宣告｜<a href="https://commons.wikimedia.org/wiki/File:%E5%8F%B0%E9%9B%BB%E5%8F%B0%E5%8D%97%E9%B9%BD%E7%94%B0%E5%85%89%E9%9B%BB%E5%A0%B4.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
         <p>國家能力不只是承擔技術追趕的風險，也包括<b>調度土地、水與電網的能力</b>；這種能力的另一面，是持續把代價轉嫁給特定社群與地理邊陲。</p>
         <p class="quote">當伺服器場與光電板取代油棕園與稻田，失去土地、承擔水電的，究竟是誰？</p>
         <p>下一階段的田野，將以柔佛與臺灣中南部農漁村為據點：</p>
@@ -451,9 +479,54 @@
 </main>
 
 <div class="end">
+  <section class="refs" aria-labelledby="refs-h">
+    <h2 id="refs-h">參考文獻</h2>
+    <p class="refs-note">本頁引用的文獻與資料，依論文的參考文獻格式列出；有網址或DOI者可直接點開。</p>
+    <ol>
+      <li id="ref-amsden2003">Amsden, A. H., &amp; Chu, W.-W. (2003). Beyond late development: Taiwan's upgrading policies. MIT Press.</li>
+      <li id="ref-bernama2025">Bernama. (2025, June 20). New electricity tariff: Over 23.6 mln domestic users in Peninsular Malaysia to enjoy fairer rates. <a href="https://www.bernama.com/en/news.php?id=2436381" target="_blank" rel="noopener">https://www.bernama.com/en/news.php?id=2436381</a></li>
+      <li id="ref-brenner2004">Brenner, N. (2004). New state spaces: Urban governance and the rescaling of statehood. Oxford University Press.</li>
+      <li id="ref-bunnell2004">Bunnell, T. (2004). Malaysia, modernity and the Multimedia Super Corridor: A critical geography of intelligent landscapes. RoutledgeCurzon.</li>
+      <li id="ref-bt2025b">Business Today. (2025b, November 5). Malaysia records 143 data centre projects since 2021 valued at RM144 billion. <a href="https://www.businesstoday.com.my/2025/11/05/malaysia-records-143-data-centre-projects-since-2021-valued-at-rm144-billion/" target="_blank" rel="noopener">https://www.businesstoday.com.my/2025/11/05/malaysia-records-143-data-centre-projects-since-2021-valued-at-rm144-billion/</a></li>
+      <li id="ref-dcd2025">DatacenterDynamics. (2025, October 29). The past, present and future of Johor. <a href="https://www.datacenterdynamics.com/en/analysis/the-past-present-and-future-of-johor/" target="_blank" rel="noopener">https://www.datacenterdynamics.com/en/analysis/the-past-present-and-future-of-johor/</a></li>
+      <li id="ref-edwards1993">Edwards, C., &amp; Jomo K. S. (1993). Policy options for Malaysian industrialisation. In Jomo K. S. (Ed.), Industrialising Malaysia: Policy, performance, prospects (pp. 316–334). Routledge.</li>
+      <li id="ref-feng2023">Feng, E. (2023, April 19). Epic drought in Taiwan pits farmers against high-tech factories for water. NPR. <a href="https://www.kunc.org/npr-news/npr-news/2023-04-19/epic-drought-in-taiwan-pits-farmers-against-high-tech-factories-for-water" target="_blank" rel="noopener">https://www.kunc.org/npr-news/npr-news/2023-04-19/epic-drought-in-taiwan-pits-farmers-against-high-tech-factories-for-water</a></li>
+      <li id="ref-hsiung1996">Hsiung, P.-C. (1996). Living rooms as factories: Class, gender, and the satellite factory system in Taiwan. Temple University Press.</li>
+      <li id="ref-kaap2025">Kadir, Andri &amp; Partners. (2025, December). Malaysia's big data centre push: Strong potential, real risks [Briefing]. <a href="https://www.kaaplaw.com" target="_blank" rel="noopener">https://www.kaaplaw.com</a></li>
+      <li id="ref-kapp1950">Kapp, K. W. (1950). The social costs of private enterprise. Harvard University Press.</li>
+      <li id="ref-kollar2026">Kollar, J. (2026). Fallowing the fields, feeding the fabs: Territorial restructuring and the political-industrial ecology of high-tech Taiwan. Environment and Planning E: Nature and Space, 9(2), 751–776. <a href="https://doi.org/10.1177/25148486251406484" target="_blank" rel="noopener">https://doi.org/10.1177/25148486251406484</a></li>
+      <li id="ref-lee2026">Lee, C., &amp; Hutchinson, F. E. (2026). Malaysia's semiconductor industry: Performance, pitfalls and potential (Trends in Southeast Asia, TRS16/26). ISEAS–Yusof Ishak Institute. <a href="https://bookshop.iseas.edu.sg/publication/8011" target="_blank" rel="noopener">https://bookshop.iseas.edu.sg/publication/8011</a></li>
+      <li id="ref-levien2013">Levien, M. (2013). Regimes of dispossession: From steel towns to special economic zones. Development and Change, 44(2), 381–407. <a href="https://doi.org/10.1111/dech.12012" target="_blank" rel="noopener">https://doi.org/10.1111/dech.12012</a></li>
+      <li id="ref-mm2025">Malay Mail. (2025, August 1). Selangor water tariffs to rise from Sept 1; no changes for low-use domestic users, new rate introduced for data centres. <a href="https://www.malaymail.com/news/malaysia/2025/08/01/selangor-water-tariffs-to-rise-from-sept-1-no-changes-for-low-use-domestic-users-new-rate-introduced-for-data-centres/186146" target="_blank" rel="noopener">https://www.malaymail.com/news/malaysia/2025/08/01/selangor-water-tariffs-to-rise-from-sept-1-no-changes-for-low-use-domestic-users-new-rate-introduced-for-data-centres/186146</a></li>
+      <li id="ref-mathews1997">Mathews, J. A. (1997). A Silicon Valley of the East: Creating Taiwan's semiconductor industry. California Management Review, 39(4), 26–54. <a href="https://doi.org/10.2307/41165909" target="_blank" rel="noopener">https://doi.org/10.2307/41165909</a></li>
+      <li id="ref-mfa">Ministry of Foreign Affairs Singapore. (n.d.). Water agreements. <a href="https://www.mfa.gov.sg/about-mfa/key-issues/water-agreements/" target="_blank" rel="noopener">https://www.mfa.gov.sg/about-mfa/key-issues/water-agreements/</a></li>
+      <li id="ref-moore2015">Moore, J. W. (2015). Capitalism in the web of life: Ecology and the accumulation of capital. Verso.</li>
+      <li id="ref-nst2025">New Straits Times. (2025, November 27). Johor tightens approvals for data centres. <a href="https://www.nst.com.my/news/nation/2025/11/1324188/johor-tightens-approvals-data-centres" target="_blank" rel="noopener">https://www.nst.com.my/news/nation/2025/11/1324188/johor-tightens-approvals-data-centres</a></li>
+      <li id="ref-ong1987">Ong, A. (1987). Spirits of resistance and capitalist discipline: Factory women in Malaysia. State University of New York Press.</li>
+      <li id="ref-ong2000">Ong, A. (2000). Graduated sovereignty in South-East Asia. Theory, Culture &amp; Society, 17(4), 55–75.</li>
+      <li id="ref-piara">Piarapakaran S. (n.d.). Green equilibrium: Water resources are under state govt purview. The Sun. <a href="https://www.thesundaily.my/home/green-equilibrium-water-resources-are-under-state-govt-purview-NM9907197" target="_blank" rel="noopener">https://www.thesundaily.my/home/green-equilibrium-water-resources-are-under-state-govt-purview-NM9907197</a></li>
+      <li id="ref-rasiah2010">Rasiah, R. (2010). Are electronics firms in Malaysia catching up in the technology ladder? Journal of the Asia Pacific Economy, 15(3), 301–319. <a href="https://doi.org/10.1080/13547860.2010.494910" target="_blank" rel="noopener">https://doi.org/10.1080/13547860.2010.494910</a></li>
+      <li id="ref-rasiah2015">Rasiah, R. (2015). The industrial policy experience of the electronics industry in Malaysia (WIDER Working Paper 2015/123). UNU-WIDER. <a href="https://doi.org/10.35188/UNU-WIDER/2015/012-6" target="_blank" rel="noopener">https://doi.org/10.35188/UNU-WIDER/2015/012-6</a></li>
+      <li id="ref-tt2011">Taipei Times. (2011, August 8). Changhua farmers protest CTSP irrigation water plans. <a href="https://www.taipeitimes.com/News/front/archives/2011/08/08/2003510205" target="_blank" rel="noopener">https://www.taipeitimes.com/News/front/archives/2011/08/08/2003510205</a></li>
+      <li id="ref-tnb2023">Tenaga Nasional Berhad. (2023). TNB establishes exclusive green lane pathway and strategic offerings for Malaysia's data centre market [Press release]. <a href="https://www.tnb.com.my/assets/press_releases/2023080944_ENG.pdf" target="_blank" rel="noopener">https://www.tnb.com.my/assets/press_releases/2023080944_ENG.pdf</a></li>
+      <li id="ref-tnb2025">Tenaga Nasional Berhad. (2025). Analyst briefing: 4QFY2024 [Presentation slides]. <a href="https://www.tnb.com.my/assets/quarterly_results/Analyst_Briefing_4QFY2024_for_Website.pdf" target="_blank" rel="noopener">https://www.tnb.com.my/assets/quarterly_results/Analyst_Briefing_4QFY2024_for_Website.pdf</a></li>
+      <li id="ref-wmedia2024">W.Media. (2024, October 31). Johor: From 10MW to 1,500MW in three years. <a href="https://w.media/johor-from-10mw-to-1500mw-in-three-years/" target="_blank" rel="noopener">https://w.media/johor-from-10mw-to-1500mw-in-three-years/</a></li>
+      <li id="ref-wmedia2025">W.Media. (2025, November 6). Data centers in Malaysia consume 50% of declared demand; risks stranded assets. <a href="https://w.media/data-centers-in-malaysia-consume-50-of-declared-demand-risks-stranded-assets/" target="_blank" rel="noopener">https://w.media/data-centers-in-malaysia-consume-50-of-declared-demand-risks-stranded-assets/</a></li>
+      <li id="ref-cna2020">中央通訊社（2020年4月9日）。農田水利會立專法改制公務機關　不受國產法規範。 <a href="https://www.cna.com.tw/news/aipl/202004090157.aspx" target="_blank" rel="noopener">https://www.cna.com.tw/news/aipl/202004090157.aspx</a></li>
+      <li id="ref-cna2021">中央通訊社（2021年11月27日）。枯水期祭全台水稻輪作制　經部拚年省一座石門水庫。 <a href="https://www.cna.com.tw/news/afe/202111270016.aspx" target="_blank" rel="noopener">https://www.cna.com.tw/news/afe/202111270016.aspx</a></li>
+      <li id="ref-cna2024">中央通訊社（2024年3月22日）。4月起漲電價　逾9成住宅電費月增近20元、產業最高調25%。 <a href="https://www.cna.com.tw/news/afe/202403220343.aspx" target="_blank" rel="noopener">https://www.cna.com.tw/news/afe/202403220343.aspx</a></li>
+      <li id="ref-bt2010">今周刊（2010年8月12日）。經濟與環保　雙贏還是零和？ <a href="https://www.businesstoday.com.tw/article/category/80392/post/201008120020/" target="_blank" rel="noopener">https://www.businesstoday.com.tw/article/category/80392/post/201008120020/</a></li>
+      <li id="ref-ltn2025">自由時報（2025年9月28日）。AI需求帶動　台積電今年用電占比挑戰10%。 <a href="https://ec.ltn.com.tw/article/paper/1725922" target="_blank" rel="noopener">https://ec.ltn.com.tw/article/paper/1725922</a></li>
+      <li id="ref-technews2024a">科技新報（2024a，8月12日）。經濟部：北部電廠電網不夠，要 AI 大廠投資請支持台電蓋電廠。 <a href="https://finance.technews.tw/2024/08/12/want-big-ai-companies-to-invest-please-support-building-power-plants/" target="_blank" rel="noopener">https://finance.technews.tw/2024/08/12/want-big-ai-companies-to-invest-please-support-building-power-plants/</a></li>
+      <li id="ref-moea2023">經濟部（2023年1月6日）。耗水費徵收辦法。行政院公報。 <a href="https://gazette2.nat.gov.tw/EG_FileManager/eguploadpub/eg029004/ch04/type1/gov31/num5/images/AA.pdf" target="_blank" rel="noopener">https://gazette2.nat.gov.tw/EG_FileManager/eguploadpub/eg029004/ch04/type1/gov31/num5/images/AA.pdf</a></li>
+      <li id="ref-udn2026">聯合報（2026年7月15日）。北部5MW以上AI資料中心解禁　曾文生點名兩地方可提專區方案。 <a href="https://udn.com/news/story/7238/9629060" target="_blank" rel="noopener">https://udn.com/news/story/7238/9629060</a></li>
+      <li id="ref-yan2021b">顏聖錝（2021b）。族裔政治的交纏：馬來西亞國家空間生產。中國地理學會會刊，67，33–54。</li>
+    </ol>
+  </section>
   <footer>
     <b>關於本頁：</b>依據研討會論文〈晶片島與雲端飛地：誰為臺馬的國家技術空間付出代價？〉（2026年臺灣東南亞學會年會）整理，為初步研究成果，數據與論點仍在修訂中，請勿引用。<br>
-    <b>地圖：</b>地點標記為概略位置，圓圈、虛線與實線均為示意，不代表實際範圍或管線路徑。底圖：© OpenStreetMap貢獻者。
+    <b>地圖：</b>地點標記為概略位置，圓圈、虛線與實線均為示意，不代表實際範圍或管線路徑。底圖：© OpenStreetMap貢獻者。<br>
+    <b>照片：</b>均取自Wikimedia Commons，採創用CC（CC BY、CC BY-SA）或政府網站資料開放宣告等開放授權；作者與授權標示於各圖說，點選照片可開啟原始頁面。
   </footer>
   <div class="byline">
     <span class="role">Researchers &middot; 研究者</span>

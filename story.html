@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>晶片島與雲端飛地｜故事地圖</title>
+<meta name="description" content="跟著論文的三個階段，從加工出口區走到電廠周邊與柔佛海峽：誰為臺灣與馬來西亞的國家技術空間付出代價？">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="台馬半導體與AI產業分工地圖">
+<meta property="og:title" content="晶片島與雲端飛地｜故事地圖">
+<meta property="og:description" content="跟著論文的三個階段，從加工出口區走到電廠周邊與柔佛海峽：誰為臺灣與馬來西亞的國家技術空間付出代價？">
+<meta property="og:url" content="https://yunching0513.github.io/TWvsMY_AIindustry/story.html">
+<meta property="og:image" content="https://yunching0513.github.io/TWvsMY_AIindustry/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&family=DM+Sans:wght@400;500&display=swap');
+  :root{
+    --bg:#F2F2F2;--panel:#FFFFFF;--panel-soft:#F1F1F1;
+    --ink:#333333;--ink-strong:#000000;--ink-soft:#5c5c5c;--ink-faint:#9a9a9a;
+    --line:#dcdcdc;--tint:#D6DCE0;--accent:#b8a98c;
+    --shu:#A6392C;--shu-soft:#E7D3CC;--midori:#2E6B4E;--midori-soft:#D6DFD7;--slate:#5a6b8c;
+    --ls-wide:0.16em;--ls:0.08em;--ease:cubic-bezier(.22,.61,.36,1);
+    --gothic:"Noto Sans TC",sans-serif;
+    --body:"DM Sans","Noto Sans TC",sans-serif;
+    --latin:"Cormorant","Noto Serif TC",serif;
+    --serif:"Noto Serif TC",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+  body{background:var(--bg);color:var(--ink);font-family:var(--gothic);line-height:1.8;
+    -webkit-font-smoothing:antialiased}
+  a{color:inherit}
+
+  /* ---- hero ---- */
+  .hero{max-width:1180px;margin:0 auto;padding:clamp(28px,5vw,68px) clamp(18px,3vw,44px) clamp(28px,4vw,48px)}
+  .back{display:inline-block;font-size:13.5px;color:var(--ink-soft);text-decoration:none;margin-bottom:28px;
+    border-bottom:1px solid var(--tint)}
+  .back:hover{color:var(--ink-strong);border-bottom-color:var(--ink-strong)}
+  .eyebrow{font-family:var(--latin);font-size:15px;letter-spacing:var(--ls-wide);text-transform:uppercase;
+    color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:15px;font-weight:600}
+  .eyebrow::before{content:"";width:38px;height:1px;background:var(--accent)}
+  .hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(34px,6vw,62px);line-height:1.25;
+    color:var(--ink-strong);letter-spacing:.02em}
+  .hero .sub{font-family:var(--serif);font-size:clamp(18px,2.4vw,24px);font-weight:500;color:var(--ink);
+    margin-top:12px;line-height:1.6}
+  .hero .meta{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px 22px;font-size:13.5px;color:var(--ink-soft)}
+  .hero .meta b{color:var(--ink-strong);font-weight:500}
+  .hero .lede{max-width:62ch;margin-top:24px;font-size:15px;font-weight:300;color:#4a4a4a;line-height:2}
+  .hero .lede b{font-weight:500;color:var(--ink)}
+  .cue{margin-top:26px;font-size:13px;letter-spacing:var(--ls);color:var(--ink-soft)}
+  .cue::after{content:"  ↓";color:var(--shu)}
+
+  /* ---- story layout ---- */
+  .story{position:relative;display:grid;grid-template-columns:minmax(340px,460px) 1fr;
+    border-top:1px solid var(--line)}
+  .mapcol{grid-column:2;grid-row:1;position:sticky;top:0;height:100vh;align-self:start}
+  #map{position:absolute;inset:0;background:var(--panel-soft)}
+  .steps{grid-column:1;grid-row:1;padding:0 clamp(16px,2.6vw,36px) 30vh;position:relative;z-index:2}
+  .step{min-height:88vh;display:flex;align-items:center;padding:6vh 0}
+  .step:first-child{min-height:70vh}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:4px;
+    padding:clamp(22px,2.6vw,32px);width:100%;transition:border-color .3s var(--ease),opacity .3s var(--ease);
+    opacity:.5}
+  .step.is-active .card{opacity:1;border-color:var(--ink-strong)}
+  .kicker{font-family:var(--latin);font-size:13px;letter-spacing:var(--ls-wide);text-transform:uppercase;
+    color:var(--ink-soft);font-weight:600;margin-bottom:6px}
+  .kicker .zh{font-family:var(--gothic);letter-spacing:.06em;text-transform:none;font-weight:500}
+  .kicker .tw{color:var(--shu)}.kicker .my{color:var(--midori)}
+  .card h2{font-family:var(--serif);font-size:clamp(22px,2.4vw,28px);font-weight:600;color:var(--ink-strong);
+    line-height:1.45;margin-bottom:14px}
+  .card p{font-size:15px;font-weight:300;color:#3f3f3f;line-height:2;margin-bottom:12px}
+  .card p b{font-weight:500;color:var(--ink-strong)}
+  .card .src{font-size:12.5px;color:var(--ink-soft);line-height:1.7;margin-top:14px;padding-top:12px;
+    border-top:1px solid var(--line);font-weight:400}
+  .card .mapnote{font-size:12.5px;color:var(--ink-soft);margin-top:6px}
+  .num{font-family:var(--serif);font-weight:600;color:var(--ink-strong)}
+
+  /* map overlays */
+  .map-chip{position:absolute;top:14px;left:14px;z-index:1000;background:var(--panel);
+    border:1px solid var(--ink-strong);border-radius:2px;padding:6px 12px;font-size:13px;
+    font-weight:500;color:var(--ink-strong);letter-spacing:.04em;pointer-events:none;max-width:70%}
+  .map-legend{position:absolute;left:14px;bottom:14px;z-index:1000;background:rgba(255,255,255,.92);
+    border:1px solid var(--line);border-radius:2px;padding:8px 12px;font-size:12px;color:var(--ink-soft);
+    display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;pointer-events:none}
+  .map-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px;
+    box-shadow:0 0 0 1px rgba(0,0,0,.12)}
+  .leaflet-container{font-family:var(--gothic)}
+  .leaflet-tile{filter:grayscale(.35) brightness(1.04) contrast(.92) saturate(.7)}
+  .leaflet-control-zoom a{background:var(--panel)!important;color:var(--ink)!important;border-color:var(--line)!important}
+  .leaflet-control-attribution{background:rgba(255,255,255,.82)!important;color:var(--ink-soft)!important}
+  .leaflet-control-attribution a{color:var(--midori)!important}
+  .leaflet-tooltip.lbl{background:var(--panel);border:1px solid var(--line);border-radius:2px;box-shadow:0 2px 8px rgba(0,0,0,.08);
+    padding:5px 9px;font-family:var(--gothic);font-size:13px;line-height:1.5;color:var(--ink);white-space:nowrap}
+  .leaflet-tooltip.lbl b{font-weight:500;color:var(--ink-strong);display:block}
+  .leaflet-tooltip.lbl span{color:var(--ink-soft);font-size:12px;display:block}
+  .leaflet-tooltip.lbl.line{background:transparent;border:none;box-shadow:none;font-weight:500;color:var(--ink-strong);
+    text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 3px #fff}
+  .leaflet-tooltip.lbl::before{display:none}
+  .map-fallback{padding:40px;color:var(--ink-soft);font-weight:300;text-align:center}
+
+  /* ---- figures inside cards ---- */
+  .concept{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0 14px}
+  .c-in{border:1px solid var(--ink-strong);padding:10px 6px;text-align:center;font-family:var(--serif);font-weight:600;
+    color:var(--ink-strong);font-size:16px;line-height:1.4}
+  .c-in small{display:block;font-family:var(--gothic);font-weight:300;font-size:12px;color:var(--ink-soft);margin-top:4px}
+  .c-arrow{grid-column:1/-1;text-align:center;color:var(--ink-soft);line-height:1;font-size:18px}
+  .c-out{grid-column:1/-1;background:var(--ink-strong);color:#fff;text-align:center;padding:12px;
+    font-family:var(--serif);font-weight:600;font-size:17px;letter-spacing:.06em}
+  .rail{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:14px 0 6px}
+  .rail li{background:var(--panel-soft);padding:8px 8px 10px;font-size:12px;line-height:1.5;color:var(--ink-soft)}
+  .rail li b{display:block;font-weight:500;color:var(--ink-strong);font-size:13px}
+  .rail li em{display:block;font-style:normal;margin-top:6px;padding-top:6px;border-top:1px solid var(--line);
+    color:var(--ink);font-weight:500}
+  .rail li.now{background:var(--ink-strong);color:#d9d9d9}
+  .rail li.now b,.rail li.now em{color:#fff}
+  .rail li.now em{border-top-color:#555}
+  .layers{list-style:none;margin:6px 0 4px}
+  .layers li{font-size:14px;font-weight:300;color:#3f3f3f;line-height:1.8;padding:8px 0;border-top:1px solid var(--line)}
+  .layers li b{font-weight:500;color:var(--ink-strong);margin-right:6px}
+
+  .bars{margin:16px 0 8px}
+  .bars-h{font-size:12.5px;font-weight:500;color:var(--ink-soft);margin:12px 0 6px}
+  .bars-h:first-child{margin-top:0}
+  .bar-row{display:grid;grid-template-columns:88px 1fr 64px;align-items:center;gap:10px;margin-bottom:6px}
+  .bar-row .bl{font-size:12.5px;color:var(--ink);line-height:1.35}
+  .bar-row .bt{height:16px;position:relative}
+  .bar-row .bt i{position:absolute;left:0;top:0;bottom:0;display:block}
+  .bar-row .bt i.o{border:1.5px solid var(--ink-strong);background:transparent}
+  .bar-row .bt i.g{background:var(--midori-soft);border:1.5px solid var(--ink-strong)}
+  .bar-row .bt i.k{background:var(--midori)}
+  .bar-row .bv{font-family:var(--serif);font-size:13.5px;font-weight:600;color:var(--ink-strong);text-align:right}
+  .bar-row .bv.hl{color:var(--midori)}
+  .fig-note{font-size:12px!important;color:var(--ink-soft)!important;margin:4px 0 12px!important;line-height:1.6!important}
+
+  .sq{display:flex;align-items:flex-start;gap:22px;margin:14px 0 6px;flex-wrap:wrap}
+  .sq-col{display:flex;flex-direction:column;gap:6px;min-width:120px;flex:1}
+  .sq-frame{height:120px;display:flex;align-items:flex-end}
+  .sq-box.tw{background:var(--shu)}
+  .sq-box.my{background:var(--midori)}
+  .sq-box.water{background:var(--tint);box-shadow:inset 0 0 0 1.5px var(--ink-strong)}
+  .sq-col b{font-family:var(--serif);font-weight:600;color:var(--ink-strong);font-size:15px;line-height:1.4}
+  .sq-col span{font-size:12px;color:var(--ink-soft);line-height:1.5}
+  .sq-cap{font-size:13px;font-weight:500;color:var(--ink-strong);margin-top:12px}
+
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0 8px}
+  .twocol h3{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink-strong);margin-bottom:6px;
+    padding-bottom:6px;border-bottom:1.5px solid var(--ink-strong)}
+  .twocol ul{list-style:none}
+  .twocol li{font-size:13px;font-weight:300;color:#3f3f3f;line-height:1.7;padding:6px 0 6px 14px;position:relative;
+    border-bottom:1px solid var(--line)}
+  .twocol li::before{content:"";position:absolute;left:0;top:13px;width:7px;height:7px;border-radius:50%}
+  .twocol li.tw::before{background:var(--shu)}
+  .twocol li.my::before{background:var(--midori)}
+  .twocol li.tbd{color:var(--ink-soft)}
+  .twocol li.tbd::before{background:transparent;box-shadow:inset 0 0 0 1.5px var(--ink-faint)}
+  .verdict{background:var(--panel-soft);border-left:2px solid var(--ink-strong);padding:14px 16px;border-radius:2px;
+    margin:14px 0 4px;font-size:14.5px;font-weight:500;color:var(--ink-strong);line-height:1.8}
+  .fedfig{display:grid;grid-template-columns:52px 1fr;gap:8px 10px;margin:14px 0 8px;font-size:13px;line-height:1.6}
+  .fedfig .lv{font-family:var(--serif);font-weight:600;color:var(--ink-strong);font-size:15px;padding-top:6px}
+  .fedfig .lv.st{color:var(--midori)}
+  .fedfig .items{display:flex;flex-wrap:wrap;gap:6px}
+  .fedfig .items span{border:1px solid var(--ink-strong);padding:4px 8px;border-radius:2px;background:var(--panel)}
+  .fedfig .items.st span{border-color:var(--midori);background:var(--midori-soft)}
+  .fedfig .down{grid-column:2;font-size:12.5px;color:var(--ink-soft)}
+  .fedfig .down::before{content:"↓ ";color:var(--midori)}
+  .quote{font-family:var(--serif);font-size:clamp(19px,2.2vw,23px);font-weight:600;line-height:1.7;color:var(--ink-strong);
+    margin:16px 0 14px;padding:16px 0;border-top:1.5px solid var(--ink-strong);border-bottom:1px solid var(--line)}
+  .next{list-style:none;margin:6px 0}
+  .next li{font-size:13.5px;font-weight:300;color:#3f3f3f;line-height:1.8;padding:6px 0 6px 18px;position:relative}
+  .next li::before{content:"→";position:absolute;left:0;color:var(--ink-soft)}
+
+  /* ---- footer ---- */
+  .end{max-width:1180px;margin:0 auto;padding:40px clamp(18px,3vw,44px) 80px}
+  .end footer{padding-top:24px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:12.5px;
+    font-weight:300;line-height:1.9}
+  .end footer b{color:var(--ink);font-weight:500}
+  .byline{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 20px;margin-top:22px;
+    padding:18px 22px;border:1px solid var(--line);border-radius:4px;background:var(--panel)}
+  .byline .role{font-family:var(--latin);font-size:13px;letter-spacing:var(--ls-wide);text-transform:uppercase;
+    color:var(--accent);font-weight:600}
+  .byline .names{font-family:var(--serif);font-size:17px;font-weight:500;color:var(--ink-strong);letter-spacing:.04em}
+  .byline .names .sep{color:var(--tint);margin:0 8px;font-weight:300}
+
+  /* ---- small screens: map on top, cards scroll beneath ---- */
+  @media (max-width: 900px){
+    .story{display:block}
+    .mapcol{position:sticky;top:0;height:46vh;z-index:3;border-bottom:1px solid var(--ink-strong)}
+    .steps{padding:0 14px 20vh;z-index:1}
+    .step{min-height:72vh;align-items:flex-start;padding:4vh 0}
+    .step:first-child{min-height:60vh}
+    .card{opacity:.92}
+    .map-chip{font-size:12px;top:10px;left:10px}
+    .map-legend{display:none}
+    .twocol{grid-template-columns:1fr}
+    .leaflet-tooltip.lbl{font-size:12px;padding:4px 7px}
+    .leaflet-tooltip.lbl span{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <a class="back" href="index.html">← 回到〈台馬半導體與AI產業分工地圖〉</a>
+  <div class="eyebrow">Story Map &middot; ACSEAST 2026</div>
+  <h1>晶片島與雲端飛地</h1>
+  <p class="sub">誰為臺馬的國家技術空間付出代價？</p>
+  <div class="meta">
+    <span><b>顏聖錝、吳昀慶</b></span>
+    <span>2026年臺灣東南亞學會年會發表論文（初稿，請勿引用）</span>
+  </div>
+  <p class="lede">既有研究多半追問臺灣與馬來西亞的技術追趕<b>為何成敗不同</b>；本頁換一個問題：追趕所仰賴的<b>土地、水與電</b>，從哪些部門、地方與群體調度而來？地圖會跟著論文的三個階段移動，從1960年代的加工出口區，一路走到今天的電廠周邊與柔佛海峽。</p>
+  <p class="cue">往下捲動開始</p>
+</header>
+
+<main class="story">
+  <div class="mapcol" aria-label="故事地圖：隨章節移動的地圖">
+    <div id="map"></div>
+    <div class="map-chip" id="mapChip">導言</div>
+    <div class="map-legend" aria-hidden="true">
+      <span><i style="background:#A6392C"></i>臺灣</span>
+      <span><i style="background:#2E6B4E"></i>馬來西亞</span>
+      <span><i style="background:#5c5c5c"></i>新加坡</span>
+      <span>地點為概略位置</span>
+    </div>
+  </div>
+
+  <div class="steps">
+
+    <section class="step" data-step="0">
+      <div class="card">
+        <div class="kicker"><span class="zh">導言</span></div>
+        <h2>從「追趕成敗」到「誰付出代價」</h2>
+        <p>晶圓廠與資料中心是地面以上看得見的部分；本研究關心地面以下：科學園區的土地從何而來？晶圓廠與伺服器場所需的水與電，又透過哪些制度，從誰身上調度而來？</p>
+        <p>我們以<b>國家技術空間</b>的概念，比較兩國三十年的軌跡：被外部化的對象，如何由<b>勞動與土地</b>，擴及<b>水與電</b>。</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="1">
+      <div class="card">
+        <div class="kicker"><span class="zh tw">場景一｜臺灣，2021</span></div>
+        <h2>停灌逾<span class="num">7.4萬</span>公頃</h2>
+        <p>在被稱為「百年大旱」的乾旱中，政府對全臺一期稻作實施大規模停灌，涵蓋桃竹苗、臺中與嘉南灌區，約占總灌區面積的<b>24%</b>；同一時期，台積電等半導體廠以水車載水維持生產。</p>
+        <p>兩年後南部再度乾旱，國際媒體指出，南部稻農已連續第三年未能種植。</p>
+        <p class="mapnote">地圖上的圓圈為停灌灌區的示意位置。</p>
+        <p class="src">資料來源：中央通訊社（2021）；Feng（2023）</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="2">
+      <div class="card">
+        <div class="kicker"><span class="zh my">場景二｜柔佛，2025</span></div>
+        <h2>停批理由：用水量約<span class="num">200</span>倍</h2>
+        <p>2025年11月，柔佛州政府宣布不再核准Tier 1與Tier 2資料中心，理由是這類設施的用水量約為Tier 3與Tier 4的200倍；新設資料中心須改用再生水，並集中於指定的工業區。</p>
+        <p>兩起管制分別發生在全球半導體製造與AI雲端基礎設施的核心節點。它們不是孤立的偶發事件，而是同一道問題：國家傾全力為技術資本生產專屬空間時，代價由誰承擔？</p>
+        <p class="src">資料來源：New Straits Times（2025）</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="3">
+      <div class="card">
+        <div class="kicker"><span class="zh">核心概念</span></div>
+        <h2>國家技術空間：一塊被三重綁定的土地</h2>
+        <div class="concept" role="img" aria-label="土地、水電與制度三者綁定，構成國家技術空間">
+          <div class="c-in">土地<small>指定一塊土地</small></div>
+          <div class="c-in">水電<small>優先綁定基礎設施</small></div>
+          <div class="c-in">制度<small>例外法規與加速審批</small></div>
+          <div class="c-arrow">↓</div>
+          <div class="c-out">國家技術空間</div>
+        </div>
+        <ul class="layers">
+          <li><b>國家空間選擇性</b>國家主動劃定技術空間，對不同空間與人群施以差別治理</li>
+          <li><b>土地體制</b>差別可徵收性：哪些土地、哪些社群，最容易被劃為可徵用的對象？</li>
+          <li><b>成本外部化</b>代價轉嫁給誰？被廉價化的對象由勞動與土地，擴及水與電</li>
+        </ul>
+        <ol class="rail" aria-label="分期與優先綁定的資源">
+          <li><b>前史</b>1960–1980年代<em>勞動</em></li>
+          <li><b>第一階段</b>1990年代<em>土地</em></li>
+          <li><b>第二階段</b>2000–2010年代<em>土地與水</em></li>
+          <li class="now"><b>第三階段</b>2020–2026<em>水與電</em></li>
+        </ol>
+        <p class="src">資料來源：本研究整理；Brenner（2004）；Ong（2000）；Levien（2013）；Kapp（1950）；Moore（2015）；Kollar（2026）</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="4">
+      <div class="card">
+        <div class="kicker"><span class="zh">前史｜1960–1980年代</span></div>
+        <h2>飛地是兩國共同的起點</h2>
+        <p>1960年代，美國電子企業已進駐臺灣南部的加工出口區，從事封裝、測試與組裝；1972年檳城峇六拜自由貿易區啟用，歌樂與國家半導體隨即開始生產。</p>
+        <p>此時被廉價化的是<b>勞動</b>：1970年代馬來西亞半導體廠的直接生產工作全由女工擔任，每台接合機由一名女工在嚴密監督下操作；臺灣則有「客廳即工廠」的家庭代工體系。</p>
+        <p class="src">資料來源：Amsden &amp; Chu（2003）；Rasiah（2010）；Ong（1987）；Hsiung（1996）</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="5">
+      <div class="card">
+        <div class="kicker"><span class="zh tw">前史至第一階段｜臺灣</span></div>
+        <h2>先成立園區，再購置土地</h2>
+        <p>新竹科學工業園區（1980年設立，本文列為前史）依1979年公布的《科學工業園區設置管理條例》設立，「先以行政實體成立，再購置土地」；進駐廠商享有低於市價的廠房與廠址租金，<b>土地本身就是國家補貼的一部分</b>。</p>
+        <p>1990年代中期以後，新竹模式被複製到臺南，這是臺灣的第一階段。科學園區的擴張，意味著國家必須持續把農地轉為工業用地：農地變更、浮動分區與區段徵收。</p>
+        <p class="src">資料來源：Mathews（1997）；Amsden &amp; Chu（2003）</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="6">
+      <div class="card">
+        <div class="kicker"><span class="zh my">第一階段｜馬來西亞</span></div>
+        <h2>建在油棕園上的賽城</h2>
+        <p>1990年代中期推出的多媒體超級走廊，核心城市賽城（Cyberjaya）建於國聯企業Golden Hope持有的原Prang Besar油棕種植園之上，1997年啟用；定居數代的<b>印裔園丘工人</b>因而被迫遷離。</p>
+        <p>種植園既是殖民經濟的遺產，也是後殖民國家與國聯企業可以直接調度的土地庫存。本文以<b>差別可徵收性</b>追問：哪些土地、哪些社群，最容易被劃為可徵用的對象？</p>
+        <p class="src">資料來源：Bunnell（2004）；顏聖錝（2021b）；Edwards &amp; Jomo（1993）</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="7">
+      <div class="card">
+        <div class="kicker"><span class="zh tw">第二階段｜2000–2010年代</span></div>
+        <h2>水首次與土地並列為公共爭議</h2>
+        <p>中科四期二林園區規劃每日需要<b>15.5萬噸</b>工業用水。2011年8月，數百名彰化農民與運動者在溪州鄉的水門集會，反對中科從以濁水溪為水源的莿仔埤圳引水，引水計畫為每日<b>6.5萬噸以上</b>。</p>
+        <p>水首次與土地並列，成為技術空間的關鍵成本；承擔者也由徵收區的地主與居民，擴大到整個灌區的農民與沿海的生態。同一時期，馬來西亞的國營晶圓廠Silterra於2000年在居林投產，長期停留在成熟製程。</p>
+        <p class="mapnote">地圖上的虛線為引水方向的示意。</p>
+        <p class="src">資料來源：今周刊（2010）；Taipei Times（2011）；Rasiah（2015）；Lee &amp; Hutchinson（2026）</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="8">
+      <div class="card">
+        <div class="kicker"><span class="zh tw">第三階段｜臺灣</span></div>
+        <h2>水移向工業，電綁定電廠</h2>
+        <p>2020年農田水利會改制為公務機關；2021年停灌之後推動「大區輪作」，每年輪作約2.6至3.1萬公頃，若轉作申報率達100%，每年可節水1.8至2.2億噸，「相當於一座石門水庫」。</p>
+        <p>2024年8月，台電表示桃園以北不再核供5MW以上的資料中心，經濟部直言「要AI大廠，請支持台電電廠」；2026年7月，台電點名<b>大潭與協和電廠</b>周邊，可規劃AI資料中心專區。技術空間開始直接與發電廠綁定（infrastructure anchoring）。</p>
+        <p class="src">資料來源：中央通訊社（2020, 2021）；科技新報（2024a）；聯合報（2026）</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="9">
+      <div class="card">
+        <div class="kicker"><span class="zh my">第三階段｜馬來西亞</span></div>
+        <h2>新加坡的需求越過柔佛海峽</h2>
+        <p>新加坡自2019年起未再核准新的資料中心，直到2022年才開始解除，需求北移至柔佛。DC Byte估計柔佛容量由2021年初的10MW增至2024年的1,500MW，但這包含興建中與規劃中的容量；2025年7月實際運轉為<b>487MW</b>。</p>
+        <p>國家以TNB的「綠色通道」把供電時程由36至48個月縮短至12個月，並於2025年成立柔新經濟特區。跨境的水則早已存在：依1962年協定，新加坡每日可從柔佛河抽取2.5億加侖原水。本土資本也參與其中，YTL Power與NVIDIA在古來的資料中心，以「主權AI」為號召。</p>
+        <p class="mapnote">虛線為需求北移、實線為原水南流的示意。</p>
+        <p class="src">資料來源：W.Media（2024）；DatacenterDynamics（2025）；Tenaga Nasional Berhad（2023）；Ministry of Foreign Affairs Singapore（n.d.）；Kadir, Andri &amp; Partners（2025）</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="10">
+      <div class="card">
+        <div class="kicker"><span class="zh my">路徑分歧</span></div>
+        <h2>招商在聯邦，水與土地的代價在州</h2>
+        <div class="fedfig" role="img" aria-label="聯邦推動招商，水與土地的代價落在州">
+          <div class="lv">聯邦</div>
+          <div class="items"><span>綠色通道</span><span>租稅優惠</span><span>柔新經濟特區</span><span>500kV電網擴建</span></div>
+          <div class="down">資料中心落地，水與土地的代價落在州</div>
+          <div class="lv st">州</div>
+          <div class="items st"><span>柔佛：停批Tier 1與Tier 2資料中心</span><span>雪蘭莪：資料中心專屬水價</span><span>州的土地核准</span></div>
+        </div>
+        <p>依聯邦憲法，水資源屬州政府管轄，土地取得也須經州政府核准。於是停批資料中心的是柔佛州，訂定資料中心專屬水價（每立方公尺RM5.31，家戶最低級距RM0.65）的是雪蘭莪州。</p>
+        <p>對照臺灣的單一國家體制，中央同時招商並調度水電：這是兩國外部化路徑分歧的重要制度條件。</p>
+        <p class="src">資料來源：Piarapakaran（n.d.）；Kadir, Andri &amp; Partners（2025）；New Straits Times（2025）；Malay Mail（2025）；DatacenterDynamics（2025）；Tenaga Nasional Berhad（2023, 2025）</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="11">
+      <div class="card">
+        <div class="kicker"><span class="zh my">預留容量</span></div>
+        <h2>電網依資本的未來需求先行擴建</h2>
+        <div class="bars" role="img" aria-label="TNB至2024年底：累計簽約5.9GW、已併網1.9GW、實際負載0.405GW；MITI 2025年6月：申報最大需量1.276GW、實際負載0.603GW">
+          <div class="bars-h">TNB併網契約，至2024年底</div>
+          <div class="bar-row"><span class="bl">累計簽約</span><span class="bt"><i class="o" style="width:100%"></i></span><span class="bv">5.9GW</span></div>
+          <div class="bar-row"><span class="bl">已併網</span><span class="bt"><i class="g" style="width:32.2%"></i></span><span class="bv">1.9GW</span></div>
+          <div class="bar-row"><span class="bl">實際負載</span><span class="bt"><i class="k" style="width:6.9%"></i></span><span class="bv hl">0.405GW</span></div>
+          <div class="bars-h">MITI國會答覆：全國資料中心，2025年6月</div>
+          <div class="bar-row"><span class="bl">申報最大需量</span><span class="bt"><i class="o" style="width:21.6%"></i></span><span class="bv">1.276GW</span></div>
+          <div class="bar-row"><span class="bl">實際負載</span><span class="bt"><i class="k" style="width:10.2%"></i></span><span class="bv hl">0.603GW</span></div>
+        </div>
+        <p class="fig-note">長條長度與GW成正比；兩組數據統計基礎不同，前者為TNB併網契約，後者為申報需量。</p>
+        <p>2024年12月的實際負載僅<b>405MW</b>，約為已併網容量的21%；2025年6月全國資料中心實際負載603MW，約為申報最大需量的<b>47%</b>。國家承諾的，恐怕是<b>預留容量</b>：比實際耗用更早發生、也更不易被看見的外部化。這些投資如何進入費率基礎、由誰負擔，仍待檢驗。</p>
+        <p class="src">資料來源：Tenaga Nasional Berhad（2025, pp. 13, 17）；W.Media（2025）</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="12">
+      <div class="card">
+        <div class="kicker"><span class="zh">2024年後的管制轉折</span></div>
+        <h2>再內部化，還是空間重置？</h2>
+        <p>判準是成本<b>由誰負擔</b>、<b>在何處負擔</b>。</p>
+        <div class="twocol">
+          <div>
+            <h3>再內部化</h3>
+            <ul>
+              <li class="tw">臺灣：資料中心電價調漲15%至25%（2024）</li>
+              <li class="tw">臺灣：用水大戶徵收耗水費（2023）</li>
+              <li class="my">馬來西亞：RP4依成本成分分列費率（2025）</li>
+              <li class="my">雪蘭莪：資料中心專屬水價（2025）</li>
+            </ul>
+          </div>
+          <div>
+            <h3>空間重置</h3>
+            <ul>
+              <li class="tw">臺灣：資料中心推往大潭、協和電廠周邊</li>
+              <li class="my">馬來西亞：資料中心推向再生水與再生能源</li>
+              <li class="tbd">待檢驗：種植園是否轉作光電用地</li>
+            </ul>
+          </div>
+        </div>
+        <p class="verdict">本文因此修正H3：價格化的部分再內部化，與空間重置並存。</p>
+        <p class="src">資料來源：中央通訊社（2024）；經濟部（2023）；Bernama（2025）；Malay Mail（2025）；聯合報（2026）；New Straits Times（2025）</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="13">
+      <div class="card">
+        <div class="kicker"><span class="zh">範圍條件</span></div>
+        <h2>先說清楚：規模與地理</h2>
+        <p class="sq-cap">電：台積電約為馬來西亞資料中心的5至7倍</p>
+        <div class="sq" role="img" aria-label="台積電2024年全球用電的平均負載約2.9GW，馬來西亞資料中心實際負載0.4至0.6GW">
+          <div class="sq-col"><div class="sq-frame"><div class="sq-box tw" style="width:120px;height:120px"></div></div><b>2.9GW</b><span>台積電2024年全球用電的平均負載</span></div>
+          <div class="sq-col"><div class="sq-frame"><div class="sq-box my" style="width:55px;height:55px"></div></div><b>0.4至0.6GW</b><span>馬來西亞資料中心實際負載（以上限繪製）</span></div>
+        </div>
+        <p class="sq-cap">水：協定可抽取的原水，為柔佛資料中心用水的百倍以上</p>
+        <div class="sq" role="img" aria-label="1962年協定每日可抽取約11億公升原水，柔佛資料中心每日用水907萬公升">
+          <div class="sq-col"><div class="sq-frame"><div class="sq-box water" style="width:120px;height:120px"></div></div><b>每日約11億公升</b><span>1962年協定可抽取的原水</span></div>
+          <div class="sq-col"><div class="sq-frame"><div class="sq-box my" style="width:11px;height:11px"></div></div><b>每日907萬公升</b><span>柔佛資料中心實際用水</span></div>
+        </div>
+        <p class="fig-note">面積與數值成正比。</p>
+        <p>兩國型態的差異，可能有相當部分來自產業別與規模，而非國家與資本關係本身；柔佛緊鄰新加坡，則是地理上的範圍條件。水的跨境外部化主要是1962年協定的歷史結構，資料中心目前只是邊際增量；跨境外溢較能成立的，恐怕是土地與電網容量。</p>
+        <p class="src">資料來源：自由時報（2025）；Tenaga Nasional Berhad（2025）；Business Today（2025b）；Ministry of Foreign Affairs Singapore（n.d.）</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="14">
+      <div class="card">
+        <div class="kicker"><span class="zh">結語</span></div>
+        <h2>國家能力的另一面</h2>
+        <p>國家能力不只是承擔技術追趕的風險，也包括<b>調度土地、水與電網的能力</b>；這種能力的另一面，是持續把代價轉嫁給特定社群與地理邊陲。</p>
+        <p class="quote">當伺服器場與光電板取代油棕園與稻田，失去土地、承擔水電的，究竟是誰？</p>
+        <p>下一階段的田野，將以柔佛與臺灣中南部農漁村為據點：</p>
+        <ul class="next">
+          <li>長期追蹤契約最大需量與實際負載的落差</li>
+          <li>柔佛種植園轉作資料中心與光電場時，園丘工人的處境</li>
+          <li>臺灣科學園區農地徵收與變更的地籍與檔案整理</li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<div class="end">
+  <footer>
+    <b>關於本頁：</b>依據研討會論文〈晶片島與雲端飛地：誰為臺馬的國家技術空間付出代價？〉（2026年臺灣東南亞學會年會）整理，為初步研究成果，數據與論點仍在修訂中，請勿引用。<br>
+    <b>地圖：</b>地點標記為概略位置，圓圈、虛線與實線均為示意，不代表實際範圍或管線路徑。底圖：© OpenStreetMap貢獻者。
+  </footer>
+  <div class="byline">
+    <span class="role">Researchers &middot; 研究者</span>
+    <span class="names">顏聖錝<span class="sep">·</span>吳昀慶</span>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function(){
+  var COL = {tw:'#A6392C', my:'#2E6B4E', sg:'#5c5c5c'};
+
+  // Approximate locations (schematic, see footer).
+  var P = {
+    kepz:     {ll:[22.590,120.305], c:'tw', dir:'left',   name:'臺灣南部加工出口區', note:'1960年代：美國電子企業進駐'},
+    bayan:    {ll:[5.315,100.285],  c:'my', dir:'left',   name:'檳城峇六拜自由貿易區', note:'1972年啟用'},
+    hsp:      {ll:[24.7745,121.0055], c:'tw', dir:'right', name:'新竹科學工業園區', note:'1980年設立（前史）'},
+    stsp:     {ll:[23.100,120.286], c:'tw', dir:'left',   name:'南部科學園區', note:'1990年代中期以後'},
+    cyber:    {ll:[2.922,101.655],  c:'my', dir:'right',  name:'賽城（Cyberjaya）', note:'原Prang Besar油棕園，1997年啟用'},
+    kulim:    {ll:[5.365,100.562],  c:'my', dir:'right',  name:'居林高科技園區', note:'Silterra，2000年投產'},
+    erlin:    {ll:[23.915,120.395], c:'tw', dir:'left',   name:'中科四期二林園區', note:'規劃每日15.5萬噸工業用水'},
+    xizhou:   {ll:[23.845,120.500], c:'tw', dir:'right',  name:'溪州鄉莿仔埤圳', note:'2011年8月農民集會'},
+    taoyuan:  {ll:[24.993,121.301], c:'tw', dir:'bottom', name:'桃園', note:'以北不再核供5MW以上資料中心（2024）'},
+    datan:    {ll:[25.0261,121.0472], c:'tw', dir:'left',  name:'大潭電廠', note:'2026年7月點名：周邊可規劃資料中心專區'},
+    hsiehho:  {ll:[25.1573,121.7393], c:'tw', dir:'right', name:'協和電廠', note:'2026年7月點名：周邊可規劃資料中心專區'},
+    jb:       {ll:[1.4927,103.7414], c:'my', dir:'left',   name:'柔佛資料中心聚落', note:'新山一帶'},
+    kulai:    {ll:[1.660,103.600],  c:'my', dir:'left',   name:'古來（Kulai）', note:'YTL Power與NVIDIA資料中心'},
+    jriver:   {ll:[1.740,103.900],  c:'my', dir:'right',  name:'柔佛河取水處', note:'1962年協定：每日可抽取2.5億加侖'},
+    sg:       {ll:[1.3521,103.8198], c:'sg', dir:'bottom', name:'新加坡', note:'2019–2022年暫停核准資料中心'},
+    putrajaya:{ll:[2.9264,101.6964], c:'my', dir:'right',  name:'布城（聯邦）', note:'綠色通道、租稅優惠、柔新經濟特區'},
+    selangor: {ll:[3.0738,101.5183], c:'my', dir:'left',   name:'雪蘭莪州', note:'資料中心專屬水價RM5.31/m³'}
+  };
+
+  var OVERVIEW = [[0.9,99.6],[25.5,122.2]];
+  var STEPS = [
+    {chip:'導言', bounds:OVERVIEW, show:['hsp','stsp','erlin','datan','hsiehho','bayan','kulim','cyber','jb','sg'], labels:false},
+    {chip:'場景一｜臺灣，2021', bounds:[[22.75,119.9],[25.35,121.95]], show:[], extra:['drought']},
+    {chip:'場景二｜柔佛，2025', bounds:[[1.25,103.45],[1.85,104.05]], show:['jb','kulai'], labels:true},
+    {chip:'核心概念：國家技術空間', bounds:OVERVIEW, show:['kepz','bayan','hsp','stsp','cyber','kulim','erlin','datan','hsiehho','jb','sg'], labels:false},
+    {chip:'前史｜1960–1980年代', bounds:[[4.6,99.8],[23.6,121.2]], show:['kepz','bayan'], labels:true},
+    {chip:'前史至第一階段｜臺灣', bounds:[[22.85,119.95],[25.05,121.4]], show:['hsp','stsp'], labels:true},
+    {chip:'第一階段｜馬來西亞', bounds:[[2.80,101.50],[3.05,101.82]], show:['cyber'], labels:true},
+    {chip:'第二階段｜水的爭議', bounds:[[23.76,120.25],[23.99,120.62]], show:['erlin','xizhou'], labels:true, extra:['diversion']},
+    {chip:'第三階段｜臺灣', bounds:[[24.86,120.92],[25.24,121.86]], show:['taoyuan','datan','hsiehho'], labels:true},
+    {chip:'第三階段｜馬來西亞', bounds:[[1.22,103.45],[1.85,104.06]], show:['jb','kulai','jriver','sg'], labels:true, extra:['crossborder']},
+    {chip:'路徑分歧：聯邦與州', bounds:[[1.15,101.2],[3.35,104.25]], show:['putrajaya','selangor','jb'], labels:true},
+    {chip:'預留容量', bounds:[[1.25,103.45],[1.85,104.05]], show:['jb','kulai'], labels:true},
+    {chip:'再內部化，還是空間重置？', bounds:OVERVIEW, show:['datan','hsiehho','jb'], labels:true},
+    {chip:'範圍條件：規模與地理', bounds:[[1.22,103.45],[1.85,104.06]], show:['jb','jriver','sg'], labels:true, extra:['crossborder']},
+    {chip:'結語', bounds:OVERVIEW, show:['kepz','bayan','hsp','stsp','cyber','kulim','erlin','xizhou','datan','hsiehho','jb','kulai','jriver','sg'], labels:false}
+  ];
+
+  var chip = document.getElementById('mapChip');
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function markActive(i){
+    steps.forEach(function(s, k){ s.classList.toggle('is-active', k === i); });
+    chip.textContent = STEPS[i].chip;
+  }
+
+  if (typeof L === 'undefined'){
+    document.getElementById('map').innerHTML =
+      '<div class="map-fallback">無法載入地圖函式庫（Leaflet）。<br>此頁需要連線至unpkg.com與openstreetmap.org，請確認網路連線後重新整理。</div>';
+    observe(function(i){ markActive(i); });
+    return;
+  }
+
+  var map = L.map('map', {
+    zoomControl:false, scrollWheelZoom:false, dragging:!L.Browser.mobile, tap:false,
+    minZoom:3, maxZoom:14
+  });
+  L.control.zoom({position:'topright'}).addTo(map);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>貢獻者',
+    maxZoom:19
+  }).addTo(map);
+  map.fitBounds(OVERVIEW, {padding:[30,30]});
+
+  function label(p){ return '<b>' + p.name + '</b><span>' + p.note + '</span>'; }
+
+  // A label pinned beside a line, clear of the stroke.
+  function tag(ll, txt, dir, off){
+    return L.circleMarker(ll, {radius:0, stroke:false, fill:false, interactive:false})
+      .bindTooltip(txt, {permanent:true, direction:dir, offset:off, className:'lbl line'});
+  }
+  function mid(a, b){ return [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]; }
+  function isSmall(){ return !!(window.matchMedia && window.matchMedia('(max-width: 900px)').matches); }
+
+  var EXTRA = {
+    drought: function(){
+      var g = L.layerGroup();
+      [
+        {ll:[24.90,121.15], t:'桃園灌區', d:'right'},
+        {ll:[24.62,120.88], t:'新竹、苗栗灌區', d:'left'},
+        {ll:[24.22,120.62], t:'臺中灌區', d:'right'},
+        {ll:[23.32,120.27], t:'嘉南灌區', d:'right'}
+      ].forEach(function(d){
+        L.circle(d.ll, {radius:15000, color:COL.tw, weight:1, fillColor:COL.tw, fillOpacity:.18})
+          .bindTooltip('<b>' + d.t + '</b><span>2021年一期稻作停灌（示意）</span>',
+            {permanent:true, direction:d.d, offset: d.d === 'left' ? [-14,0] : [14,0], className:'lbl'})
+          .addTo(g);
+      });
+      return g;
+    },
+    diversion: function(){
+      var g = L.layerGroup();
+      L.polyline([P.xizhou.ll, P.erlin.ll], {color:COL.tw, weight:3, dashArray:'7 7'}).addTo(g);
+      if (isSmall()) tag(mid(P.xizhou.ll, P.erlin.ll), '引水計畫：每日6.5萬噸以上（示意）', 'bottom', [0,16]).addTo(g);
+      else tag(mid(P.xizhou.ll, P.erlin.ll), '引水計畫：每日6.5萬噸以上（示意）', 'left', [-16,8]).addTo(g);
+      return g;
+    },
+    crossborder: function(){
+      var g = L.layerGroup();
+      var bend = [1.56,103.80];
+      L.polyline([P.sg.ll, P.jb.ll, P.kulai.ll], {color:'#333333', weight:3, dashArray:'7 7'}).addTo(g);
+      L.polyline([P.jriver.ll, bend, [1.4555,103.769], [1.40,103.79]], {color:'#5a6b8c', weight:3}).addTo(g);
+      tag(mid(P.jb.ll, P.kulai.ll), '需求北移', 'left', [-14,0]).addTo(g);
+      tag(mid(P.jriver.ll, bend), '原水南流（示意）', 'right', [14,0]).addTo(g);
+      return g;
+    }
+  };
+
+  var current = L.layerGroup().addTo(map);
+
+  function apply(i){
+    var s = STEPS[i];
+    markActive(i);
+    current.clearLayers();
+    (s.extra || []).forEach(function(k){ current.addLayer(EXTRA[k]()); });
+    s.show.forEach(function(id){
+      var p = P[id];
+      var m = L.circleMarker(p.ll, {radius: s.labels ? 8 : 6, color:'#ffffff', weight:2,
+        fillColor:COL[p.c], fillOpacity:.95});
+      m.bindTooltip(label(p), {permanent: !!s.labels, direction:p.dir, offset: p.dir === 'left' ? [-10,0] : (p.dir === 'right' ? [10,0] : [0,10]), className:'lbl'});
+      current.addLayer(m);
+    });
+    var opts = {padding: isSmall() ? [64,24] : [40,40]};
+    if (reduce){ map.fitBounds(s.bounds, opts); }
+    else { opts.duration = 1.2; map.flyToBounds(s.bounds, opts); }
+  }
+
+  function observe(cb){
+    var active = -1;
+    function set(i){ if (i !== active){ active = i; cb(i); } }
+    if ('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if (e.isIntersecting){ set(+e.target.getAttribute('data-step')); }
+        });
+      }, {rootMargin:'-45% 0px -45% 0px', threshold:0});
+      steps.forEach(function(s){ io.observe(s); });
+    } else {
+      steps.forEach(function(s){ s.classList.add('is-active'); });
+    }
+    set(0);
+  }
+
+  observe(apply);
+  window.addEventListener('resize', function(){ map.invalidateSize(); });
+})();
+</script>
+</body>
+</html>

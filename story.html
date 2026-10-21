@@ -535,7 +535,7 @@
   </section>
   <footer>
     <b>關於本頁：</b>依據研討會論文〈晶片島與雲端飛地：誰為臺馬的國家技術空間付出代價？〉（2026年臺灣東南亞學會年會）整理，為初步研究成果，數據與論點仍在修訂中，請勿引用。<br>
-    <b>地圖：</b>地點標記為概略位置，圓圈、虛線與實線均為示意，不代表實際範圍或管線路徑。底圖：預設為<a href="https://cloudless.eox.at" target="_blank" rel="noopener">EOxCloudless</a>衛星影像（EOX IT Services GmbH，含經修改的Copernicus Sentinel 2025年資料，依<a href="https://cloudless.eox.at/documentation/license" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>供非商業使用），可用地圖右上角的按鈕切換為OpenStreetMap街道地圖（© OpenStreetMap貢獻者）。<br>
+    <b>地圖：</b>地點標記為概略位置，圓圈、虛線與實線均為示意，不代表實際範圍或管線路徑。底圖：預設為OpenStreetMap街道地圖（© OpenStreetMap貢獻者），可用地圖右上角的按鈕切換為<a href="https://cloudless.eox.at" target="_blank" rel="noopener">EOxCloudless</a>衛星影像（EOX IT Services GmbH，含經修改的Copernicus Sentinel 2025年資料，依<a href="https://cloudless.eox.at/documentation/license" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>供非商業使用）。<br>
     <b>照片：</b>均取自Wikimedia Commons，採創用CC（CC BY、CC BY-SA）或政府網站資料開放宣告等開放授權；作者與授權標示於各圖說，點選照片可開啟原始頁面。
   </footer>
   <div class="byline">
@@ -628,7 +628,7 @@
     })
   };
   var baseNow = null;
-  function setBase(b){
+  function setBase(b, remember){
     if (!BASES[b] || b === baseNow) return;
     if (baseNow) map.removeLayer(BASES[baseNow]);
     BASES[b].addTo(map);
@@ -637,7 +637,7 @@
     Array.prototype.forEach.call(document.querySelectorAll('.base-switch button'), function(btn){
       btn.setAttribute('aria-pressed', String(btn.getAttribute('data-b') === b));
     });
-    try { localStorage.setItem('storyBase', b); } catch (e) {}
+    if (remember) { try { localStorage.setItem('storyBasemap', b); } catch (e) {} }
   }
   var BaseSwitch = L.Control.extend({
     options:{position:'topright'},
@@ -650,15 +650,15 @@
       L.DomEvent.disableClickPropagation(div);
       div.addEventListener('click', function(e){
         var b = e.target && e.target.getAttribute ? e.target.getAttribute('data-b') : null;
-        if (b) setBase(b);
+        if (b) setBase(b, true);
       });
       return div;
     }
   });
   map.addControl(new BaseSwitch());
   var savedBase = null;
-  try { savedBase = localStorage.getItem('storyBase'); } catch (e) {}
-  setBase(savedBase === 'osm' ? 'osm' : 'sat');
+  try { savedBase = localStorage.getItem('storyBasemap'); } catch (e) {}
+  setBase(savedBase === 'sat' ? 'sat' : 'osm');
   map.fitBounds(OVERVIEW, {padding:[30,30]});
 
   function label(p){ return '<b>' + p.name + '</b><span>' + p.note + '</span>'; }

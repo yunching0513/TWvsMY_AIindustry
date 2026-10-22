@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>農地流失地圖｜臺灣與馬來西亞</title>
+<meta name="description" content="把衛星判讀的農田變化疊在衛星影像上：2003到2019年，臺灣與馬來西亞哪些農田不再耕作、哪些已經蓋了房子，以及柔佛的油棕園如何變成資料中心。">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="台馬半導體與AI產業分工地圖">
+<meta property="og:title" content="農地流失地圖｜臺灣與馬來西亞">
+<meta property="og:description" content="2003到2019年，臺灣與馬來西亞哪些農田不再耕作、哪些已經蓋了房子：放大衛星影像自己看。">
+<meta property="og:url" content="https://yunching0513.github.io/TWvsMY_AIindustry/farmland.html">
+<meta property="og:image" content="https://yunching0513.github.io/TWvsMY_AIindustry/og-farmland.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant:wght@500;600&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@500;600;700&display=swap');
+  :root{
+    --bg:#F2F2F2;--panel:#FFFFFF;--panel-soft:#F1F1F1;
+    --ink:#333333;--ink-strong:#000000;--ink-soft:#5c5c5c;--ink-faint:#9a9a9a;
+    --line:#dcdcdc;--tint:#D6DCE0;--accent:#b8a98c;
+    --shu:#A6392C;--midori:#2E6B4E;
+    --k-farm:#8fcf5a;--k-gone:#f5a623;--k-built:#e3242b;--k-palm:#d8e84a;
+    --down:#b35c00;--up:#2E6B4E;
+    --ls-wide:0.16em;--ease:cubic-bezier(.22,.61,.36,1);
+    --gothic:"Noto Sans TC",sans-serif;
+    --latin:"Cormorant","Noto Serif TC",serif;
+    --serif:"Noto Serif TC",serif;
+    --panel-w:440px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--ink);font-family:var(--gothic);line-height:1.8;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  button{font-family:inherit}
+  [hidden]{display:none!important}
+
+  /* ---- layout: panel on the left, map fills the rest ---- */
+  .app{display:grid;grid-template-columns:var(--panel-w) 1fr;height:100vh}
+  .panel{position:relative;background:var(--panel);border-right:1px solid var(--ink-strong);overflow-y:auto;height:100vh;
+    padding:26px 26px 40px;scroll-behavior:smooth}
+  .mapwrap{position:relative;height:100vh}
+  #map{position:absolute;inset:0;background:#1d2226}
+
+  /* ---- header ---- */
+  .back{display:inline-block;font-size:13px;color:var(--ink-soft);text-decoration:none;border-bottom:1px solid var(--tint);margin-bottom:22px}
+  .back:hover{color:var(--ink-strong);border-bottom-color:var(--ink-strong)}
+  .eyebrow{font-family:var(--latin);font-size:14px;letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--accent);
+    font-weight:600;display:flex;align-items:center;gap:12px;margin-bottom:10px}
+  .eyebrow::before{content:"";width:30px;height:1px;background:var(--accent)}
+  h1{font-family:var(--serif);font-weight:700;font-size:32px;line-height:1.3;color:var(--ink-strong);letter-spacing:.02em}
+  .sub{font-family:var(--serif);font-size:17px;font-weight:500;color:var(--ink);margin-top:6px;line-height:1.6}
+  .lede{font-size:14.5px;font-weight:300;color:#3f3f3f;line-height:1.95;margin-top:16px}
+  .lede b{font-weight:500;color:var(--ink-strong)}
+
+  .key{list-style:none;margin:14px 0 6px;padding:10px 12px;background:var(--panel-soft);border-radius:2px}
+  .key li{font-size:13px;font-weight:300;color:#3f3f3f;line-height:1.65;padding:3px 0 3px 26px;position:relative}
+  .key li b{font-weight:500;color:var(--ink-strong)}
+  .key i{position:absolute;left:0;top:8px;width:16px;height:11px;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+  .key .k-farm{background:var(--k-farm);opacity:.75}
+  .key .k-gone{background:var(--k-gone)}
+  .key .k-built{background:var(--k-built)}
+  .key .k-palm{background:var(--k-palm);opacity:.8}
+  .key .k-line{height:0;top:13px;border-top:2px dashed #111;box-shadow:none;background:none;border-radius:0}
+  .note{font-size:12.5px;color:var(--ink-soft);line-height:1.75;margin-top:8px}
+
+  /* ---- tabs ---- */
+  .tabs{display:flex;margin:24px 0 0;border-bottom:1px solid var(--ink-strong);position:sticky;top:-26px;background:var(--panel);z-index:5;
+    padding-top:4px}
+  .tabs button{flex:1;border:1px solid transparent;border-bottom:none;background:none;padding:9px 6px 8px;font-size:15px;font-weight:500;
+    color:var(--ink-soft);cursor:pointer;letter-spacing:.08em;margin-bottom:-1px;border-radius:2px 2px 0 0}
+  .tabs button[aria-selected="true"]{color:var(--ink-strong);border-color:var(--ink-strong);background:var(--panel)}
+  .tabs button[aria-selected="true"]#tab-tw{box-shadow:inset 0 3px 0 var(--shu)}
+  .tabs button[aria-selected="true"]#tab-my{box-shadow:inset 0 3px 0 var(--midori)}
+  .tabs button:focus-visible{outline:2px solid var(--shu);outline-offset:-2px}
+
+  .pane{padding-top:22px}
+  .pane h2{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink-strong);line-height:1.45;margin-bottom:14px}
+  .pane h3{font-family:var(--serif);font-size:16.5px;font-weight:600;color:var(--ink-strong);margin:26px 0 10px;line-height:1.5}
+  .pane p{font-size:14.5px;font-weight:300;color:#3f3f3f;line-height:1.95;margin-bottom:10px}
+  .pane p b{font-weight:500;color:var(--ink-strong)}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:4px 0 16px}
+  .stat{border:1px solid var(--line);border-radius:2px;padding:10px 9px 9px}
+  .stat .v{font-family:var(--serif);font-weight:700;font-size:21px;line-height:1.25;color:var(--ink-strong);white-space:nowrap}
+  .stat .v small{font-size:13px;font-weight:600;margin-left:1px}
+  .stat .l{font-size:12.5px;font-weight:500;color:var(--ink);line-height:1.5;margin-top:4px}
+  .stat .h{font-size:11.5px;font-weight:300;color:var(--ink-soft);line-height:1.5;margin-top:3px}
+  .stat.gone{border-top:3px solid var(--k-gone)}
+  .stat.built{border-top:3px solid var(--k-built)}
+  .stat.net{border-top:3px solid #777}
+
+  .callout{border-left:3px solid var(--midori);background:#f3f6f4;padding:10px 12px 4px;margin:14px 0}
+  .callout p{font-size:14px}
+  .linkbtn{display:inline-block;font-size:13px;font-weight:500;color:var(--ink-strong);background:var(--panel);border:1px solid var(--ink-strong);
+    border-radius:2px;padding:4px 10px;cursor:pointer;margin:2px 0 10px}
+  .linkbtn:hover{background:var(--ink-strong);color:#fff}
+  .linkbtn:focus-visible{outline:2px solid var(--shu);outline-offset:1px}
+
+  /* ---- hotspots ---- */
+  .spots{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+  .spots > li{border-bottom:1px solid var(--line)}
+  .spot{display:block;width:100%;text-align:left;background:none;border:0;padding:11px 28px 11px 0;cursor:pointer;position:relative;color:var(--ink)}
+  .spot b{display:block;font-size:15px;font-weight:500;color:var(--ink-strong);line-height:1.5}
+  .spot span{display:block;font-size:13px;font-weight:300;color:var(--ink-soft);line-height:1.55;margin-top:1px}
+  .spot::after{content:"＋";position:absolute;right:4px;top:11px;font-size:15px;color:var(--ink-soft)}
+  .spot[aria-expanded="true"]::after{content:"－";color:var(--ink-strong)}
+  .spot:hover b{text-decoration:underline;text-decoration-color:var(--tint);text-underline-offset:3px}
+  .spot:focus-visible{outline:2px solid var(--shu);outline-offset:2px}
+  .spot-body{padding:0 0 14px}
+  .spot-body p{font-size:14px}
+  .nums{display:flex;flex-wrap:wrap;gap:4px 6px;margin:2px 0 10px;padding:0;list-style:none}
+  .nums li{font-size:12.5px;line-height:1.5;background:var(--panel-soft);border-radius:2px;padding:4px 8px;color:var(--ink)}
+  .nums li b{font-family:var(--serif);font-weight:700;color:var(--ink-strong)}
+  .src{font-size:12px;color:var(--ink-soft);line-height:1.7}
+  .src a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--tint);text-underline-offset:3px}
+  .src a:hover{color:var(--ink-strong);text-decoration-color:var(--ink-strong)}
+
+  /* ---- ranking tables ---- */
+  .seg{display:inline-flex;border:1px solid var(--ink-strong);border-radius:2px;overflow:hidden;margin:0 0 8px}
+  .seg button{border:0;background:var(--panel);font-size:12.5px;padding:4px 10px;cursor:pointer;color:var(--ink)}
+  .seg button + button{border-left:1px solid var(--line)}
+  .seg button[aria-pressed="true"]{background:var(--ink-strong);color:#fff}
+  .seg button:focus-visible{outline:2px solid var(--shu);outline-offset:-2px}
+  table.rank{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:6px}
+  table.rank caption{text-align:left;font-size:12.5px;color:var(--ink-soft);padding-bottom:4px}
+  table.rank th,table.rank td{padding:5px 4px;border-bottom:1px solid var(--line);text-align:right;font-weight:400;white-space:nowrap}
+  table.rank thead th{font-size:12px;color:var(--ink-soft);font-weight:500;border-bottom:1px solid var(--ink-strong);vertical-align:bottom;white-space:normal;line-height:1.35}
+  table.rank th[scope="row"],table.rank thead th:first-child{text-align:left}
+  table.rank th[scope="row"] button{background:none;border:0;padding:0;font-size:13.5px;font-weight:500;color:var(--ink-strong);cursor:pointer;
+    text-decoration:underline;text-decoration-color:var(--tint);text-underline-offset:3px;text-align:left}
+  table.rank th[scope="row"] button:hover{text-decoration-color:var(--ink-strong)}
+  table.rank tr.total th,table.rank tr.total td{background:var(--panel-soft);font-weight:500}
+  table.rank tr.is-sel th,table.rank tr.is-sel td{background:#fff6d6}
+  .dn{color:var(--down)} .up{color:var(--up)}
+  .pct{font-family:var(--serif);font-weight:700}
+
+  /* ---- layer settings ---- */
+  .settings{margin-top:30px;padding-top:18px;border-top:1px solid var(--ink-strong)}
+  .settings h2{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink-strong);margin-bottom:8px}
+  .settings label{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;line-height:1.55;padding:5px 0;cursor:pointer;color:var(--ink)}
+  .settings input[type="checkbox"]{margin-top:4px;accent-color:#111;width:15px;height:15px;flex:none}
+  .settings .sw{display:inline-block;width:14px;height:10px;border-radius:2px;margin-right:4px;vertical-align:0;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+  .range{display:block!important;margin-top:8px}
+  .range span{display:flex;justify-content:space-between;font-size:13px;color:var(--ink)}
+  .range input{width:100%;accent-color:#111;margin-top:4px}
+
+  /* ---- about + references ---- */
+  details.about{margin-top:26px;border-top:1px solid var(--ink-strong);padding-top:14px}
+  details.about summary{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink-strong);cursor:pointer;list-style:none}
+  details.about summary::-webkit-details-marker{display:none}
+  details.about summary::after{content:"　＋";font-family:var(--gothic);font-weight:400;font-size:14px;color:var(--ink-soft)}
+  details.about[open] summary::after{content:"　－"}
+  details.about h3{font-size:14px;font-weight:500;color:var(--ink-strong);margin:14px 0 4px}
+  details.about p,details.about li{font-size:13px;font-weight:300;color:#3f3f3f;line-height:1.85}
+  details.about ul{padding-left:18px}
+  .refs{margin-top:24px}
+  .refs h2{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink-strong);margin-bottom:6px}
+  .refs ol{padding-left:20px}
+  .refs li{font-size:12.5px;color:#4a4a4a;line-height:1.75;margin-bottom:6px;overflow-wrap:anywhere}
+  .refs a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--tint);text-underline-offset:3px}
+  .refs li:target{background:#fff6d6}
+  .foot{margin-top:24px;padding-top:12px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-soft);line-height:1.8}
+  .foot a{color:var(--ink)}
+
+  /* ---- map controls ---- */
+  .leaflet-container{font-family:var(--gothic)}
+  .tiles-osm{filter:grayscale(.35) brightness(1.04) contrast(.92) saturate(.7)}
+  .farm-tiles canvas{image-rendering:pixelated;image-rendering:crisp-edges}
+  .base-switch{display:flex;background:var(--panel);border:1px solid var(--ink-strong);border-radius:2px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+  .base-switch button{font-size:12.5px;line-height:1.4;padding:6px 10px;border:0;margin:0;background:var(--panel);color:var(--ink);cursor:pointer;letter-spacing:.03em}
+  .base-switch button + button{border-left:1px solid var(--line)}
+  .base-switch button[aria-pressed="true"]{background:var(--ink-strong);color:#fff}
+  .base-switch button:focus-visible{outline:2px solid var(--shu);outline-offset:-2px}
+  .ov-switch{font-size:12.5px;line-height:1.4;padding:6px 11px;border:1px solid var(--ink-strong);border-radius:2px;background:var(--panel);
+    color:var(--ink);cursor:pointer;letter-spacing:.03em;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+  .ov-switch[aria-pressed="true"]{background:var(--ink-strong);color:#fff}
+  .ov-switch:focus-visible{outline:2px solid var(--shu);outline-offset:1px}
+  .map-legend{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:2px;padding:6px 10px;font-size:12px;
+    color:var(--ink);display:flex;flex-wrap:wrap;gap:3px 12px;max-width:min(560px,calc(100vw - 120px));line-height:1.5}
+  .map-legend span{white-space:nowrap}
+  .has-google .leaflet-bottom.leaflet-left .map-legend{margin-bottom:34px}
+  .map-legend i{display:inline-block;width:11px;height:9px;border-radius:2px;margin-right:5px;vertical-align:0;box-shadow:0 0 0 1px rgba(0,0,0,.18)}
+  .map-legend i.ln{width:16px;height:0;border-top:2px dashed #111;box-shadow:none;border-radius:0;vertical-align:3px}
+  .leaflet-control-zoom a{background:var(--panel)!important;color:var(--ink)!important;border-color:var(--line)!important}
+  .leaflet-control-attribution{background:rgba(255,255,255,.85)!important;color:var(--ink-soft)!important;font-size:10.5px}
+  .leaflet-control-attribution a{color:var(--midori)!important}
+  .leaflet-tooltip.lbl{background:var(--panel);border:1px solid var(--line);border-radius:2px;box-shadow:0 2px 8px rgba(0,0,0,.12);
+    padding:4px 8px;font-family:var(--gothic);font-size:12.5px;line-height:1.5;color:var(--ink);white-space:nowrap}
+  .leaflet-tooltip.lbl b{font-weight:500;color:var(--ink-strong);display:block}
+  .leaflet-tooltip.lbl span{color:var(--ink-soft);font-size:12px;display:block}
+  .leaflet-tooltip.lbl::before{display:none}
+  .leaflet-popup-content-wrapper{border-radius:3px}
+  .leaflet-popup-content{margin:12px 14px;font-family:var(--gothic);font-size:13px;line-height:1.7;color:var(--ink);min-width:200px}
+  .pop h4{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--ink-strong);margin-bottom:4px}
+  .pop .row{display:flex;justify-content:space-between;gap:12px}
+  .pop .row b{font-weight:500;color:var(--ink-strong)}
+  .pop .sec{font-size:11.5px;color:var(--ink-soft);margin-top:6px;letter-spacing:.04em}
+  .map-msg{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:1000;background:rgba(255,255,255,.95);border:1px solid var(--ink-strong);
+    border-radius:2px;padding:5px 12px;font-size:12.5px;color:var(--ink);max-width:80%;text-align:center}
+  .map-fallback{padding:40px;color:#ddd;font-weight:300;text-align:center}
+
+  @media (max-width: 900px){
+    .app{display:flex;flex-direction:column;height:auto}
+    .mapwrap{order:-1;position:sticky;top:0;height:52vh;z-index:10;border-bottom:1px solid var(--ink-strong)}
+    .panel{height:auto;overflow:visible;border-right:0;padding:18px 16px 40px}
+    .tabs{top:52vh;margin-top:18px}
+    h1{font-size:27px}
+    .sub{font-size:16px}
+    .stats{gap:5px}
+    .stat{padding:8px 7px}
+    .stat .v{font-size:18px}
+    .map-legend{font-size:11px;padding:4px 7px;gap:2px 9px;max-width:calc(100vw - 90px)}
+    .base-switch button{padding:5px 8px;font-size:12px}
+    .ov-switch{padding:5px 8px;font-size:12px}
+    .leaflet-control-attribution{font-size:9.5px;line-height:1.35}
+    .leaflet-tooltip.lbl{font-size:11.5px;padding:3px 6px}
+    .leaflet-tooltip.lbl span{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){.panel{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="panel" id="panel">
+    <a class="back" href="story.html">← 回到故事地圖〈晶片島與雲端飛地〉</a>
+    <div class="eyebrow">Farmland Atlas · 2003–2019</div>
+    <h1>農地流失地圖</h1>
+    <p class="sub">臺灣與馬來西亞：哪些農田不再耕作，哪些蓋了房子</p>
+    <p class="lede">這張地圖把衛星判讀的農田變化，疊在衛星影像上。資料來自美國馬里蘭大學用Landsat衛星畫的全球農田地圖，比較<b>2003年</b>和<b>2019年</b>。放大到你熟悉的地方，看看那些橘色和紅色的土地，現在變成了什麼。</p>
+    <ul class="key">
+      <li><i class="k-farm"></i><b>綠色</b>：2019年是農田</li>
+      <li><i class="k-gone"></i><b>橘色</b>：2003年是農田，2019年已經沒在耕作</li>
+      <li><i class="k-built"></i><b>紅色</b>：同上，而且到2021年已經蓋了房子、工廠或道路</li>
+      <li><i class="k-palm"></i><b>萊姆綠</b>：2019年的油棕園（只畫柔佛）</li>
+      <li><i class="k-line"></i><b>虛線</b>：園區範圍，或數字的計算範圍</li>
+    </ul>
+    <p class="note">這套衛星地圖的「農田」只算稻米、蔬菜、甘蔗這類草本作物，不算果園、茶園和油棕。點地圖上任一縣市或州，可以看那裡的數字。</p>
+
+    <div class="tabs" role="tablist" aria-label="選擇國家">
+      <button type="button" role="tab" id="tab-tw" aria-controls="pane-tw" aria-selected="true">臺灣</button>
+      <button type="button" role="tab" id="tab-my" aria-controls="pane-my" aria-selected="false" tabindex="-1">馬來西亞</button>
+    </div>
+
+    <!-- ================= 臺灣 ================= -->
+    <section class="pane" id="pane-tw" role="tabpanel" aria-labelledby="tab-tw">
+      <h2>16年間，5.3萬公頃農田不再耕作</h2>
+      <div class="stats">
+        <div class="stat gone"><div class="v">5.3<small>萬公頃</small></div><div class="l">不再耕作</div><div class="h">約兩個臺北市</div></div>
+        <div class="stat built"><div class="v">1.1<small>萬公頃</small></div><div class="l">其中已蓋了建物</div><div class="h">約每五塊有一塊</div></div>
+        <div class="stat net"><div class="v">−3.8<small>%</small></div><div class="l">農田總量</div><div class="h">33.9萬→32.6萬公頃</div></div>
+      </div>
+      <p>同一段時間，也有4.0萬公頃的地新判為農田，多半是休耕地重新耕作，所以總量只少了1.3萬公頃。農業部的官方統計方向一致：全國農耕土地從2012年的80.3萬公頃，降到2025年的77.5萬公頃（−3.4%）。官方數字包含果園和茶園，所以總量比衛星大。</p>
+      <p>「不再耕作」不一定是蓋了房子，也可能是休耕超過四年、改種果樹，或者荒廢。紅色才是衛星看得到已經蓋了東西的地方。</p>
+      <p class="src">資料：<a href="#ref-potapov2022">Potapov et al. (2022)</a>、<a href="#ref-zanaga2022">Zanaga et al. (2022)</a>，本頁計算；<a href="#ref-moa">農業部統計處（n.d.）</a></p>
+
+      <h3>去這些地方看看</h3>
+      <ul class="spots">
+        <li>
+          <button type="button" class="spot" data-spot="tw-taichung" aria-expanded="false" aria-controls="sb-tw-taichung"><b>臺中：中科周邊</b><span>不再耕作的農田，四成蓋了建物</span></button>
+          <div class="spot-body" id="sb-tw-taichung" hidden>
+            <p>臺中市的農田16年間少了17%，不再耕作的部分約<b>四成</b>已經蓋了建物：在農田超過1萬公頃的縣市裡，這兩個比例都是最高。框內最大塊的紅色，落在中部科學園區的<b>臺中園區</b>（2003年設立）：依OpenStreetMap標示的範圍，約七成土地在2003年還是農田；北邊<b>后里園區</b>的七星基地約八成。</p>
+            <ul class="nums"><li>框內2003年農田<b>1.23萬</b>公頃</li><li>不再耕作<b>4,075</b>公頃</li><li>已蓋建物<b>1,708</b>公頃</li></ul>
+            <p class="src">資料：<a href="#ref-potapov2022">Potapov et al. (2022)</a>、<a href="#ref-zanaga2022">Zanaga et al. (2022)</a>，本頁計算；園區範圍：OpenStreetMap；<a href="#ref-amcham2019">AmCham Taiwan (2019)</a></p>
+          </div>
+        </li>
+        <li>
+          <button type="button" class="spot" data-spot="tw-chiayi" aria-expanded="false" aria-controls="sb-tw-chiayi"><b>嘉義：AI晶片封裝廠</b><span>2019年還是農田的地方，現在蓋了工廠</span></button>
+          <div class="spot-body" id="sb-tw-chiayi" hidden>
+            <p>虛線框是<b>嘉義科學園區</b>。2019年衛星判讀，這塊地約<b>九成</b>還是農田。台積電在這裡興建CoWoS等先進封裝廠：2024年5月動工，一廠施工時挖到疑似遺址而停工，改先趕建二廠；到2026年7月，第一座廠已經量產。東側約90公頃的第二期也在同月動土。</p>
+            <p>這套農田地圖只到2019年，之後的變化請直接看底圖的衛星影像（各地拍攝時間不同）。</p>
+            <p class="src">資料：<a href="#ref-potapov2022">Potapov et al. (2022)</a>；<a href="#ref-tnews2024">Taiwan News (2024)</a>；<a href="#ref-trendforce2024">TrendForce (2024)</a>；<a href="#ref-ctee2024">工商時報（2024）</a>；<a href="#ref-reuters2026">Reuters (2026)</a>；<a href="#ref-edn2026">經濟日報（2026）</a></p>
+          </div>
+        </li>
+        <li>
+          <button type="button" class="spot" data-spot="tw-hsinchu" aria-expanded="false" aria-controls="sb-tw-hsinchu"><b>新竹：竹科與竹北</b><span>新竹市的農田少了三成</span></button>
+          <div class="spot-body" id="sb-tw-hsinchu" hidden>
+            <p>新竹市的農田16年間少了<b>31%</b>，是各縣市比例最高的（不過總量只有約1,200公頃）。框內包含新竹科學園區和高鐵新竹站一帶，新竹縣的農田也少了13%。</p>
+            <ul class="nums"><li>框內2003年農田<b>1.14萬</b>公頃</li><li>不再耕作<b>2,122</b>公頃</li><li>已蓋建物<b>698</b>公頃</li></ul>
+            <p class="src">資料：<a href="#ref-potapov2022">Potapov et al. (2022)</a>、<a href="#ref-zanaga2022">Zanaga et al. (2022)</a>，本頁計算</p>
+          </div>
+        </li>
+        <li>
+          <button type="button" class="spot" data-spot="tw-tainan" aria-expanded="false" aria-controls="sb-tw-tainan"><b>臺南：南科周邊</b><span>少掉的和新增的差不多</span></button>
+          <div class="spot-body" id="sb-tw-tainan" hidden>
+            <p>框內包含南部科學園區臺南園區和臺南市區。有2,855公頃農田到2019年不再耕作，其中851公頃已經蓋了建物；但也有差不多面積的地新判為農田，所以總量幾乎沒變。只看總量，容易漏掉這種「一邊流失、一邊從休耕恢復」的變化。</p>
+            <ul class="nums"><li>框內2003年農田<b>1.39萬</b>公頃</li><li>不再耕作<b>2,855</b>公頃</li><li>已蓋建物<b>851</b>公頃</li><li>新判為農田<b>2,862</b>公頃</li></ul>
+            <p class="src">資料：<a href="#ref-potapov2022">Potapov et al. (2022)</a>、<a href="#ref-zanaga2022">Zanaga et al. (2022)</a>，本頁計算</p>
+          </div>
+        </li>
+        <li>
+          <button type="button" class="spot" data-spot="tw-kaohsiung" aria-expanded="false" aria-controls="sb-tw-kaohsiung"><b>高雄：市區往北到岡山</b><span>框內農田淨減少一成四</span></button>
+          <div class="spot-body" id="sb-tw-kaohsiung" hidden>
+            <p>框內從高雄市區往北到岡山，2003年有6,676公頃農田，到2019年剩5,721公頃（−14%）。不再耕作的2,464公頃裡，699公頃已經蓋了建物。</p>
+            <ul class="nums"><li>框內2003年農田<b>6,676</b>公頃</li><li>不再耕作<b>2,464</b>公頃</li><li>已蓋建物<b>699</b>公頃</li></ul>
+            <p class="src">資料：<a href="#ref-potapov2022">Potapov et al. (2022)</a>、<a href="#ref-zanaga2022">Zanaga et al. (2022)</a>，本頁計算</p>
+          </div>
+        </li>
+      </ul>
+
+      <h3>各縣市</h3>
+      <table class="rank" id="rank-tw">
+        <caption>2003→2019年，依農田減少比例排序</caption>
+        <thead><tr><th scope="col">縣市</th><th scope="col">農田增減</th><th scope="col">不再耕作（公頃）</th><th scope="col">其中蓋了建物</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <p class="note">點縣市名稱，地圖會移過去。只列2003年農田超過1,000公頃的縣市；分析範圍不含澎湖、金門、馬祖。</p>
+    </section>
+
+    <!-- ================= 馬來西亞 ================= -->
+    <section class="pane" id="pane-my" role="tabpanel" aria-labelledby="tab-my" hidden>
+      <h2>稻田總量持平，資料中心用的是油棕園</h2>
+      <div class="stats">
+        <div class="stat gone"><div class="v">4.4<small>萬公頃</small></div><div class="l">不再耕作</div><div class="h">約1.6個臺北市</div></div>
+        <div class="stat built"><div class="v">3,400<small>公頃</small></div><div class="l">其中已蓋了建物</div><div class="h">不到一成（臺灣約兩成）</div></div>
+        <div class="stat net"><div class="v">+0.3<small>%</small></div><div class="l">農田總量</div><div class="h">30.6萬→30.7萬公頃</div></div>
+      </div>
+      <p>在馬來西亞，這套衛星地圖判讀出的「農田」主要是<b>稻田</b>，集中在吉打、玻璃市、吉蘭丹等北部產區。16年間有4.4萬公頃不再耕作，但也有4.5萬公頃新判為農田，所以總量幾乎持平。</p>
+      <div class="callout">
+        <p>資料中心大多蓋在柔佛，用掉的多半是<b>油棕園</b>。油棕種一次就長二十多年，這套農田地圖不算它。所以看馬來西亞，要另外看油棕：</p>
+        <p><b>官方統計：</b>MPOB的數字顯示，2019到2024年全國油棕面積少了28.7萬公頃（−4.9%）；<b>柔佛少了9.9萬公頃</b>（−13%），比整個新加坡還大，雪蘭莪少了21%。不過MPOB 2025年的柔佛數字又回升到67.6萬公頃，統計有修訂，引用時要小心。</p>
+        <button type="button" class="linkbtn" data-spot="my-oilpalm">在地圖上看各州油棕減少 →</button>
+        <p><b>衛星判讀：</b>地圖上的萊姆綠色，是2019年衛星判讀為油棕園的地方（只畫柔佛）。衛星算出的柔佛油棕約81萬公頃，和MPOB統計的75.9萬公頃接近。放大柔佛南部，對照底圖現在的樣子，就能看出哪些油棕園已經變成別的東西。</p>
+        <p class="src">資料：<a href="#ref-mpob2020">MPOB (2020)</a>、<a href="#ref-mpob2025">MPOB (2025)</a>、<a href="#ref-mpob2026">MPOB (2026)</a>；<a href="#ref-descals2021">Descals et al. (2021)</a>，本頁計算</p>
+      </div>
+      <p class="src">農田資料：<a href="#ref-potapov2022">Potapov et al. (2022)</a>、<a href="#ref-zanaga2022">Zanaga et al. (2022)</a>，本頁計算</p>
+
+      <h3>去這些地方看看</h3>
+      <ul class="spots">
+        <li>
+          <button type="button" class="spot" data-spot="my-kulai" aria-expanded="false" aria-controls="sb-my-kulai"><b>柔佛古來：油棕園變資料中心</b><span>2019年幾乎全是油棕</span></button>
+          <div class="spot-body" id="sb-my-kulai" hidden>
+            <p>虛線框是<b>YTL綠色資料中心園區</b>，約108公頃，在新山西北約30公里。2019年衛星判讀，框內幾乎全是大型油棕園（萊姆綠）。2022年8月，YTL和新加坡的Sea集團在這裡為園區第一期動土，整個園區規劃達500MW。</p>
+            <p>按地圖右上的「看底圖」，比較現在的樣子。</p>
+            <p class="src">資料：<a href="#ref-descals2021">Descals et al. (2021)</a>，本頁計算；<a href="#ref-mida2022">MIDA (2022)</a>；園區範圍：OpenStreetMap</p>
+          </div>
+        </li>
+        <li>
+          <button type="button" class="spot" data-spot="my-chuping" aria-expanded="false" aria-controls="sb-my-chuping"><b>玻璃市Chuping：甘蔗園改種果樹</b><span>看起來像流失，其實是換了作物</span></button>
+          <div class="spot-body" id="sb-my-chuping" hidden>
+            <p>在農田超過1萬公頃的州屬中，<b>玻璃市</b>減少最多（−22%），而且集中在東邊的Chuping一帶。這裡原本是大片甘蔗園：MSM糖業在Chuping約4,500公頃的土地停種甘蔗後，改為經營橡膠、油棕和芒果園。這些都是多年生的樹，不算在這套地圖的「農田」裡，所以看起來像流失。這和AI產業無關。</p>
+            <ul class="nums"><li>玻璃市2003年農田<b>3.71萬</b>公頃</li><li>2019年<b>2.89萬</b>公頃</li><li>不再耕作<b>9,188</b>公頃</li><li>其中蓋了建物<b>4%</b></li></ul>
+            <p class="src">資料：<a href="#ref-potapov2022">Potapov et al. (2022)</a>、<a href="#ref-zanaga2022">Zanaga et al. (2022)</a>，本頁計算；<a href="#ref-malaymail2021">Malay Mail (2021)</a></p>
+          </div>
+        </li>
+        <li>
+          <button type="button" class="spot" data-spot="my-alorsetar" aria-expanded="false" aria-controls="sb-my-alorsetar"><b>吉打亞羅士打：稻田邊的城市</b><span>不再耕作的地，過半蓋了建物</span></button>
+          <div class="spot-body" id="sb-my-alorsetar" hidden>
+            <p><b>吉打</b>是這套地圖裡農田最多的州（多為稻田），16年間少了4.7%。州首府亞羅士打周邊（框內）不再耕作的1,482公頃中，有830公頃（<b>56%</b>）到2021年已經蓋了建物，比全國平均的不到一成高很多。</p>
+            <ul class="nums"><li>框內2003年農田<b>2.34萬</b>公頃</li><li>不再耕作<b>1,482</b>公頃</li><li>已蓋建物<b>830</b>公頃</li></ul>
+            <p class="src">資料：<a href="#ref-potapov2022">Potapov et al. (2022)</a>、<a href="#ref-zanaga2022">Zanaga et al. (2022)</a>，本頁計算</p>
+          </div>
+        </li>
+      </ul>
+
+      <h3>各州</h3>
+      <div class="seg" role="group" aria-label="切換表格">
+        <button type="button" data-tbl="farm" aria-pressed="true">農田（衛星）</button>
+        <button type="button" data-tbl="palm" aria-pressed="false">油棕（MPOB）</button>
+      </div>
+      <table class="rank" id="rank-my">
+        <caption></caption>
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+      <p class="note" id="rank-my-note"></p>
+    </section>
+
+    <!-- ================= 圖層 ================= -->
+    <section class="settings" aria-labelledby="settings-h">
+      <h2 id="settings-h">圖層</h2>
+      <label><input type="checkbox" id="lyr-farm" checked><span><i class="sw" style="background:var(--k-gone)"></i>農田變化（2003→2019）</span></label>
+      <label><input type="checkbox" id="lyr-palm" checked><span><i class="sw" style="background:var(--k-palm)"></i>2019年的油棕園（柔佛）</span></label>
+      <label><input type="checkbox" id="lyr-mpob"><span><i class="sw" style="background:var(--midori);border-radius:50%"></i>各州油棕減少（MPOB，2019→2024）</span></label>
+      <label><input type="checkbox" id="lyr-sites" checked><span><i class="sw" style="height:0;border-top:2px dashed #111;box-shadow:none;border-radius:0;vertical-align:3px"></i>園區範圍</span></label>
+      <label class="range" for="ov-opacity"><span><span>疊圖濃淡</span><span id="ov-val">85%</span></span>
+        <input type="range" id="ov-opacity" min="0" max="100" step="5" value="85"></label>
+    </section>
+
+    <!-- ================= 方法 ================= -->
+    <details class="about">
+      <summary>資料與方法</summary>
+      <h3>農田</h3>
+      <p>美國馬里蘭大學GLAD團隊的全球農田地圖（<a href="#ref-potapov2022">Potapov et al., 2022</a>），用Landsat衛星影像判讀，解析度約30公尺。「2003年」指2000–2003年，「2019年」指2016–2019年；期間內有耕作、休耕不超過四年就算農田。農田只含一年生與多年生的<b>草本</b>作物，不含果園、茶、油棕、橡膠等木本作物。</p>
+      <h3>蓋了建物</h3>
+      <p>用歐洲太空總署的ESA WorldCover 2021（<a href="#ref-zanaga2022">Zanaga et al., 2022</a>，10公尺）判斷。一個30公尺像素剛好包含9個10公尺像素，其中5個以上是「建成區」，就畫成紅色。</p>
+      <h3>面積怎麼算</h3>
+      <p>像素面積依緯度換算（臺灣每個像素約0.07公頃，馬來西亞約0.08公頃），再依geoBoundaries的行政界（<a href="#ref-runfola2020">Runfola et al., 2020</a>）加總到縣市與州。臺灣範圍不含澎湖、金門、馬祖。地圖拉遠時，為了看得見，零星的顏色會畫得比實際濃。</p>
+      <h3>油棕</h3>
+      <p>2019年的油棕園來自<a href="#ref-descals2021">Descals et al. (2021)</a>，用Sentinel衛星判讀，解析度10公尺，包含大型農園和小農的成林油棕（剛種下的幼苗不算）。本頁只畫柔佛。各州面積用MPOB的官方統計。</p>
+      <h3>讀圖要注意</h3>
+      <ul>
+        <li>衛星判讀有誤差。原作者指出，「變化」的準確度比「某一年有沒有農田」低；雲多的熱帶地區也比較難判讀。</li>
+        <li>臺灣2011年後的回升，多半是休耕地在分類上的擺動，不代表農地真的增加。</li>
+        <li>這張地圖呈現的是空間上的重疊，不是因果：某塊地為什麼不再耕作，要個案查證。兩國都沒有「因AI或半導體而變更的農地」官方統計。</li>
+        <li>底圖影像的拍攝時間各地不同，多半是近幾年。</li>
+      </ul>
+    </details>
+
+    <section class="refs" aria-labelledby="refs-h">
+      <h2 id="refs-h">參考資料</h2>
+      <ol>
+        <li id="ref-amcham2019">AmCham Taiwan. (2019, March). What are Taiwan's science parks? Taiwan Business TOPICS. <a href="https://topics.amcham.com.tw/2019/03/what-are-taiwans-science-parks/" target="_blank" rel="noopener">https://topics.amcham.com.tw/2019/03/what-are-taiwans-science-parks/</a></li>
+        <li id="ref-descals2021">Descals, A., Wich, S., Meijaard, E., Gaveau, D. L. A., Peedell, S., &amp; Szantoi, Z. (2021). High-resolution global map of smallholder and industrial closed-canopy oil palm plantations. Earth System Science Data, 13(3), 1211–1231. <a href="https://doi.org/10.5194/essd-13-1211-2021" target="_blank" rel="noopener">https://doi.org/10.5194/essd-13-1211-2021</a>（圖資：<a href="https://doi.org/10.5281/zenodo.4473715" target="_blank" rel="noopener">https://doi.org/10.5281/zenodo.4473715</a>）</li>
+        <li id="ref-malaymail2021">Malay Mail. (2021, June 8). FGV Integrated Farming Holdings inks agreement to acquire MSM Perlis for RM175m [Bernama]. <a href="https://www.malaymail.com/news/money/2021/06/08/fgv-integrated-farming-holdings-inks-agreement-to-acquire-msm-perlis-for-rm/1980555" target="_blank" rel="noopener">https://www.malaymail.com/news/money/2021/06/08/fgv-integrated-farming-holdings-inks-agreement-to-acquire-msm-perlis-for-rm/1980555</a></li>
+        <li id="ref-mida2022">Malaysian Investment Development Authority. (2022, August 25). YTL Data Centers and Sea break ground with the RM1.5bil first phase of the 500MW YTL Green Data Center Park in Johor [Media release]. <a href="https://www.mida.gov.my/media-release/ytl-data-centers-and-sea-break-ground-with-the-rm1-5bil-first-phase-of-the-500mw-ytl-green-data-center-park-in-johor/" target="_blank" rel="noopener">https://www.mida.gov.my/media-release/ytl-data-centers-and-sea-break-ground-with-the-rm1-5bil-first-phase-of-the-500mw-ytl-green-data-center-park-in-johor/</a></li>
+        <li id="ref-mpob2020">Malaysian Palm Oil Board. (2020). Oil palm planted area as at December 2019 [Data table]. <a href="https://bepi.mpob.gov.my/images/area/2019/Area_summary.pdf" target="_blank" rel="noopener">https://bepi.mpob.gov.my/images/area/2019/Area_summary.pdf</a></li>
+        <li id="ref-mpob2025">Malaysian Palm Oil Board. (2025). Oil palm planted area as at December 2024 [Data table]. <a href="https://bepi.mpob.gov.my/images/area/2024/Area_summary2024.pdf" target="_blank" rel="noopener">https://bepi.mpob.gov.my/images/area/2024/Area_summary2024.pdf</a></li>
+        <li id="ref-mpob2026">Malaysian Palm Oil Board. (2026). Oil palm planted area as at December 2025 [Data table]. <a href="https://bepi.mpob.gov.my/images/area/2025/Area_summary2025.pdf" target="_blank" rel="noopener">https://bepi.mpob.gov.my/images/area/2025/Area_summary2025.pdf</a></li>
+        <li id="ref-potapov2022">Potapov, P., Turubanova, S., Hansen, M. C., Tyukavina, A., Zalles, V., Khan, A., Song, X.-P., Pickens, A., Shen, Q., &amp; Cortez, J. (2022). Global maps of cropland extent and change show accelerated cropland expansion in the twenty-first century. Nature Food, 3(1), 19–28. <a href="https://doi.org/10.1038/s43016-021-00429-z" target="_blank" rel="noopener">https://doi.org/10.1038/s43016-021-00429-z</a></li>
+        <li id="ref-reuters2026">Reuters. (2026, July 13). TSMC to add 2 advanced chip packaging plants in Chiayi, Taiwan minister says. The Star. <a href="https://www.thestar.com.my/tech/tech-news/2026/07/13/tsmc-to-add-2-advanced-chip-packaging-plants-in-chiayi-taiwan-minister-says" target="_blank" rel="noopener">https://www.thestar.com.my/tech/tech-news/2026/07/13/tsmc-to-add-2-advanced-chip-packaging-plants-in-chiayi-taiwan-minister-says</a></li>
+        <li id="ref-runfola2020">Runfola, D., Anderson, A., Baier, H., Crittenden, M., Dowker, E., Fuhrig, S., Goodman, S., Grimsley, G., Layko, R., Melville, G., Mulder, M., Oberman, R., Panganiban, J., Peck, A., Seitz, L., Shea, S., Slevin, H., Youngerman, R., &amp; Hobbs, L. (2020). geoBoundaries: A global database of political administrative boundaries. PLOS ONE, 15(4), e0231866. <a href="https://doi.org/10.1371/journal.pone.0231866" target="_blank" rel="noopener">https://doi.org/10.1371/journal.pone.0231866</a></li>
+        <li id="ref-tnews2024">Taiwan News. (2024, March 18). Taiwan's TSMC expands advanced packaging capacity in Chiayi. <a href="https://www.taiwannews.com.tw/news/5117164" target="_blank" rel="noopener">https://www.taiwannews.com.tw/news/5117164</a></li>
+        <li id="ref-trendforce2024">TrendForce. (2024, June 12). [News] TSMC accelerates CoWoS advanced packaging capacity construction, beginning equipment procurement in its Chiayi plant. <a href="https://www.trendforce.com/news/2024/06/12/news-tsmc-accelerates-cowos-advanced-packaging-capacity-construction-beginning-equipment-procurement-in-its-chiayi-plant/" target="_blank" rel="noopener">https://www.trendforce.com/news/2024/06/12/news-tsmc-accelerates-cowos-advanced-packaging-capacity-construction-beginning-equipment-procurement-in-its-chiayi-plant/</a></li>
+        <li id="ref-zanaga2022">Zanaga, D., Van De Kerchove, R., Daems, D., De Keersmaecker, W., Brockmann, C., Kirches, G., Wevers, J., Cartus, O., Santoro, M., Fritz, S., Lesiv, M., Herold, M., Tsendbazar, N.-E., Xu, P., Ramoino, F., &amp; Arino, O. (2022). ESA WorldCover 10 m 2021 v200 [Data set]. Zenodo. <a href="https://doi.org/10.5281/zenodo.7254221" target="_blank" rel="noopener">https://doi.org/10.5281/zenodo.7254221</a></li>
+        <li id="ref-ctee2024">工商時報（2024年6月18日）。台積嘉科挖到寶　二廠急啟動。 <a href="https://www.ctee.com.tw/news/20240618700036-439901" target="_blank" rel="noopener">https://www.ctee.com.tw/news/20240618700036-439901</a></li>
+        <li id="ref-edn2026">經濟日報（2026年7月13日）。嘉科二期動土　強化半導體鏈。聯合新聞網。 <a href="https://udn.com/news/story/7240/9623437" target="_blank" rel="noopener">https://udn.com/news/story/7240/9623437</a></li>
+        <li id="ref-moa">農業部統計處（n.d.）。農業統計年報（110年版、114年版）。 <a href="https://agrstat.moa.gov.tw/moasdweb/book/Book.aspx" target="_blank" rel="noopener">https://agrstat.moa.gov.tw/moasdweb/book/Book.aspx</a></li>
+      </ol>
+      <p class="note">圖層：農田變化與油棕圖層由本頁依上列資料計算；園區範圍來自© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>貢獻者（ODbL）。</p>
+    </section>
+
+    <p class="foot">本頁是〈晶片島與雲端飛地〉研究的延伸分析（初稿，請勿引用）。<br><a href="index.html">台馬半導體與AI產業分工地圖</a>｜<a href="story.html">故事地圖</a></p>
+  </aside>
+
+  <main class="mapwrap" aria-label="農地流失地圖">
+    <div id="map"></div>
+    <div class="map-msg" id="mapMsg" role="status" hidden></div>
+  </main>
+</div>
+
+<noscript><p style="padding:20px">這張地圖需要JavaScript。</p></noscript>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="data/farmland-data.js"></script>
+<script>
+(function(){
+  'use strict';
+
+  // Google衛星底圖：在Google Cloud建立Maps JavaScript API金鑰（限制網域為 https://yunching0513.github.io/*）後填入。
+  // 留空時改用Esri的衛星影像。
+  var GOOGLE_MAPS_KEY = '';
+  var GOOGLE_MUTANT = 'https://unpkg.com/leaflet.gridlayer.googlemutant@0.16.0/dist/Leaflet.GoogleMutant.js';
+
+  var D = window.FARMLAND;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function isSmall(){ return !!(window.matchMedia && window.matchMedia('(max-width: 900px)').matches); }
+  function $(s, r){ return (r || document).querySelector(s); }
+  function $$(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+
+  // ---------- number formatting ----------
+  function comma(n){ return Math.round(n).toLocaleString('en-US'); }
+  function wan(n){ return n >= 1e5 ? (n / 1e4).toFixed(1) + '萬' : (n >= 1e4 ? (n / 1e4).toFixed(2) + '萬' : comma(n)); }
+  function pct(p){ if (p == null) return '–'; var s = Math.abs(p).toFixed(1); return (p > 0.05 ? '+' : (p < -0.05 ? '−' : '')) + s + '%'; }
+  function cls(p){ return p < -0.05 ? 'dn' : (p > 0.05 ? 'up' : ''); }
+
+  var UNITS = {};
+  ['tw', 'my'].forEach(function(c){ D.units[c].forEach(function(u){ u.c = c; UNITS[u.id] = u; }); });
+
+  if (typeof L === 'undefined' || !D){
+    $('#map').innerHTML = '<div class="map-fallback">無法載入地圖函式庫（Leaflet）。請確認網路連線後重新整理。</div>';
+    buildTables(); wirePanel(null);
+    return;
+  }
+
+  // ---------- map ----------
+  var VIEW = {
+    tw: [[21.9, 120.0], [25.3, 122.0]],
+    my: [[1.25, 99.65], [6.75, 104.45]]
+  };
+  var map = L.map('map', {zoomControl:false, minZoom:4, maxZoom:19, worldCopyJump:false, zoomSnap:1});
+  L.control.zoom({position:'topright', zoomInTitle:'放大', zoomOutTitle:'縮小'}).addTo(map);
+  map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
+
+  // ---------- basemaps ----------
+  var ESRI = 'https://server.arcgisonline.com/ArcGIS/rest/services/';
+  var BASE = {
+    esriSat: L.tileLayer(ESRI + 'World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      maxNativeZoom:17, maxZoom:19, zIndex:1,
+      attribution:'影像：Esri, Maxar, Earthstar Geographics, and the GIS User Community'
+    }),
+    esriLabels: L.tileLayer(ESRI + 'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+      maxNativeZoom:17, maxZoom:19, zIndex:9, attribution:'標註：Esri'
+    }),
+    osm: L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom:19, zIndex:1, className:'tiles-osm',
+      attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>貢獻者'
+    })
+  };
+  var GOOGLE = {state: GOOGLE_MAPS_KEY ? 'loading' : 'off', layers:{}};
+  var baseMode = 'hyb', baseOn = [];
+
+  function googleLayer(type){
+    if (!GOOGLE.layers[type]) GOOGLE.layers[type] = L.gridLayer.googleMutant({type:type, maxZoom:21, zIndex:1});
+    return GOOGLE.layers[type];
+  }
+  function layersFor(mode){
+    if (mode === 'osm') return [BASE.osm];
+    if (GOOGLE.state === 'ready') return [googleLayer(mode === 'hyb' ? 'hybrid' : 'satellite')];
+    if (GOOGLE.state === 'loading') return [];
+    return mode === 'hyb' ? [BASE.esriSat, BASE.esriLabels] : [BASE.esriSat];
+  }
+  function setBase(mode, force){
+    if (mode === baseMode && !force) return;
+    baseMode = mode;
+    var next = layersFor(mode);
+    baseOn.forEach(function(l){ if (next.indexOf(l) < 0) map.removeLayer(l); });
+    next.forEach(function(l){ if (!map.hasLayer(l)) l.addTo(map); });
+    baseOn = next;
+    map.getContainer().classList.toggle('has-google', GOOGLE.state === 'ready' && mode !== 'osm');
+    $$('.base-switch button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.getAttribute('data-b') === mode)); });
+  }
+  var BaseSwitch = L.Control.extend({
+    options:{position:'topright'},
+    onAdd:function(){
+      var div = L.DomUtil.create('div', 'base-switch');
+      div.setAttribute('role', 'group');
+      div.setAttribute('aria-label', '切換底圖');
+      div.innerHTML = '<button type="button" data-b="hyb" aria-pressed="true">衛星＋地名</button>' +
+                      '<button type="button" data-b="sat" aria-pressed="false">衛星</button>' +
+                      '<button type="button" data-b="osm" aria-pressed="false">街道</button>';
+      L.DomEvent.disableClickPropagation(div);
+      div.addEventListener('click', function(e){
+        var b = e.target && e.target.getAttribute ? e.target.getAttribute('data-b') : null;
+        if (b) setBase(b);
+      });
+      return div;
+    }
+  });
+  map.addControl(new BaseSwitch());
+
+  function showMsg(txt, ms){
+    var el = $('#mapMsg'); el.textContent = txt; el.hidden = false;
+    clearTimeout(showMsg.t); showMsg.t = setTimeout(function(){ el.hidden = true; }, ms || 6000);
+  }
+  function googleFail(){
+    if (GOOGLE.state === 'failed') return;
+    var was = GOOGLE.state;
+    GOOGLE.state = 'failed';
+    Object.keys(GOOGLE.layers).forEach(function(k){ if (map.hasLayer(GOOGLE.layers[k])) map.removeLayer(GOOGLE.layers[k]); });
+    baseOn = baseOn.filter(function(l){ return map.hasLayer(l); });
+    setBase(baseMode, true);
+    if (was === 'ready' || was === 'loading') showMsg('Google衛星影像無法載入，暫時改用Esri衛星影像。');
+  }
+  function loadScript(src, ok, bad){
+    var s = document.createElement('script'); s.src = src; s.async = true;
+    s.onload = ok; s.onerror = bad; document.head.appendChild(s);
+  }
+  if (GOOGLE.state === 'loading'){
+    window.gm_authFailure = googleFail;
+    window.__farmlandGoogleReady = function(){
+      var go = function(){
+        if (GOOGLE.state !== 'loading' || !L.gridLayer.googleMutant) return;
+        GOOGLE.state = 'ready'; setBase(baseMode, true);
+      };
+      if (window.google && google.maps && google.maps.importLibrary) google.maps.importLibrary('maps').then(go, googleFail);
+      else go();
+    };
+    loadScript(GOOGLE_MUTANT, function(){
+      loadScript('https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(GOOGLE_MAPS_KEY) +
+                 '&language=zh-TW&region=TW&loading=async&callback=__farmlandGoogleReady', null, googleFail);
+    }, googleFail);
+    setTimeout(function(){ if (GOOGLE.state === 'loading') googleFail(); }, 10000);
+  }
+  setBase('hyb', true);
+
+  // ---------- overlay tiles (pre-rendered; deeper zooms reuse the nearest ancestor tile) ----------
+  function parseIdx(str){
+    var set = {};
+    str.split('|').forEach(function(zp){
+      var a = zp.split('=');
+      a[1].split(';').forEach(function(col){
+        var c = col.split(':');
+        c[1].split(',').forEach(function(run){
+          var r = run.split('-'), y0 = +r[0], y1 = r.length > 1 ? +r[1] : y0;
+          for (var y = y0; y <= y1; y++) set[a[0] + '/' + c[0] + '/' + y] = 1;
+        });
+      });
+    });
+    return set;
+  }
+  var FarmLayer = L.GridLayer.extend({
+    options:{minNative:5, fullZoom:12, maxNative:12, className:'farm-tiles', updateWhenZooming:false},
+    initialize:function(url, idx, options){
+      L.GridLayer.prototype.initialize.call(this, options);
+      this._url = url; this._set = parseIdx(idx); this._imgs = {};
+    },
+    _load:function(z, x, y){
+      var k = z + '/' + x + '/' + y;
+      if (!this._imgs[k]){
+        var url = this._url.replace('{z}', z).replace('{x}', x).replace('{y}', y);
+        this._imgs[k] = new Promise(function(resolve, reject){
+          var im = new Image();
+          im.onload = function(){ resolve(im); };
+          im.onerror = reject;
+          im.src = url;
+        });
+      }
+      return this._imgs[k];
+    },
+    createTile:function(c, done){
+      var tile = document.createElement('canvas');
+      tile.width = tile.height = 256;
+      var o = this.options, z = c.z, found = -1;
+      if (z <= o.fullZoom){
+        if (z >= o.minNative && this._set[z + '/' + c.x + '/' + c.y]) found = 0;
+      } else {
+        for (var dz = z - Math.min(z, o.maxNative); z - dz >= o.minNative && dz <= 10; dz++){
+          if (this._set[(z - dz) + '/' + (c.x >> dz) + '/' + (c.y >> dz)]){ found = dz; break; }
+        }
+      }
+      if (found < 0){ setTimeout(function(){ done(null, tile); }, 0); return tile; }
+      var n = 1 << found, s = 256 / n, ax = c.x >> found, ay = c.y >> found;
+      var sx = (c.x - ax * n) * s, sy = (c.y - ay * n) * s;
+      this._load(z - found, ax, ay).then(function(im){
+        var ctx = tile.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(im, sx, sy, s, s, 0, 0, 256, 256);
+        done(null, tile);
+      }, function(){ done(null, tile); });
+      return tile;
+    }
+  });
+  var ATTR_FARM = '農田：<a href="https://doi.org/10.1038/s43016-021-00429-z" target="_blank" rel="noopener">GLAD</a>、<a href="https://doi.org/10.5281/zenodo.7254221" target="_blank" rel="noopener">ESA WorldCover</a>（本頁計算）';
+  var johor = UNITS['my-johor'].bb;
+  var OV = {
+    farmTW: new FarmLayer('tiles/farm-tw/{z}/{x}/{y}.png', D.idx.tw, {bounds:L.latLngBounds([[21.88,119.98],[25.32,122.02]]), zIndex:5, attribution:ATTR_FARM}),
+    farmMY: new FarmLayer('tiles/farm-my/{z}/{x}/{y}.png', D.idx.my, {bounds:L.latLngBounds([[0.8,99.5],[7.4,119.4]]), zIndex:5, attribution:ATTR_FARM}),
+    palm: new FarmLayer('tiles/palm-jh/{z}/{x}/{y}.png', D.idx.palm, {minNative:8, fullZoom:13, maxNative:14,
+      bounds:L.latLngBounds([[johor[0], johor[1]], [johor[2], johor[3]]]), zIndex:6,
+      attribution:'油棕：<a href="https://doi.org/10.5194/essd-13-1211-2021" target="_blank" rel="noopener">Descals et al. 2021</a>'})
+  };
+  var ovLevel = 0.85, ovHidden = false;
+  function applyOpacity(){
+    var v = ovHidden ? 0 : ovLevel;
+    OV.farmTW.setOpacity(v); OV.farmMY.setOpacity(v); OV.palm.setOpacity(v * 0.75);
+  }
+  function setLayer(k, on){
+    var list = k === 'farm' ? [OV.farmTW, OV.farmMY] : (k === 'palm' ? [OV.palm] : (k === 'mpob' ? [mpobLayer] : [sitesLayer]));
+    list.forEach(function(l){ if (on && !map.hasLayer(l)) l.addTo(map); if (!on && map.hasLayer(l)) map.removeLayer(l); });
+    var box = $('#lyr-' + k); if (box) box.checked = on;
+    if (k === 'sites') updateSiteLabels();
+  }
+
+  // ---------- park outlines ----------
+  var SITES = [
+    {k:'ctspTc', name:'中科臺中園區', dir:'left'},
+    {k:'ctspHl', name:'后里園區（七星基地）', dir:'right'},
+    {k:'cysp1', name:'嘉義科學園區', dir:'left'},
+    {k:'cysp2', name:'第二期（2026年動土）', dir:'right'},
+    {k:'ytl', name:'YTL綠色資料中心園區', dir:'right'}
+  ];
+  var sitesLayer = L.layerGroup(), siteLabels = L.layerGroup();
+  SITES.forEach(function(s){
+    var polys = D.outlines[s.k].map(function(r){ return [r]; });
+    L.polygon(polys, {color:'#ffffff', weight:5, opacity:.9, fill:false, interactive:false}).addTo(sitesLayer);
+    L.polygon(polys, {color:'#111111', weight:2.2, dashArray:'7 5', fill:false, interactive:false}).addTo(sitesLayer);
+    var b = L.latLngBounds([].concat.apply([], D.outlines[s.k])), c = b.getCenter();
+    var at = {left:[c.lat, b.getWest()], right:[c.lat, b.getEast()]}[s.dir];
+    L.circleMarker(at, {radius:0, stroke:false, fill:false, interactive:false})
+      .bindTooltip('<b>' + s.name + '</b>', {permanent:true, direction:s.dir, offset: s.dir === 'left' ? [-8,0] : [8,0], className:'lbl'})
+      .addTo(siteLabels);
+  });
+  function updateSiteLabels(){
+    var on = map.hasLayer(sitesLayer) && map.getZoom() >= 13;
+    if (on && !map.hasLayer(siteLabels)) siteLabels.addTo(map);
+    if (!on && map.hasLayer(siteLabels)) map.removeLayer(siteLabels);
+  }
+  map.on('zoomend', updateSiteLabels);
+
+  // ---------- MPOB circles: same area as the oil palm lost in each state, 2019→2024 ----------
+  var MPOB_PTS = {'my-johor':[1.95,103.40,'right',1], 'my-perak':[4.60,101.05,'left',1], 'my-pahang':[3.75,102.65,'right',1],
+    'my-selangor':[3.35,101.45,'left',1], 'my-terengganu':[4.95,103.00,'right',0], 'my-negeri-sembilan':[2.75,102.15,'right',0],
+    'my-kelantan':[5.30,102.05,'right',0], 'my-malacca':[2.25,102.30,'left',0], 'my-penang':[5.38,100.40,'left',0], 'my-kedah':[5.95,100.70,'left',0],
+    'my-sabah':[5.30,117.00,'right',1]};
+  var mpobLayer = L.layerGroup();
+  Object.keys(MPOB_PTS).forEach(function(id){
+    var u = UNITS[id], p = MPOB_PTS[id], ha = u.op19 - u.op24;
+    if (!(ha > 0)) return;
+    var r = Math.sqrt(ha * 1e4 / Math.PI), ll = [p[0], p[1]], dir = p[2];
+    var amount = ha >= 1e4 ? (ha / 1e4).toFixed(1) + '萬' : comma(ha);
+    var txt = '<b>' + u.zh + '：−' + amount + '公頃</b><span>' + pct((u.op24 - u.op19) / u.op19 * 100) + '（2019→2024）</span>';
+    var circle = L.circle(ll, {radius:r, color:'#ffffff', weight:1.5, fillColor:'#2E6B4E', fillOpacity:.6}).addTo(mpobLayer);
+    if (p[3]){
+      var dLng = r / (111320 * Math.cos(ll[0] * Math.PI / 180));
+      L.circleMarker([ll[0], ll[1] + (dir === 'left' ? -dLng : dLng)], {radius:0, stroke:false, fill:false, interactive:false})
+        .bindTooltip(txt, {permanent:true, direction:dir, offset: dir === 'left' ? [-6,0] : [6,0], className:'lbl'}).addTo(mpobLayer);
+    } else {
+      circle.bindTooltip(txt, {direction:dir, className:'lbl'});
+    }
+  });
+
+  // ---------- legend + "look at the basemap" switch ----------
+  var Legend = L.Control.extend({
+    options:{position:'bottomleft'},
+    onAdd:function(){
+      var d = L.DomUtil.create('div', 'map-legend');
+      d.setAttribute('aria-hidden', 'true');
+      d.innerHTML = '<span><i style="background:#8fcf5a;opacity:.8"></i>2019年是農田</span>' +
+        '<span><i style="background:#f5a623"></i>不再耕作</span>' +
+        '<span><i style="background:#e3242b"></i>已蓋建物</span>' +
+        '<span><i style="background:#d8e84a"></i>2019年油棕（柔佛）</span>' +
+        '<span><i class="ln"></i>範圍</span>';
+      return d;
+    }
+  });
+  map.addControl(new Legend());
+  var cornerL = map._controlCorners.bottomleft, cornerR = map._controlCorners.bottomright;
+  function liftLeft(){ cornerL.style.bottom = (isSmall() ? cornerR.offsetHeight : Math.max(0, cornerR.offsetHeight - 4)) + 'px'; }
+  if ('ResizeObserver' in window) new ResizeObserver(liftLeft).observe(cornerR);
+  map.on('layeradd layerremove', function(){ setTimeout(liftLeft, 0); });
+  var OvSwitch = L.Control.extend({
+    options:{position:'topright'},
+    onAdd:function(){
+      var b = L.DomUtil.create('button', 'ov-switch');
+      b.type = 'button'; b.textContent = '看底圖'; b.setAttribute('aria-pressed', 'false');
+      b.title = '暫時隱藏疊圖，只看衛星影像';
+      L.DomEvent.disableClickPropagation(b);
+      b.addEventListener('click', function(){
+        ovHidden = !ovHidden; applyOpacity();
+        b.setAttribute('aria-pressed', String(ovHidden));
+        b.textContent = ovHidden ? '顯示疊圖' : '看底圖';
+      });
+      return b;
+    }
+  });
+  map.addControl(new OvSwitch());
+
+  // ---------- counties / states: click for numbers ----------
+  map.createPane('admPane');
+  map.getPane('admPane').style.zIndex = 390;
+  var admLayer = null, admFeat = {}, selLayer = L.layerGroup().addTo(map), selId = null;
+  function popupHtml(u){
+    var h = '<div class="pop"><h4>' + u.zh + '</h4>' +
+      '<div class="sec">農田（衛星判讀）2003→2019</div>' +
+      '<div class="row"><span>' + wan(u.c03) + '→' + wan(u.c19) + '公頃</span><b class="' + cls(u.pct) + '">' + pct(u.pct) + '</b></div>' +
+      '<div class="row"><span>不再耕作</span><b>' + comma(u.loss) + '公頃</b></div>' +
+      '<div class="row"><span>其中蓋了建物</span><b>' + (u.loss ? Math.round(u.built / u.loss * 100) + '%' : '–') + '</b></div>' +
+      '<div class="row"><span>新判為農田</span><b>' + comma(u.gain) + '公頃</b></div>';
+    if (u.op19){
+      var p = (u.op24 - u.op19) / u.op19 * 100;
+      h += '<div class="sec">油棕（MPOB）2019→2024</div>' +
+        '<div class="row"><span>' + wan(u.op19) + '→' + wan(u.op24) + '公頃</span><b class="' + cls(p) + '">' + pct(p) + '</b></div>';
+    }
+    return h + '</div>';
+  }
+  function selectUnit(id, latlng, fly){
+    var u = UNITS[id]; if (!u) return;
+    map.closePopup();                       // fires popupclose first, so the new selection is not wiped
+    selId = id; selLayer.clearLayers();
+    var f = admFeat[id];
+    if (f){
+      L.geoJSON(f, {style:{color:'#ffffff', weight:5, opacity:.9, fill:false}, interactive:false}).addTo(selLayer);
+      L.geoJSON(f, {style:{color:'#111111', weight:2, fill:false}, interactive:false}).addTo(selLayer);
+    }
+    var b = L.latLngBounds([[u.bb[0], u.bb[1]], [u.bb[2], u.bb[3]]]);
+    var pop = L.popup({maxWidth:280, autoPanPaddingTopLeft:[12, 150], autoPanPaddingBottomRight:[12, 50]})
+      .setLatLng(latlng || b.getCenter()).setContent(popupHtml(u));
+    if (fly){ map.once('moveend', function(){ if (selId === id) pop.openOn(map); }); moveTo(b); }
+    else pop.openOn(map);
+    $$('table.rank tr').forEach(function(tr){ tr.classList.toggle('is-sel', tr.getAttribute('data-unit') === id); });
+  }
+  map.on('popupclose', function(){
+    selLayer.clearLayers(); selId = null;
+    $$('table.rank tr.is-sel').forEach(function(tr){ tr.classList.remove('is-sel'); });
+  });
+  fetch('data/farmland-adm1.json').then(function(r){ return r.json(); }).then(function(gj){
+    gj.features.forEach(function(f){ admFeat[f.properties.id] = f; });
+    admLayer = L.geoJSON(gj, {pane:'admPane', style:{stroke:false, fill:true, fillColor:'#000', fillOpacity:0},
+      onEachFeature:function(f, l){ l.on('click', function(e){ selectUnit(f.properties.id, e.latlng, false); }); }
+    }).addTo(map);
+  }).catch(function(){});
+
+  // ---------- hotspots ----------
+  var frameLayer = L.layerGroup().addTo(map);
+  var SPOTS = {
+    'tw-taichung':{tab:'tw', b:[[24.10,120.50],[24.30,120.80]], frame:true},
+    'tw-chiayi':{tab:'tw', b:[[23.457,120.283],[23.491,120.331]]},
+    'tw-hsinchu':{tab:'tw', b:[[24.70,120.95],[24.95,121.35]], frame:true},
+    'tw-tainan':{tab:'tw', b:[[22.95,120.15],[23.15,120.45]], frame:true},
+    'tw-kaohsiung':{tab:'tw', b:[[22.60,120.20],[22.80,120.45]], frame:true},
+    'my-kulai':{tab:'my', b:[[1.600,103.500],[1.635,103.541]], layers:{palm:true}},
+    'my-chuping':{tab:'my', b:[[6.40,100.12],[6.72,100.46]]},
+    'my-alorsetar':{tab:'my', b:[[6.03,100.28],[6.20,100.45]], frame:true},
+    'my-oilpalm':{tab:'my', b:[[1.25,100.3],[6.6,104.3]], layers:{mpob:true}}
+  };
+  function moveTo(b, instant){
+    var opts = {padding: isSmall() ? [20, 20] : [36, 36]};
+    if (reduce || instant || !map._loaded) map.fitBounds(b, opts);
+    else { opts.duration = 1.1; map.flyToBounds(b, opts); }
+  }
+  function drawFrame(b){
+    var r = L.latLngBounds(b);
+    L.rectangle(r, {color:'#ffffff', weight:4.5, opacity:.85, fill:false, interactive:false}).addTo(frameLayer);
+    L.rectangle(r, {color:'#111111', weight:1.8, dashArray:'6 5', fill:false, interactive:false}).addTo(frameLayer);
+  }
+  function openSpot(id, opts){
+    opts = opts || {};
+    var s = SPOTS[id]; if (!s) return;
+    if (s.tab !== curTab) setTab(s.tab, {noMove:true});
+    $$('.spot').forEach(function(btn){
+      var on = btn.getAttribute('data-spot') === id && !opts.close;
+      btn.setAttribute('aria-expanded', String(on));
+      var body = document.getElementById(btn.getAttribute('aria-controls'));
+      if (body) body.hidden = !on;
+    });
+    if (opts.close) return;
+    if (opts.reveal !== false){
+      var btn = $('.spot[data-spot="' + id + '"]');
+      if (btn) btn.scrollIntoView({block:'nearest', behavior: reduce ? 'auto' : 'smooth'});
+    }
+    frameLayer.clearLayers();
+    map.closePopup();
+    if (s.frame) drawFrame(s.b);
+    Object.keys(s.layers || {}).forEach(function(k){ setLayer(k, s.layers[k]); });
+    moveTo(L.latLngBounds(s.b), opts.instant);
+    setHash(id);
+  }
+
+  // ---------- tabs ----------
+  var curTab = 'tw';
+  function setTab(t, opts){
+    opts = opts || {};
+    curTab = t;
+    ['tw', 'my'].forEach(function(k){
+      var on = k === t, tab = document.getElementById('tab-' + k);
+      tab.setAttribute('aria-selected', String(on));
+      tab.tabIndex = on ? 0 : -1;
+      document.getElementById('pane-' + k).hidden = !on;
+    });
+    if (opts.noMove) return;
+    if (opts.reveal){
+      // bring the start of the pane into view, just under the sticky tabs (and the sticky map on phones)
+      var pane = document.getElementById('pane-' + t), th = $('.tabs').offsetHeight;
+      var how = reduce ? 'auto' : 'smooth';
+      if (isSmall()) window.scrollTo({top: pane.getBoundingClientRect().top + window.pageYOffset - $('.mapwrap').offsetHeight - th - 6, behavior:how});
+      else $('#panel').scrollTo({top: pane.offsetTop - th - 6, behavior:how});
+    }
+    frameLayer.clearLayers(); map.closePopup();
+    $$('.spot').forEach(function(btn){
+      btn.setAttribute('aria-expanded', 'false');
+      var body = document.getElementById(btn.getAttribute('aria-controls')); if (body) body.hidden = true;
+    });
+    moveTo(L.latLngBounds(VIEW[t]), opts.instant);
+    setHash(t);
+  }
+  function setHash(h){ try { history.replaceState(null, '', '#' + h); } catch (e) {} }
+
+  // ---------- tables ----------
+  function buildTables(){
+    var rows = D.units.tw.filter(function(u){ return u.c03 >= 1000; }).sort(function(a, b){ return a.pct - b.pct; });
+    $('#rank-tw tbody').innerHTML = totalRow('全臺', D.nat.tw) + rows.map(farmRow).join('');
+    renderMy('farm');
+  }
+  function totalRow(name, n){
+    var p = (n.c19 - n.c03) / n.c03 * 100;
+    return '<tr class="total"><th scope="row">' + name + '</th><td class="pct ' + cls(p) + '">' + pct(p) + '</td><td>' + comma(n.loss) + '</td><td>' + Math.round(n.built / n.loss * 100) + '%</td></tr>';
+  }
+  function farmRow(u){
+    return '<tr data-unit="' + u.id + '"><th scope="row"><button type="button" data-unit="' + u.id + '">' + u.zh + '</button></th>' +
+      '<td class="pct ' + cls(u.pct) + '">' + pct(u.pct) + '</td><td>' + comma(u.loss) + '</td><td>' + Math.round(u.built / u.loss * 100) + '%</td></tr>';
+  }
+  function renderMy(kind){
+    var t = $('#rank-my');
+    if (kind === 'farm'){
+      t.querySelector('caption').textContent = '2003→2019年，依農田減少比例排序';
+      t.querySelector('thead').innerHTML = '<tr><th scope="col">州</th><th scope="col">農田增減</th><th scope="col">不再耕作（公頃）</th><th scope="col">其中蓋了建物</th></tr>';
+      var rows = D.units.my.filter(function(u){ return u.c03 >= 1000; }).sort(function(a, b){ return a.pct - b.pct; });
+      t.querySelector('tbody').innerHTML = totalRow('全國', D.nat.my) + rows.map(farmRow).join('');
+      $('#rank-my-note').textContent = '點州名，地圖會移過去。只列2003年農田超過1,000公頃的州屬（不列吉隆坡、布城、納閩）。增加很多的州屬多半基數很小。';
+    } else {
+      t.querySelector('caption').textContent = 'MPOB油棕種植面積，2019→2024年，依減少比例排序';
+      t.querySelector('thead').innerHTML = '<tr><th scope="col">州</th><th scope="col">2019年（公頃）</th><th scope="col">2024年（公頃）</th><th scope="col">增減</th></tr>';
+      var r2 = D.units.my.filter(function(u){ return u.op19; }).sort(function(a, b){ return (a.op24 / a.op19) - (b.op24 / b.op19); });
+      var n = D.nat.my, pn = (n.op24 - n.op19) / n.op19 * 100;
+      t.querySelector('tbody').innerHTML = '<tr class="total"><th scope="row">全國</th><td>' + comma(n.op19) + '</td><td>' + comma(n.op24) + '</td><td class="pct ' + cls(pn) + '">' + pct(pn) + '</td></tr>' +
+        r2.map(function(u){
+          var p = (u.op24 - u.op19) / u.op19 * 100;
+          return '<tr data-unit="' + u.id + '"><th scope="row"><button type="button" data-unit="' + u.id + '">' + u.zh + '</button></th><td>' + comma(u.op19) + '</td><td>' + comma(u.op24) + '</td><td class="pct ' + cls(p) + '">' + pct(p) + '</td></tr>';
+        }).join('');
+      $('#rank-my-note').textContent = 'MPOB的表格沒有另列吉隆坡、布城和納閩。MPOB 2025年的柔佛數字回升到67.6萬公頃，統計有修訂。';
+    }
+    if (selId) $$('table.rank tr').forEach(function(tr){ tr.classList.toggle('is-sel', tr.getAttribute('data-unit') === selId); });
+  }
+
+  // ---------- wire the panel ----------
+  function wirePanel(m){
+    $$('.tabs button').forEach(function(b){
+      b.addEventListener('click', function(){ setTab(b.id.slice(4), {reveal:true}); });
+      b.addEventListener('keydown', function(e){
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft'){
+          var other = b.id === 'tab-tw' ? 'my' : 'tw';
+          setTab(other); document.getElementById('tab-' + other).focus(); e.preventDefault();
+        }
+      });
+    });
+    $$('[data-spot]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var id = b.getAttribute('data-spot');
+        if (b.classList.contains('spot') && b.getAttribute('aria-expanded') === 'true') openSpot(id, {close:true});
+        else openSpot(id);
+      });
+    });
+    $$('.seg button').forEach(function(b){
+      b.addEventListener('click', function(){
+        $$('.seg button').forEach(function(x){ x.setAttribute('aria-pressed', String(x === b)); });
+        renderMy(b.getAttribute('data-tbl'));
+        if (b.getAttribute('data-tbl') === 'palm') setLayer('mpob', true);
+      });
+    });
+    document.addEventListener('click', function(e){
+      var t = e.target.closest && e.target.closest('table.rank button[data-unit]');
+      if (t && m) selectUnit(t.getAttribute('data-unit'), null, true);
+    });
+    ['farm', 'palm', 'mpob', 'sites'].forEach(function(k){
+      var box = $('#lyr-' + k);
+      box.addEventListener('change', function(){ if (m) setLayer(k, box.checked); });
+    });
+    var rng = $('#ov-opacity');
+    rng.addEventListener('input', function(){
+      ovLevel = rng.value / 100; $('#ov-val').textContent = rng.value + '%';
+      if (m) applyOpacity();
+    });
+  }
+
+  buildTables();
+  wirePanel(map);
+  setLayer('farm', true); setLayer('palm', true); setLayer('sites', true);
+  applyOpacity();
+
+  function fromHash(first){
+    var h = decodeURIComponent((location.hash || '').slice(1));
+    if (SPOTS[h]){ openSpot(h, {reveal: !first, instant: first}); return true; }
+    if (h === 'tw' || h === 'my'){ setTab(h, {instant: first, reveal: !first}); return true; }
+    return false;
+  }
+  if (!fromHash(true)) map.fitBounds(L.latLngBounds(VIEW.tw), {padding: isSmall() ? [12, 12] : [30, 30]});
+  window.addEventListener('hashchange', function(){ fromHash(false); });
+  window.addEventListener('resize', function(){ map.invalidateSize(); });
+})();
+</script>
+</body>
+</html>

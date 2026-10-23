@@ -76,6 +76,20 @@
   .card .src{font-size:12.5px;color:var(--ink-soft);line-height:1.7;margin-top:14px;padding-top:12px;
     border-top:1px solid var(--line);font-weight:400}
   .card .mapnote{font-size:12.5px;color:var(--ink-soft);margin-top:6px}
+  .card .deeplink{margin:10px 0 2px}
+  .card .deeplink a{display:inline-block;font-size:13.5px;font-weight:500;line-height:1.5;color:var(--ink-strong);text-decoration:none;
+    border:1px solid var(--ink-strong);border-radius:2px;padding:5px 12px;background:var(--panel);transition:background .2s var(--ease),color .2s var(--ease)}
+  .card .deeplink a::after{content:"  →"}
+  .card .deeplink a:hover{background:var(--ink-strong);color:#fff}
+  .card .deeplink a:focus-visible{outline:2px solid var(--shu);outline-offset:2px}
+  .farm-cta{display:block;max-width:62ch;margin-top:22px;padding:13px 18px;border:1px solid var(--line);border-left:3px solid var(--midori);
+    border-radius:4px;background:var(--panel);text-decoration:none;color:var(--ink);transition:border-color .25s var(--ease)}
+  .farm-cta:hover{border-color:var(--ink-strong);border-left-color:var(--midori)}
+  .farm-cta:focus-visible{outline:2px solid var(--shu);outline-offset:2px}
+  .farm-cta .fc-k{display:block;font-family:var(--latin);font-size:12.5px;letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--accent);font-weight:600}
+  .farm-cta .fc-t{display:block;font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink-strong);line-height:1.5;margin-top:2px}
+  .farm-cta .fc-d{display:block;font-size:13.5px;font-weight:300;color:#5c5c5c;line-height:1.8;margin-top:2px}
+  .farm-cta .fc-d::after{content:"  →";color:var(--midori)}
   .num{font-family:var(--serif);font-weight:600;color:var(--ink-strong)}
   .card .src a, .refs a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--tint);text-underline-offset:3px}
   .card .src a:hover, .refs a:hover{color:var(--ink-strong);text-decoration-color:var(--ink-strong)}
@@ -258,6 +272,11 @@
     <span>2026年臺灣東南亞學會年會發表論文（初稿，請勿引用）</span>
   </div>
   <p class="lede">既有研究多半追問臺灣與馬來西亞的技術追趕<b>為何成敗不同</b>；本頁換一個問題：追趕所仰賴的<b>土地、水與電</b>，從哪些部門、地方與群體調度而來？地圖會跟著論文的三個階段移動，從1960年代的加工出口區，一路走到今天的電廠周邊與柔佛海峽。</p>
+  <a class="farm-cta" href="farmland.html">
+    <span class="fc-k">Farmland Atlas &middot; 延伸地圖</span>
+    <span class="fc-t">農地流失地圖：臺灣與馬來西亞</span>
+    <span class="fc-d">本頁〈從衛星看土地〉那段的疊圖，另有可以自由放大、用Google衛星影像對照的獨立版本</span>
+  </a>
   <p class="cue">往下捲動開始</p>
 </header>
 
@@ -481,7 +500,8 @@
         <p>加起來約<b>5.3萬公頃</b>，差不多兩個臺北市。其中約<b>1.1萬公頃</b>（約五分之一，大約一個新竹市）已經蓋成建物；其餘可能是休耕、改種果樹，或者還空著。</p>
         <p>同一段時間，也有約4.0萬公頃的地新判為農田（例如長期休耕後又恢復耕作），所以算下來淨減少約1.3萬公頃（−3.8%）。農業部的統計也在減少：全臺農耕土地從2012年約80.3萬公頃，降到2025年約77.5萬公頃（−3.4%）；不過兩者年份和算法都不同，只能比大方向。</p>
         <p class="fig-note">提醒：這套衛星地圖只算稻米、蔬菜這類草本作物，不算果園和茶園；顏色只代表土地用途改變了，不代表都是科學園區用掉的。</p>
-        <p class="mapnote">地圖可以放大看細節；右上角可以切換衛星影像，或暫時隱藏疊圖。想自己放大逛逛，可以打開<a href="farmland.html#tw">農地流失地圖</a>。</p>
+        <p class="mapnote">地圖可以放大看細節；右上角可以切換衛星影像，或暫時隱藏疊圖。</p>
+        <p class="deeplink"><a href="farmland.html#tw">打開農地流失地圖，自己放大看</a></p>
         <p class="src">資料來源：<a href="https://doi.org/10.1038/s43016-021-00429-z" target="_blank" rel="noopener">Potapov et al.（2022）</a>；<a href="https://doi.org/10.5281/zenodo.7254221" target="_blank" rel="noopener">Zanaga et al.（2022）</a>；<a href="https://agrstat.moa.gov.tw/moasdweb/book/Book.aspx" target="_blank" rel="noopener">農業部統計處（n.d.）</a>；本頁疊圖計算</p>
       </div>
     </section>
@@ -494,6 +514,7 @@
         <p>最大塊的紅色，落在中部科學園區（2003年設立）的<b>臺中園區</b>：依OpenStreetMap標示的園區範圍，約七成土地在2003年還是農田。北邊<b>后里園區</b>的七星基地也有約八成。</p>
         <p>園區外圍也散布著紅點：新蓋的道路、住宅或工廠；衛星分不出哪些是園區直接用掉的、哪些是園區帶動的開發。</p>
         <p class="mapnote">虛線框為園區範圍（取自OpenStreetMap）。</p>
+        <p class="deeplink"><a href="farmland.html#tw-taichung">在農地流失地圖上看臺中</a></p>
         <p class="src">資料來源：<a href="https://doi.org/10.1038/s43016-021-00429-z" target="_blank" rel="noopener">Potapov et al.（2022）</a>；<a href="https://doi.org/10.5281/zenodo.7254221" target="_blank" rel="noopener">Zanaga et al.（2022）</a>；<a href="https://topics.amcham.com.tw/2019/03/what-are-taiwans-science-parks/" target="_blank" rel="noopener">AmCham Taiwan（2019）</a>；本頁疊圖計算</p>
       </div>
     </section>
@@ -509,6 +530,7 @@
           <li><i class="k-line"></i><b>虛線框</b>：嘉義科學園區（2025年施工範圍與第二期）</li>
         </ul>
         <p class="fig-note">這套全球農田地圖只到2019年，之後的變化，這裡直接用衛星影像對照。</p>
+        <p class="deeplink"><a href="farmland.html#tw-chiayi">用Google衛星影像看嘉義科學園區</a></p>
         <p class="src">資料來源：<a href="https://www.taiwannews.com.tw/news/5117164" target="_blank" rel="noopener">Taiwan News（2024）</a>；<a href="https://www.trendforce.com/news/2024/06/12/news-tsmc-accelerates-cowos-advanced-packaging-capacity-construction-beginning-equipment-procurement-in-its-chiayi-plant/" target="_blank" rel="noopener">TrendForce（2024）</a>；<a href="https://www.taipeitimes.com/News/biz/archives/2024/06/19/2003819546" target="_blank" rel="noopener">Taipei Times（2024）</a>；<a href="https://www.taiwannews.com.tw/zh/news/5993263" target="_blank" rel="noopener">台灣英文新聞（2024）</a>；<a href="https://www.ctee.com.tw/news/20240618700036-439901" target="_blank" rel="noopener">工商時報（2024）</a>；<a href="https://www.thestar.com.my/tech/tech-news/2026/07/13/tsmc-to-add-2-advanced-chip-packaging-plants-in-chiayi-taiwan-minister-says" target="_blank" rel="noopener">Reuters（2026）</a>；<a href="https://udn.com/news/story/7240/9623437" target="_blank" rel="noopener">經濟日報（2026）</a>；<a href="https://doi.org/10.1038/s43016-021-00429-z" target="_blank" rel="noopener">Potapov et al.（2022）</a></p>
       </div>
     </section>
@@ -520,7 +542,8 @@
         <p>上面那套衛星農田地圖只算草本作物（在馬來西亞主要是稻田），不算油棕這種一種就是二十多年的樹，所以這裡改看馬來西亞棕油局（MPOB）的種植面積統計。</p>
         <p>2019到2024年，全國油棕種植面積少了約28.7萬公頃（−4.9%）。資料中心最集中的<b>柔佛</b>少了約9.9萬公頃（−13%），比整個新加坡還大；<b>雪蘭莪</b>少了21%，<b>霹靂</b>少了14%。</p>
         <p>不過，少掉的油棕園不一定都變成資料中心，也可能改種別的作物、蓋住宅或工業區；數字每年也有起伏，柔佛2025年就回升到約67.6萬公頃。種植園大企業SD Guthrie則表示，未來十年要拿出約1萬公頃（先從老舊橡膠園和低產油棕地著手），改作光電場和工業園區。</p>
-        <p class="mapnote">圓圈面積等於各州2019到2024年減少的油棕面積，位置為各州的概略中心。各州數字和柔佛的油棕分布，可以在<a href="farmland.html#my">農地流失地圖</a>上查。</p>
+        <p class="mapnote">圓圈面積等於各州2019到2024年減少的油棕面積，位置為各州的概略中心。</p>
+        <p class="deeplink"><a href="farmland.html#my-oilpalm">在農地流失地圖上看各州數字</a></p>
         <p class="src">資料來源：<a href="https://bepi.mpob.gov.my/images/area/2019/Area_summary.pdf" target="_blank" rel="noopener">MPOB（2020）</a>；<a href="https://bepi.mpob.gov.my/images/area/2024/Area_summary2024.pdf" target="_blank" rel="noopener">MPOB（2025）</a>；<a href="https://bepi.mpob.gov.my/images/area/2025/Area_summary2025.pdf" target="_blank" rel="noopener">MPOB（2026）</a>；<a href="https://prestasisawit.mpob.gov.my/en/palmnews/news/38712" target="_blank" rel="noopener">The Business Times（2025）</a></p>
       </div>
     </section>
@@ -546,7 +569,7 @@
         <p>同一個地方，2025年的衛星影像。2022年8月，YTL和新加坡的Sea集團在這裡為園區第一期動土，整個園區規劃達500MW；影像上已經看得到大片的機房屋頂和整好的空地。</p>
         <p>前面提到YTL Power與輝達合作、以「主權AI」為號召的運算設施，就設在這個園區。</p>
         <p>這是柔佛「油棕園變資料中心」的一個具體例子；全州有多少油棕園這樣轉用，還要一塊一塊比對才知道。</p>
-        <p class="mapnote">在<a href="farmland.html#my-kulai">農地流失地圖</a>上，可以用解析度更高的衛星影像對照。</p>
+        <p class="deeplink"><a href="farmland.html#my-kulai">用Google衛星影像看古來的園區</a></p>
         <p class="src">資料來源：<a href="https://www.mida.gov.my/media-release/ytl-data-centers-and-sea-break-ground-with-the-rm1-5bil-first-phase-of-the-500mw-ytl-green-data-center-park-in-johor/" target="_blank" rel="noopener">MIDA（2022）</a>；<a href="https://www.ytlpowerinternational.com/press-releases/ytl-to-advance-ai-development-in-malaysia-in-collaboration-with-nvidia/" target="_blank" rel="noopener">YTL Power International（2023）</a>；衛星影像：<a href="https://cloudless.eox.at" target="_blank" rel="noopener">EOxCloudless 2025</a></p>
       </div>
     </section>

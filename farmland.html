@@ -236,7 +236,7 @@
       <li><i class="k-palm"></i><b>萊姆綠</b>：2019年的油棕園（只畫柔佛）</li>
       <li><i class="k-line"></i><b>虛線</b>：園區範圍，或數字的計算範圍</li>
     </ul>
-    <p class="note">這套衛星地圖的「農田」只算稻米、蔬菜、甘蔗這類草本作物，不算果園、茶園和油棕。點地圖上任一縣市或州，可以看那裡的數字。</p>
+    <p class="note">這套衛星地圖的「農田」只算稻米、蔬菜、甘蔗這類草本作物，不算果園、茶園和油棕。點地圖上任一縣市或州，可以看那裡的數字；地圖右上角可以切換成1999年的衛星影像，對照農田原本的樣子。</p>
 
     <div class="tabs" role="tablist" aria-label="選擇國家">
       <button type="button" role="tab" id="tab-tw" aria-controls="pane-tw" aria-selected="true">臺灣</button>
@@ -389,6 +389,8 @@
       <p>像素面積依緯度換算（臺灣每個像素約0.07公頃，馬來西亞約0.08公頃），再依geoBoundaries的行政界（<a href="#ref-runfola2020">Runfola et al., 2020</a>）加總到縣市與州。臺灣範圍不含澎湖、金門、馬祖。地圖拉遠時，為了看得見，零星的顏色會畫得比實際濃。</p>
       <h3>油棕</h3>
       <p>2019年的油棕園來自<a href="#ref-descals2021">Descals et al. (2021)</a>，用Sentinel衛星判讀，解析度10公尺，包含大型農園和小農的成林油棕（樹冠還沒長滿的幼齡油棕不算）。本頁只畫柔佛。各州面積用MPOB的官方統計。</p>
+      <h3>1999年影像</h3>
+      <p>NASA的全球Landsat年度合成影像（<a href="#ref-gweld">GWELD</a>），由NASA全球影像瀏覽服務（GIBS）提供，解析度約30公尺，和這裡的農田資料一樣來自Landsat衛星。看得出農田、聚落和道路的大致樣子，看不清個別建物；部分地區有雲或接縫。</p>
       <h3>讀圖要注意</h3>
       <ul>
         <li>衛星判讀有誤差。原作者指出，「變化」的準確度比「某一年有沒有農田」低；在亞洲等小塊農地交錯的地方，這套地圖也會低估農田面積。</li>
@@ -408,6 +410,7 @@
         <li id="ref-mpob2020">Malaysian Palm Oil Board. (2020). Oil palm planted area as at December 2019 [Data table]. <a href="https://bepi.mpob.gov.my/images/area/2019/Area_summary.pdf" target="_blank" rel="noopener">https://bepi.mpob.gov.my/images/area/2019/Area_summary.pdf</a></li>
         <li id="ref-mpob2025">Malaysian Palm Oil Board. (2025). Oil palm planted area as at December 2024 [Data table]. <a href="https://bepi.mpob.gov.my/images/area/2024/Area_summary2024.pdf" target="_blank" rel="noopener">https://bepi.mpob.gov.my/images/area/2024/Area_summary2024.pdf</a></li>
         <li id="ref-mpob2026">Malaysian Palm Oil Board. (2026). Oil palm planted area as at December 2025 [Data table]. <a href="https://bepi.mpob.gov.my/images/area/2025/Area_summary2025.pdf" target="_blank" rel="noopener">https://bepi.mpob.gov.my/images/area/2025/Area_summary2025.pdf</a></li>
+        <li id="ref-gweld">NASA EOSDIS Land Processes Distributed Active Archive Center. (n.d.). NASA Global Web-Enabled Landsat Data Annual Global 30 m V031 [Data set]. <a href="https://doi.org/10.5067/MEaSUREs/GWELD/GWELDYR.031" target="_blank" rel="noopener">https://doi.org/10.5067/MEaSUREs/GWELD/GWELDYR.031</a>（圖磚由NASA GIBS提供）</li>
         <li id="ref-potapov2022">Potapov, P., Turubanova, S., Hansen, M. C., Tyukavina, A., Zalles, V., Khan, A., Song, X.-P., Pickens, A., Shen, Q., &amp; Cortez, J. (2022). Global maps of cropland extent and change show accelerated cropland expansion in the twenty-first century. Nature Food, 3(1), 19–28. <a href="https://doi.org/10.1038/s43016-021-00429-z" target="_blank" rel="noopener">https://doi.org/10.1038/s43016-021-00429-z</a></li>
         <li id="ref-reuters2026">Reuters. (2026, July 13). TSMC to add 2 advanced chip packaging plants in Chiayi, Taiwan minister says. The Star. <a href="https://www.thestar.com.my/tech/tech-news/2026/07/13/tsmc-to-add-2-advanced-chip-packaging-plants-in-chiayi-taiwan-minister-says" target="_blank" rel="noopener">https://www.thestar.com.my/tech/tech-news/2026/07/13/tsmc-to-add-2-advanced-chip-packaging-plants-in-chiayi-taiwan-minister-says</a></li>
         <li id="ref-runfola2020">Runfola, D., Anderson, A., Baier, H., Crittenden, M., Dowker, E., Fuhrig, S., Goodman, S., Grimsley, G., Layko, R., Melville, G., Mulder, M., Oberman, R., Panganiban, J., Peck, A., Seitz, L., Shea, S., Slevin, H., Youngerman, R., &amp; Hobbs, L. (2020). geoBoundaries: A global database of political administrative boundaries. PLOS ONE, 15(4), e0231866. <a href="https://doi.org/10.1371/journal.pone.0231866" target="_blank" rel="noopener">https://doi.org/10.1371/journal.pone.0231866</a></li>
@@ -485,13 +488,18 @@
     esriLabels: L.tileLayer(ESRI + 'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
       maxNativeZoom:17, maxZoom:19, zIndex:9, attribution:'標註：Esri'
     }),
+    // Landsat annual composite for 1999 (NASA GWELD v3.1, served by NASA GIBS); 30 m, so tiles stop at z12
+    y1999: L.tileLayer('https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/Landsat_WELD_CorrectedReflectance_TrueColor_Global_Annual/default/1999-12-01/GoogleMapsCompatible_Level12/{z}/{y}/{x}.jpg', {
+      maxNativeZoom:12, maxZoom:19, zIndex:1,
+      attribution:'1999年影像：<a href="https://doi.org/10.5067/MEaSUREs/GWELD/GWELDYR.031" target="_blank" rel="noopener">NASA GWELD</a>（Landsat），由<a href="https://gibs.earthdata.nasa.gov" target="_blank" rel="noopener">NASA GIBS</a>提供'
+    }),
     osm: L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom:19, zIndex:1, className:'tiles-osm',
       attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>貢獻者'
     })
   };
   var GOOGLE = {state: GOOGLE_MAPS_KEY ? 'loading' : 'off', layers:{}};
-  var baseMode = 'hyb', baseOn = [];
+  var baseMode = 'hyb', baseOn = [], told1999 = false;
 
   function googleLayer(type){
     if (!GOOGLE.layers[type]) GOOGLE.layers[type] = L.gridLayer.googleMutant({type:type, maxZoom:21, zIndex:1});
@@ -499,6 +507,7 @@
   }
   function layersFor(mode){
     if (mode === 'osm') return [BASE.osm];
+    if (mode === 'y1999') return [BASE.y1999, BASE.esriLabels];
     if (GOOGLE.state === 'ready') return [googleLayer(mode === 'hyb' ? 'hybrid' : 'satellite')];
     if (GOOGLE.state === 'loading') return [];
     return mode === 'hyb' ? [BASE.esriSat, BASE.esriLabels] : [BASE.esriSat];
@@ -510,7 +519,8 @@
     baseOn.forEach(function(l){ if (next.indexOf(l) < 0) map.removeLayer(l); });
     next.forEach(function(l){ if (!map.hasLayer(l)) l.addTo(map); });
     baseOn = next;
-    map.getContainer().classList.toggle('has-google', GOOGLE.state === 'ready' && mode !== 'osm');
+    map.getContainer().classList.toggle('has-google', GOOGLE.state === 'ready' && (mode === 'hyb' || mode === 'sat'));
+    if (mode === 'y1999' && !told1999){ told1999 = true; showMsg('1999年的Landsat衛星影像，解析度約30公尺，放大後會變模糊。', 5000); }
     $$('.base-switch button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.getAttribute('data-b') === mode)); });
   }
   var BaseSwitch = L.Control.extend({
@@ -521,6 +531,7 @@
       div.setAttribute('aria-label', '切換底圖');
       div.innerHTML = '<button type="button" data-b="hyb" aria-pressed="true">衛星＋地名</button>' +
                       '<button type="button" data-b="sat" aria-pressed="false">衛星</button>' +
+                      '<button type="button" data-b="y1999" aria-pressed="false" title="1999年的Landsat衛星影像，解析度約30公尺">1999年</button>' +
                       '<button type="button" data-b="osm" aria-pressed="false">街道</button>';
       L.DomEvent.disableClickPropagation(div);
       div.addEventListener('click', function(e){

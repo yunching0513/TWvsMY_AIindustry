@@ -173,6 +173,22 @@
   .base-switch button + button{border-left:1px solid var(--line)}
   .base-switch button[aria-pressed="true"]{background:var(--ink-strong);color:#fff}
   .base-switch button:focus-visible{outline:2px solid var(--shu);outline-offset:-2px}
+  .base-ctl{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+  .base-switch button[disabled]{color:var(--ink-faint);background:var(--panel-soft);cursor:not-allowed}
+  /* side-by-side comparison */
+  .cmp-line{position:absolute;top:0;bottom:0;width:3px;margin-left:-1.5px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.35);z-index:900;pointer-events:none}
+  .cmp-range{position:absolute;left:0;top:50%;width:100%;height:0;margin:0;padding:0;z-index:901;-webkit-appearance:none;appearance:none;
+    background:transparent;pointer-events:none;outline:none}
+  .cmp-range::-webkit-slider-runnable-track{height:0;background:transparent;border:0}
+  .cmp-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;pointer-events:auto;box-sizing:border-box;width:34px;height:34px;margin-top:-17px;
+    border-radius:50%;border:2px solid #111;background:#fff url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 6l-5 6 5 6M15 6l5 6-5 6'/%3E%3C/svg%3E") center/18px no-repeat;box-shadow:0 1px 6px rgba(0,0,0,.45);cursor:ew-resize}
+  .cmp-range::-moz-range-track{height:0;background:transparent;border:0}
+  .cmp-range::-moz-range-thumb{pointer-events:auto;box-sizing:border-box;width:34px;height:34px;border-radius:50%;border:2px solid #111;
+    background:#fff url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 6l-5 6 5 6M15 6l5 6-5 6'/%3E%3C/svg%3E") center/18px no-repeat;box-shadow:0 1px 6px rgba(0,0,0,.45);cursor:ew-resize}
+  .cmp-range:focus-visible::-webkit-slider-thumb{outline:3px solid var(--shu);outline-offset:2px}
+  .cmp-range:focus-visible::-moz-range-thumb{outline:3px solid var(--shu);outline-offset:2px}
+  .cmp-tag{position:absolute;top:12px;z-index:902;background:rgba(17,17,17,.82);color:#fff;font-size:12.5px;line-height:1.5;padding:3px 9px;
+    border-radius:2px;pointer-events:none;white-space:nowrap}
   .ov-switch{font-size:12.5px;line-height:1.4;padding:6px 11px;border:1px solid var(--ink-strong);border-radius:2px;background:var(--panel);
     color:var(--ink);cursor:pointer;letter-spacing:.03em;box-shadow:0 1px 4px rgba(0,0,0,.25)}
   .ov-switch[aria-pressed="true"]{background:var(--ink-strong);color:#fff}
@@ -236,7 +252,7 @@
       <li><i class="k-palm"></i><b>萊姆綠</b>：2019年的油棕園（只畫柔佛）</li>
       <li><i class="k-line"></i><b>虛線</b>：園區範圍，或數字的計算範圍</li>
     </ul>
-    <p class="note">這套衛星地圖的「農田」只算稻米、蔬菜、甘蔗這類草本作物，不算果園、茶園和油棕。點地圖上任一縣市或州，可以看那裡的數字。</p>
+    <p class="note">這套衛星地圖的「農田」只算稻米、蔬菜、甘蔗這類草本作物，不算果園、茶園和油棕。點地圖上任一縣市或州，可以看那裡的數字。地圖右上角可以切換1999、2014、2019年和現在的衛星影像，或按「左右比較」，拖曳中間的線對照前後。</p>
 
     <div class="tabs" role="tablist" aria-label="選擇國家">
       <button type="button" role="tab" id="tab-tw" aria-controls="pane-tw" aria-selected="true">臺灣</button>
@@ -262,6 +278,7 @@
           <div class="spot-body" id="sb-tw-taichung" hidden>
             <p>臺中市的農田16年間少了17%，不再是農田的部分約<b>四成</b>已經蓋了建物：在農田超過1萬公頃的縣市裡，這兩個比例都是最高。框內最大塊的紅色，落在中部科學園區的<b>臺中園區</b>（2003年設立）：依OpenStreetMap標示的範圍，約七成土地在2003年還是農田；北邊<b>后里園區</b>的七星基地約八成。</p>
             <ul class="nums"><li>框內2003年農田<b>1.23萬</b>公頃</li><li>不再是農田<b>4,075</b>公頃</li><li>已蓋建物<b>1,708</b>公頃</li></ul>
+            <button type="button" class="linkbtn" data-compare="y1999">左右比較：1999年和現在 →</button>
             <p class="src">資料：<a href="#ref-potapov2022">Potapov et al. (2022)</a>、<a href="#ref-zanaga2022">Zanaga et al. (2022)</a>，本頁計算；園區範圍：OpenStreetMap；<a href="#ref-amcham2019">AmCham Taiwan (2019)</a></p>
           </div>
         </li>
@@ -269,7 +286,8 @@
           <button type="button" class="spot" data-spot="tw-chiayi" aria-expanded="false" aria-controls="sb-tw-chiayi"><b>嘉義：AI晶片封裝廠</b><span>2019年還是農田的地方，現在蓋了工廠</span></button>
           <div class="spot-body" id="sb-tw-chiayi" hidden>
             <p>虛線框是OpenStreetMap標示的<b>嘉義科學園區</b>施工範圍。2019年衛星判讀，這塊地約<b>九成</b>還是農田。台積電在這裡興建CoWoS等先進封裝廠：2024年5月動工，一廠施工時挖到疑似遺址而停工，改先趕建二廠；到2026年7月，第一座廠已經量產。東側約90公頃的第二期也在同月動土。</p>
-            <p>這套農田地圖只到2019年，之後的變化請直接看底圖的衛星影像（各地拍攝時間不同）。</p>
+            <p>這套農田地圖只到2019年；之後的變化，可以用下面的按鈕把2019年和現在的影像並排比較。</p>
+            <button type="button" class="linkbtn" data-compare="y2019">左右比較：2019年和現在 →</button>
             <p class="src">資料：<a href="#ref-potapov2022">Potapov et al. (2022)</a>；<a href="#ref-tnews2024">Taiwan News (2024)</a>；<a href="#ref-trendforce2024">TrendForce (2024)</a>；<a href="#ref-taipeitimes2024">Taipei Times (2024)</a>；<a href="#ref-ctee2024">工商時報（2024）</a>；<a href="#ref-reuters2026">Reuters (2026)</a>；<a href="#ref-edn2026">經濟日報（2026）</a>；園區範圍：OpenStreetMap</p>
           </div>
         </li>
@@ -332,7 +350,8 @@
           <button type="button" class="spot" data-spot="my-kulai" aria-expanded="false" aria-controls="sb-my-kulai"><b>柔佛古來：油棕園變資料中心</b><span>2019年幾乎全是油棕</span></button>
           <div class="spot-body" id="sb-my-kulai" hidden>
             <p>虛線框是<b>YTL綠色資料中心園區</b>，約108公頃，在新山西北約30公里。2019年衛星判讀，框內幾乎全是大型油棕園（萊姆綠）。2022年8月，YTL和新加坡的Sea集團在這裡為園區第一期動土，整個園區規劃達500MW。</p>
-            <p>按地圖右上的「看底圖」，比較現在的樣子。</p>
+            <p>用下面的按鈕把2019年和現在的影像並排，拖曳中間的線比較。</p>
+            <button type="button" class="linkbtn" data-compare="y2019">左右比較：2019年和現在 →</button>
             <p class="src">資料：<a href="#ref-descals2021">Descals et al. (2021)</a>，本頁計算；<a href="#ref-mida2022">MIDA (2022)</a>；園區範圍：OpenStreetMap</p>
           </div>
         </li>
@@ -389,6 +408,10 @@
       <p>像素面積依緯度換算（臺灣每個像素約0.07公頃，馬來西亞約0.08公頃），再依geoBoundaries的行政界（<a href="#ref-runfola2020">Runfola et al., 2020</a>）加總到縣市與州。臺灣範圍不含澎湖、金門、馬祖。地圖拉遠時，為了看得見，零星的顏色會畫得比實際濃。</p>
       <h3>油棕</h3>
       <p>2019年的油棕園來自<a href="#ref-descals2021">Descals et al. (2021)</a>，用Sentinel衛星判讀，解析度10公尺，包含大型農園和小農的成林油棕（樹冠還沒長滿的幼齡油棕不算）。本頁只畫柔佛。各州面積用MPOB的官方統計。</p>
+      <h3>歷年衛星影像</h3>
+      <p><b>1999年</b>：NASA的全球Landsat年度合成影像（<a href="#ref-gweld">GWELD</a>），由NASA全球影像瀏覽服務（GIBS）提供，解析度約30公尺，和這裡的農田資料一樣來自Landsat衛星；看得出農田、聚落和道路的大致樣子，看不清個別建物。</p>
+      <p><b>2014年、2019年</b>：<a href="#ref-wayback">Esri World Imagery Wayback</a>的2014年2月與2019年12月版本。版本日期不是拍攝日期，有些地方的影像拍得更早。</p>
+      <p><b>現在</b>：Google的衛星影像（無法載入時改用Esri）。各年影像都可能有雲或拼接的痕跡。</p>
       <h3>讀圖要注意</h3>
       <ul>
         <li>衛星判讀有誤差。原作者指出，「變化」的準確度比「某一年有沒有農田」低；在亞洲等小塊農地交錯的地方，這套地圖也會低估農田面積。</li>
@@ -403,11 +426,13 @@
       <ol>
         <li id="ref-amcham2019">AmCham Taiwan. (2019, March). What are Taiwan's science parks? Taiwan Business TOPICS. <a href="https://topics.amcham.com.tw/2019/03/what-are-taiwans-science-parks/" target="_blank" rel="noopener">https://topics.amcham.com.tw/2019/03/what-are-taiwans-science-parks/</a></li>
         <li id="ref-descals2021">Descals, A., Wich, S., Meijaard, E., Gaveau, D. L. A., Peedell, S., &amp; Szantoi, Z. (2021). High-resolution global map of smallholder and industrial closed-canopy oil palm plantations. Earth System Science Data, 13(3), 1211–1231. <a href="https://doi.org/10.5194/essd-13-1211-2021" target="_blank" rel="noopener">https://doi.org/10.5194/essd-13-1211-2021</a>（圖資：<a href="https://doi.org/10.5281/zenodo.4473715" target="_blank" rel="noopener">https://doi.org/10.5281/zenodo.4473715</a>）</li>
+        <li id="ref-wayback">Esri. (n.d.). World Imagery Wayback [Web map service]. <a href="https://livingatlas.arcgis.com/wayback/" target="_blank" rel="noopener">https://livingatlas.arcgis.com/wayback/</a></li>
         <li id="ref-malaymail2021">Malay Mail. (2021, June 8). FGV Integrated Farming Holdings inks agreement to acquire MSM Perlis for RM175m [Bernama]. <a href="https://www.malaymail.com/news/money/2021/06/08/fgv-integrated-farming-holdings-inks-agreement-to-acquire-msm-perlis-for-rm/1980555" target="_blank" rel="noopener">https://www.malaymail.com/news/money/2021/06/08/fgv-integrated-farming-holdings-inks-agreement-to-acquire-msm-perlis-for-rm/1980555</a></li>
         <li id="ref-mida2022">Malaysian Investment Development Authority. (2022, August 25). YTL Data Centers and Sea break ground with the RM1.5bil first phase of the 500MW YTL Green Data Center Park in Johor [Media release]. <a href="https://www.mida.gov.my/media-release/ytl-data-centers-and-sea-break-ground-with-the-rm1-5bil-first-phase-of-the-500mw-ytl-green-data-center-park-in-johor/" target="_blank" rel="noopener">https://www.mida.gov.my/media-release/ytl-data-centers-and-sea-break-ground-with-the-rm1-5bil-first-phase-of-the-500mw-ytl-green-data-center-park-in-johor/</a></li>
         <li id="ref-mpob2020">Malaysian Palm Oil Board. (2020). Oil palm planted area as at December 2019 [Data table]. <a href="https://bepi.mpob.gov.my/images/area/2019/Area_summary.pdf" target="_blank" rel="noopener">https://bepi.mpob.gov.my/images/area/2019/Area_summary.pdf</a></li>
         <li id="ref-mpob2025">Malaysian Palm Oil Board. (2025). Oil palm planted area as at December 2024 [Data table]. <a href="https://bepi.mpob.gov.my/images/area/2024/Area_summary2024.pdf" target="_blank" rel="noopener">https://bepi.mpob.gov.my/images/area/2024/Area_summary2024.pdf</a></li>
         <li id="ref-mpob2026">Malaysian Palm Oil Board. (2026). Oil palm planted area as at December 2025 [Data table]. <a href="https://bepi.mpob.gov.my/images/area/2025/Area_summary2025.pdf" target="_blank" rel="noopener">https://bepi.mpob.gov.my/images/area/2025/Area_summary2025.pdf</a></li>
+        <li id="ref-gweld">NASA EOSDIS Land Processes Distributed Active Archive Center. (n.d.). NASA Global Web-Enabled Landsat Data Annual Global 30 m V031 [Data set]. <a href="https://doi.org/10.5067/MEaSUREs/GWELD/GWELDYR.031" target="_blank" rel="noopener">https://doi.org/10.5067/MEaSUREs/GWELD/GWELDYR.031</a>（圖磚由NASA GIBS提供）</li>
         <li id="ref-potapov2022">Potapov, P., Turubanova, S., Hansen, M. C., Tyukavina, A., Zalles, V., Khan, A., Song, X.-P., Pickens, A., Shen, Q., &amp; Cortez, J. (2022). Global maps of cropland extent and change show accelerated cropland expansion in the twenty-first century. Nature Food, 3(1), 19–28. <a href="https://doi.org/10.1038/s43016-021-00429-z" target="_blank" rel="noopener">https://doi.org/10.1038/s43016-021-00429-z</a></li>
         <li id="ref-reuters2026">Reuters. (2026, July 13). TSMC to add 2 advanced chip packaging plants in Chiayi, Taiwan minister says. The Star. <a href="https://www.thestar.com.my/tech/tech-news/2026/07/13/tsmc-to-add-2-advanced-chip-packaging-plants-in-chiayi-taiwan-minister-says" target="_blank" rel="noopener">https://www.thestar.com.my/tech/tech-news/2026/07/13/tsmc-to-add-2-advanced-chip-packaging-plants-in-chiayi-taiwan-minister-says</a></li>
         <li id="ref-runfola2020">Runfola, D., Anderson, A., Baier, H., Crittenden, M., Dowker, E., Fuhrig, S., Goodman, S., Grimsley, G., Layko, R., Melville, G., Mulder, M., Oberman, R., Panganiban, J., Peck, A., Seitz, L., Shea, S., Slevin, H., Youngerman, R., &amp; Hobbs, L. (2020). geoBoundaries: A global database of political administrative boundaries. PLOS ONE, 15(4), e0231866. <a href="https://doi.org/10.1371/journal.pone.0231866" target="_blank" rel="noopener">https://doi.org/10.1371/journal.pone.0231866</a></li>
@@ -475,62 +500,175 @@
   L.control.zoom({position:'topright', zoomInTitle:'放大', zoomOutTitle:'縮小'}).addTo(map);
   map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
 
-  // ---------- basemaps ----------
+  // ---------- basemaps: satellite images from several years, and a street map ----------
   var ESRI = 'https://server.arcgisonline.com/ArcGIS/rest/services/';
-  var BASE = {
-    esriSat: L.tileLayer(ESRI + 'World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      maxNativeZoom:17, maxZoom:19, zIndex:1,
-      attribution:'影像：Esri, Maxar, Earthstar Geographics, and the GIS User Community'
-    }),
-    esriLabels: L.tileLayer(ESRI + 'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
-      maxNativeZoom:17, maxZoom:19, zIndex:9, attribution:'標註：Esri'
-    }),
-    osm: L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom:19, zIndex:1, className:'tiles-osm',
-      attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>貢獻者'
-    })
+  var WAYBACK = 'https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/';
+  var A_WAYBACK = '<a href="https://livingatlas.arcgis.com/wayback/" target="_blank" rel="noopener">Esri World Imagery Wayback</a>';
+  // "now" is Google imagery when the key works, otherwise Esri World Imagery.
+  var IMAGES = {
+    // Landsat annual composite for 1999 (NASA GWELD v3.1, served by NASA GIBS); 30 m, so tiles stop at z12
+    y1999: {name:'1999年', make:function(){
+      return L.tileLayer('https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/Landsat_WELD_CorrectedReflectance_TrueColor_Global_Annual/default/1999-12-01/GoogleMapsCompatible_Level12/{z}/{y}/{x}.jpg', {
+        maxNativeZoom:12, maxZoom:19, zIndex:1,
+        attribution:'1999年影像：<a href="https://doi.org/10.5067/MEaSUREs/GWELD/GWELDYR.031" target="_blank" rel="noopener">NASA GWELD</a>（Landsat），由<a href="https://gibs.earthdata.nasa.gov" target="_blank" rel="noopener">NASA GIBS</a>提供'});
+    }},
+    // Esri Wayback releases: 10 = 2014-02-20, 4756 = 2019-12-12
+    y2014: {name:'2014年', make:function(){
+      return L.tileLayer(WAYBACK + '10/{z}/{y}/{x}', {maxNativeZoom:17, maxZoom:19, zIndex:1, attribution:'2014年2月版影像：' + A_WAYBACK});
+    }},
+    y2019: {name:'2019年', make:function(){
+      return L.tileLayer(WAYBACK + '4756/{z}/{y}/{x}', {maxNativeZoom:17, maxZoom:19, zIndex:1, attribution:'2019年12月版影像：' + A_WAYBACK});
+    }},
+    esri: {name:'現在', make:function(){
+      return L.tileLayer(ESRI + 'World_Imagery/MapServer/tile/{z}/{y}/{x}', {maxNativeZoom:17, maxZoom:19, zIndex:1,
+        attribution:'影像：Esri, Maxar, Earthstar Geographics, and the GIS User Community'});
+    }},
+    labels: {make:function(){
+      return L.tileLayer(ESRI + 'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {maxNativeZoom:17, maxZoom:19, zIndex:9, attribution:'標註：Esri'});
+    }}
   };
+  var OSM = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom:19, zIndex:1, className:'tiles-osm',
+    attribution:'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>貢獻者'
+  });
+  var made = {};
+  // One tile layer per image and side, so the two halves of the comparison can show at once.
+  function inst(key, side){
+    var k = key + side;
+    if (!made[k]) made[k] = IMAGES[key].make();
+    return made[k];
+  }
   var GOOGLE = {state: GOOGLE_MAPS_KEY ? 'loading' : 'off', layers:{}};
-  var baseMode = 'hyb', baseOn = [];
-
   function googleLayer(type){
     if (!GOOGLE.layers[type]) GOOGLE.layers[type] = L.gridLayer.googleMutant({type:type, maxZoom:21, zIndex:1});
     return GOOGLE.layers[type];
   }
-  function layersFor(mode){
-    if (mode === 'osm') return [BASE.osm];
-    if (GOOGLE.state === 'ready') return [googleLayer(mode === 'hyb' ? 'hybrid' : 'satellite')];
-    if (GOOGLE.state === 'loading') return [];
-    return mode === 'hyb' ? [BASE.esriSat, BASE.esriLabels] : [BASE.esriSat];
+
+  // year: the image shown; in comparison mode the left half shows "left" and the right half "now".
+  var view = {year:'now', labels:true, compare:false, left:'y1999', split:0.5};
+  var baseOn = [], leftSet = [], rightSet = [], told1999 = false;
+  function layersFor(key, side){
+    if (key === 'osm') return [OSM];
+    var out;
+    if (key === 'now'){
+      if (GOOGLE.state === 'ready') return [googleLayer(view.labels ? 'hybrid' : 'satellite')];
+      if (GOOGLE.state === 'loading') return [];
+      out = [inst('esri', side)];
+    } else {
+      out = [inst(key, side)];
+    }
+    if (view.labels) out.push(inst('labels', side));
+    return out;
   }
-  function setBase(mode, force){
-    if (mode === baseMode && !force) return;
-    baseMode = mode;
-    var next = layersFor(mode);
-    baseOn.forEach(function(l){ if (next.indexOf(l) < 0) map.removeLayer(l); });
-    next.forEach(function(l){ if (!map.hasLayer(l)) l.addTo(map); });
-    baseOn = next;
-    map.getContainer().classList.toggle('has-google', GOOGLE.state === 'ready' && mode !== 'osm');
-    $$('.base-switch button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.getAttribute('data-b') === mode)); });
+  function render(){
+    leftSet = view.compare ? layersFor(view.left, 'L') : [];
+    rightSet = view.compare ? layersFor('now', 'R') : [];
+    var want = view.compare ? leftSet.concat(rightSet) : layersFor(view.year, 'R');
+    baseOn.forEach(function(l){
+      if (want.indexOf(l) < 0) map.removeLayer(l);
+      var c = l.getContainer && l.getContainer(); if (c) c.style.clip = '';
+    });
+    want.forEach(function(l){ if (!map.hasLayer(l)) l.addTo(map); });
+    baseOn = want;
+    map.getContainer().classList.toggle('has-google', want.some(function(l){ return l === GOOGLE.layers.hybrid || l === GOOGLE.layers.satellite; }));
+    var shown = view.compare ? view.left : view.year;
+    if (shown === 'y1999' && !told1999){ told1999 = true; showMsg('1999年的Landsat衛星影像，解析度約30公尺，放大後會變模糊。', 5000); }
+    compareUI();
+    updateClip();
+    syncButtons();
   }
+
+  // ---------- side-by-side comparison: a line the reader drags across the map ----------
+  var THUMB = 34;                       // px, matches .cmp-range thumb in the CSS
+  var cmp = {dragging:false};
+  (function(){
+    var c = map.getContainer();
+    cmp.line = L.DomUtil.create('div', 'cmp-line', c);
+    cmp.tagL = L.DomUtil.create('div', 'cmp-tag', c);
+    cmp.tagR = L.DomUtil.create('div', 'cmp-tag', c);
+    cmp.range = L.DomUtil.create('input', 'cmp-range', c);
+    cmp.range.type = 'range'; cmp.range.min = '0'; cmp.range.max = '1'; cmp.range.step = 'any'; cmp.range.value = '0.5';
+    cmp.range.setAttribute('aria-label', '左右比較的分隔線：左邊是較早的影像，右邊是現在');
+    [cmp.line, cmp.tagL, cmp.tagR, cmp.range].forEach(function(el){ el.hidden = true; });
+    L.DomEvent.disableClickPropagation(cmp.range);
+    L.DomEvent.disableScrollPropagation(cmp.range);
+    L.DomEvent.on(cmp.range, 'mousedown touchstart pointerdown', function(){ cmp.dragging = true; map.dragging.disable(); });
+    L.DomEvent.on(document, 'mouseup touchend pointerup', function(){ if (cmp.dragging){ cmp.dragging = false; map.dragging.enable(); } });
+    L.DomEvent.on(cmp.range, 'input change', function(){ view.split = +cmp.range.value; updateClip(); });
+  })();
+  function dividerX(){ var w = map.getSize().x; return Math.round(THUMB / 2 + view.split * (w - THUMB)); }
+  function compareUI(){
+    [cmp.line, cmp.tagL, cmp.tagR, cmp.range].forEach(function(el){ el.hidden = !view.compare; });
+    if (view.compare){
+      cmp.tagL.textContent = '◀ ' + IMAGES[view.left].name;
+      cmp.tagR.textContent = '現在 ▶';
+    }
+  }
+  function updateClip(){
+    if (!view.compare) return;
+    var size = map.getSize(), nw = map.containerPointToLayerPoint([0, 0]), se = map.containerPointToLayerPoint(size);
+    var x = dividerX(), cx = nw.x + x;
+    var cl = 'rect(' + [nw.y, cx, se.y, nw.x].join('px,') + 'px)';
+    var cr = 'rect(' + [nw.y, se.x, se.y, cx].join('px,') + 'px)';
+    leftSet.forEach(function(l){ var c = l.getContainer && l.getContainer(); if (c) c.style.clip = cl; });
+    rightSet.forEach(function(l){ var c = l.getContainer && l.getContainer(); if (c) c.style.clip = cr; });
+    cmp.line.style.left = x + 'px';
+    cmp.tagL.style.left = Math.max(6, x - 10 - cmp.tagL.offsetWidth) + 'px';
+    cmp.tagR.style.left = Math.min(size.x - cmp.tagR.offsetWidth - 6, x + 10) + 'px';
+  }
+  map.on('move zoomend resize', updateClip);
+  function setCompare(on, left){
+    if (on && !view.compare){ cmp.ovBefore = ovHidden; setOvHidden(true); }
+    if (!on && view.compare && cmp.ovBefore !== undefined) setOvHidden(cmp.ovBefore);
+    view.compare = on;
+    if (on){
+      view.left = left || (IMAGES[view.year] && view.year !== 'esri' ? view.year : view.left);
+      view.split = 0.5; cmp.range.value = '0.5';
+    }
+    render();
+  }
+
+  // ---------- basemap controls ----------
+  var YEAR_BTNS = [['y1999', '1999'], ['y2014', '2014'], ['y2019', '2019'], ['now', '現在'], ['osm', '街道']];
   var BaseSwitch = L.Control.extend({
     options:{position:'topright'},
     onAdd:function(){
-      var div = L.DomUtil.create('div', 'base-switch');
-      div.setAttribute('role', 'group');
-      div.setAttribute('aria-label', '切換底圖');
-      div.innerHTML = '<button type="button" data-b="hyb" aria-pressed="true">衛星＋地名</button>' +
-                      '<button type="button" data-b="sat" aria-pressed="false">衛星</button>' +
-                      '<button type="button" data-b="osm" aria-pressed="false">街道</button>';
-      L.DomEvent.disableClickPropagation(div);
-      div.addEventListener('click', function(e){
-        var b = e.target && e.target.getAttribute ? e.target.getAttribute('data-b') : null;
-        if (b) setBase(b);
+      var wrap = L.DomUtil.create('div', 'base-ctl');
+      var g = L.DomUtil.create('div', 'base-switch', wrap);
+      g.setAttribute('role', 'group');
+      g.setAttribute('aria-label', '底圖：衛星影像的年份或街道圖');
+      g.innerHTML = YEAR_BTNS.map(function(b){
+        return '<button type="button" data-y="' + b[0] + '" aria-pressed="false">' + b[1] + '</button>';
+      }).join('');
+      var t = L.DomUtil.create('div', 'base-switch', wrap);
+      t.setAttribute('role', 'group');
+      t.setAttribute('aria-label', '地名與左右比較');
+      t.innerHTML = '<button type="button" data-t="labels" aria-pressed="true">地名</button>' +
+                    '<button type="button" data-t="compare" aria-pressed="false" title="左邊看較早的影像，右邊看現在">左右比較</button>';
+      L.DomEvent.disableClickPropagation(wrap);
+      wrap.addEventListener('click', function(e){
+        var b = e.target.closest ? e.target.closest('button') : null;
+        if (!b || b.disabled) return;
+        var y = b.getAttribute('data-y'), tg = b.getAttribute('data-t');
+        if (y){ if (view.compare) view.left = y; else view.year = y; render(); }
+        else if (tg === 'labels'){ view.labels = !view.labels; render(); }
+        else if (tg === 'compare') setCompare(!view.compare);
       });
-      return div;
+      return wrap;
     }
   });
   map.addControl(new BaseSwitch());
+  function syncButtons(){
+    var sel = view.compare ? view.left : view.year;
+    $$('.base-ctl [data-y]').forEach(function(b){
+      var y = b.getAttribute('data-y'), off = view.compare && (y === 'now' || y === 'osm');
+      b.disabled = off;
+      b.setAttribute('aria-pressed', String(!off && y === sel));
+    });
+    $$('.base-ctl [data-t]').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-t') === 'labels' ? view.labels : view.compare));
+    });
+  }
 
   function showMsg(txt, ms){
     var el = $('#mapMsg'); el.textContent = txt; el.hidden = false;
@@ -542,7 +680,7 @@
     GOOGLE.state = 'failed';
     Object.keys(GOOGLE.layers).forEach(function(k){ if (map.hasLayer(GOOGLE.layers[k])) map.removeLayer(GOOGLE.layers[k]); });
     baseOn = baseOn.filter(function(l){ return map.hasLayer(l); });
-    setBase(baseMode, true);
+    render();
     if (was === 'ready' || was === 'loading') showMsg('Google衛星影像無法載入，暫時改用Esri衛星影像。');
   }
   function loadScript(src, ok, bad){
@@ -554,7 +692,7 @@
     window.__farmlandGoogleReady = function(){
       var go = function(){
         if (GOOGLE.state !== 'loading' || !L.gridLayer.googleMutant) return;
-        GOOGLE.state = 'ready'; setBase(baseMode, true);
+        GOOGLE.state = 'ready'; render();
       };
       if (window.google && google.maps && google.maps.importLibrary) google.maps.importLibrary('maps').then(go, googleFail);
       else go();
@@ -565,7 +703,7 @@
     }, googleFail);
     setTimeout(function(){ if (GOOGLE.state === 'loading') googleFail(); }, 10000);
   }
-  setBase('hyb', true);
+  render();
 
   // ---------- overlay tiles (pre-rendered; deeper zooms reuse the nearest ancestor tile) ----------
   function parseIdx(str){
@@ -633,10 +771,14 @@
       bounds:L.latLngBounds([[johor[0], johor[1]], [johor[2], johor[3]]]), zIndex:6,
       attribution:'油棕：<a href="https://doi.org/10.5194/essd-13-1211-2021" target="_blank" rel="noopener">Descals et al. 2021</a>'})
   };
-  var ovLevel = 0.85, ovHidden = false;
+  var ovLevel = 0.85, ovHidden = false, ovBtn = null;
   function applyOpacity(){
     var v = ovHidden ? 0 : ovLevel;
     OV.farmTW.setOpacity(v); OV.farmMY.setOpacity(v); OV.palm.setOpacity(v * 0.75);
+  }
+  function setOvHidden(h){
+    ovHidden = h; applyOpacity();
+    if (ovBtn){ ovBtn.setAttribute('aria-pressed', String(h)); ovBtn.textContent = h ? '顯示疊圖' : '看底圖'; }
   }
   function setLayer(k, on){
     var list = k === 'farm' ? [OV.farmTW, OV.farmMY] : (k === 'palm' ? [OV.palm] : (k === 'mpob' ? [mpobLayer] : [sitesLayer]));
@@ -720,11 +862,8 @@
       b.type = 'button'; b.textContent = '看底圖'; b.setAttribute('aria-pressed', 'false');
       b.title = '暫時隱藏疊圖，只看衛星影像';
       L.DomEvent.disableClickPropagation(b);
-      b.addEventListener('click', function(){
-        ovHidden = !ovHidden; applyOpacity();
-        b.setAttribute('aria-pressed', String(ovHidden));
-        b.textContent = ovHidden ? '顯示疊圖' : '看底圖';
-      });
+      b.addEventListener('click', function(){ setOvHidden(!ovHidden); });
+      ovBtn = b;
       return b;
     }
   });
@@ -906,6 +1045,9 @@
         if (b.classList.contains('spot') && b.getAttribute('aria-expanded') === 'true') openSpot(id, {close:true});
         else openSpot(id);
       });
+    });
+    $$('[data-compare]').forEach(function(b){
+      b.addEventListener('click', function(){ if (m) setCompare(true, b.getAttribute('data-compare')); });
     });
     $$('.seg button').forEach(function(b){
       b.addEventListener('click', function(){

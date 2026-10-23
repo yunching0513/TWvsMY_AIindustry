@@ -411,7 +411,7 @@
       <h3>歷年衛星影像</h3>
       <p><b>1999年</b>：NASA的全球Landsat年度合成影像（<a href="#ref-gweld">GWELD</a>），由NASA全球影像瀏覽服務（GIBS）提供，解析度約30公尺，和這裡的農田資料一樣來自Landsat衛星；看得出農田、聚落和道路的大致樣子，看不清個別建物。</p>
       <p><b>2014年、2019年</b>：<a href="#ref-wayback">Esri World Imagery Wayback</a>的2014年2月與2019年12月版本。版本日期不是拍攝日期，有些地方的影像拍得更早。</p>
-      <p><b>現在</b>：Google的衛星影像（無法載入時改用Esri）。各年影像都可能有雲或拼接的痕跡。</p>
+      <p><b>現在</b>：Google的衛星影像（無法載入時改用Esri），已隱藏商家、景點和交通圖示；按「地名」可以連地名一起關掉。<b>淺色</b>：Google的淺色地圖，只留行政區與地名，適合看疊圖或截圖（無法載入時改用OpenStreetMap）。各年影像都可能有雲或拼接的痕跡。</p>
       <h3>讀圖要注意</h3>
       <ul>
         <li>衛星判讀有誤差。原作者指出，「變化」的準確度比「某一年有沒有農田」低；在亞洲等小塊農地交錯的地方，這套地圖也會低估農田面積。</li>
@@ -539,16 +539,44 @@
     return made[k];
   }
   var GOOGLE = {state: GOOGLE_MAPS_KEY ? 'loading' : 'off', layers:{}};
-  function googleLayer(type){
-    if (!GOOGLE.layers[type]) GOOGLE.layers[type] = L.gridLayer.googleMutant({type:type, maxZoom:21, zIndex:1});
-    return GOOGLE.layers[type];
+  // Clean Google basemaps: no shops, sights, transit or road-number icons; place names stay unless 地名 is off.
+  var G_QUIET = [
+    {featureType:'poi', stylers:[{visibility:'off'}]},
+    {featureType:'transit', stylers:[{visibility:'off'}]},
+    {featureType:'road', elementType:'labels.icon', stylers:[{visibility:'off'}]},
+    {featureType:'road.local', elementType:'labels', stylers:[{visibility:'off'}]}
+  ];
+  var G_LIGHT = G_QUIET.concat([
+    {elementType:'geometry', stylers:[{color:'#f1f1ee'}]},
+    {elementType:'labels.text.fill', stylers:[{color:'#5f5f5f'}]},
+    {elementType:'labels.text.stroke', stylers:[{color:'#f7f7f5'}]},
+    {featureType:'landscape.natural', elementType:'geometry', stylers:[{color:'#e9eae5'}]},
+    {featureType:'road', elementType:'geometry', stylers:[{color:'#ffffff'}]},
+    {featureType:'road', elementType:'labels', stylers:[{visibility:'off'}]},
+    {featureType:'road.highway', elementType:'geometry', stylers:[{color:'#dededa'}]},
+    {featureType:'water', elementType:'geometry', stylers:[{color:'#cdd7dd'}]},
+    {featureType:'water', elementType:'labels', stylers:[{visibility:'off'}]},
+    {featureType:'administrative', elementType:'geometry.stroke', stylers:[{color:'#a9a9a9'}]}
+  ]);
+  var G_NOLABELS = [{elementType:'labels', stylers:[{visibility:'off'}]}];
+  function googleLayer(kind){
+    if (!GOOGLE.layers[kind]){
+      var o = {hybrid:{type:'hybrid', styles:G_QUIET}, satellite:{type:'satellite'},
+               light:{type:'roadmap', styles:G_LIGHT}, lightBare:{type:'roadmap', styles:G_LIGHT.concat(G_NOLABELS)}}[kind];
+      GOOGLE.layers[kind] = L.gridLayer.googleMutant({type:o.type, styles:o.styles, maxZoom:21, zIndex:1});
+    }
+    return GOOGLE.layers[kind];
   }
 
   // year: the image shown; in comparison mode the left half shows "left" and the right half "now".
   var view = {year:'now', labels:true, compare:false, left:'y1999', split:0.5};
   var baseOn = [], leftSet = [], rightSet = [], told1999 = false;
   function layersFor(key, side){
-    if (key === 'osm') return [OSM];
+    if (key === 'light'){
+      if (GOOGLE.state === 'ready') return [googleLayer(view.labels ? 'light' : 'lightBare')];
+      if (GOOGLE.state === 'loading') return [];
+      return [OSM];
+    }
     var out;
     if (key === 'now'){
       if (GOOGLE.state === 'ready') return [googleLayer(view.labels ? 'hybrid' : 'satellite')];
@@ -570,7 +598,9 @@
     });
     want.forEach(function(l){ if (!map.hasLayer(l)) l.addTo(map); });
     baseOn = want;
-    map.getContainer().classList.toggle('has-google', want.some(function(l){ return l === GOOGLE.layers.hybrid || l === GOOGLE.layers.satellite; }));
+    map.getContainer().classList.toggle('has-google', want.some(function(l){
+      return Object.keys(GOOGLE.layers).some(function(k){ return GOOGLE.layers[k] === l; });
+    }));
     var shown = view.compare ? view.left : view.year;
     if (shown === 'y1999' && !told1999){ told1999 = true; showMsg('1999年的Landsat衛星影像，解析度約30公尺，放大後會變模糊。', 5000); }
     compareUI();
@@ -629,7 +659,7 @@
   }
 
   // ---------- basemap controls ----------
-  var YEAR_BTNS = [['y1999', '1999'], ['y2014', '2014'], ['y2019', '2019'], ['now', '現在'], ['osm', '街道']];
+  var YEAR_BTNS = [['y1999', '1999'], ['y2014', '2014'], ['y2019', '2019'], ['now', '現在'], ['light', '淺色']];
   var BaseSwitch = L.Control.extend({
     options:{position:'topright'},
     onAdd:function(){
@@ -638,7 +668,8 @@
       g.setAttribute('role', 'group');
       g.setAttribute('aria-label', '底圖：衛星影像的年份或街道圖');
       g.innerHTML = YEAR_BTNS.map(function(b){
-        return '<button type="button" data-y="' + b[0] + '" aria-pressed="false">' + b[1] + '</button>';
+        var tip = b[0] === 'light' ? ' title="乾淨的淺色底圖，適合看疊圖或截圖"' : '';
+        return '<button type="button" data-y="' + b[0] + '" aria-pressed="false"' + tip + '>' + b[1] + '</button>';
       }).join('');
       var t = L.DomUtil.create('div', 'base-switch', wrap);
       t.setAttribute('role', 'group');
@@ -661,7 +692,7 @@
   function syncButtons(){
     var sel = view.compare ? view.left : view.year;
     $$('.base-ctl [data-y]').forEach(function(b){
-      var y = b.getAttribute('data-y'), off = view.compare && (y === 'now' || y === 'osm');
+      var y = b.getAttribute('data-y'), off = view.compare && (y === 'now' || y === 'light');
       b.disabled = off;
       b.setAttribute('aria-pressed', String(!off && y === sel));
     });

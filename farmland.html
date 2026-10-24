@@ -7,12 +7,15 @@
 <meta name="description" content="把衛星判讀的農田變化疊在衛星影像上：2003到2019年，臺灣與馬來西亞有哪些農田消失、哪些已經蓋了房子，以及柔佛油棕園變成資料中心的例子。">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
 <meta property="og:site_name" content="台馬半導體與AI產業分工地圖">
 <meta property="og:title" content="農地流失地圖｜臺灣與馬來西亞">
 <meta property="og:description" content="2003到2019年，臺灣與馬來西亞有哪些農田消失、哪些已經蓋了房子：放大衛星影像自己看。">
 <meta property="og:url" content="https://yunching0513.github.io/TWvsMY_AIindustry/farmland.html">
 <meta property="og:image" content="https://yunching0513.github.io/TWvsMY_AIindustry/og-farmland.jpg">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" hreflang="zh-Hant" href="https://yunching0513.github.io/TWvsMY_AIindustry/farmland.html">
+<link rel="alternate" hreflang="en" href="https://yunching0513.github.io/TWvsMY_AIindustry/farmland-en.html">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cormorant:wght@500;600&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@500;600;700&display=swap');
@@ -46,6 +49,11 @@
   /* ---- header ---- */
   .back{display:inline-block;font-size:13px;color:var(--ink-soft);text-decoration:none;border-bottom:1px solid var(--tint);margin-bottom:22px}
   .back:hover{color:var(--ink-strong);border-bottom-color:var(--ink-strong)}
+  .topbar{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin-bottom:22px}
+  .topbar .back{margin-bottom:0}
+  .lang{flex:none;font-size:12.5px;line-height:1.6;color:var(--ink);text-decoration:none;border:1px solid var(--ink-strong);border-radius:2px;padding:1px 9px;letter-spacing:.04em}
+  .lang:hover{background:var(--ink-strong);color:#fff}
+  .lang:focus-visible{outline:2px solid var(--shu);outline-offset:1px}
   .eyebrow{font-family:var(--latin);font-size:14px;letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--accent);
     font-weight:600;display:flex;align-items:center;gap:12px;margin-bottom:10px}
   .eyebrow::before{content:"";width:30px;height:1px;background:var(--accent)}
@@ -240,7 +248,7 @@
 <body>
 <div class="app">
   <aside class="panel" id="panel">
-    <a class="back" href="story.html">← 回到故事地圖〈晶片島與雲端飛地〉</a>
+    <div class="topbar"><a class="back" href="story.html">← 回到故事地圖〈晶片島與雲端飛地〉</a><a class="lang" href="farmland-en.html" hreflang="en" lang="en">English</a></div>
     <div class="eyebrow">Farmland Atlas · 2003–2019</div>
     <h1>農地流失地圖</h1>
     <p class="sub">臺灣與馬來西亞：哪些農田消失了，哪些蓋了房子</p>
@@ -475,6 +483,11 @@
   function isSmall(){ return !!(window.matchMedia && window.matchMedia('(max-width: 900px)').matches); }
   function $(s, r){ return (r || document).querySelector(s); }
   function $$(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  // the language switch keeps the open tab or place
+  function syncLang(){
+    $$('a.lang').forEach(function(a){ a.href = a.getAttribute('href').split('#')[0] + location.hash; });
+  }
+  syncLang();
 
   // ---------- number formatting ----------
   function comma(n){ return Math.round(n).toLocaleString('en-US'); }
@@ -1020,7 +1033,7 @@
     moveTo(L.latLngBounds(VIEW[t]), opts.instant);
     setHash(t);
   }
-  function setHash(h){ try { history.replaceState(null, '', '#' + h); } catch (e) {} }
+  function setHash(h){ try { history.replaceState(null, '', '#' + h); } catch (e) {} syncLang(); }
 
   // ---------- tables ----------
   function buildTables(){

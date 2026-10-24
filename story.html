@@ -7,12 +7,15 @@
 <meta name="description" content="跟著論文的三個階段，從加工出口區走到電廠周邊與柔佛海峽：誰為臺灣與馬來西亞的國家技術空間付出代價？">
 <meta property="og:type" content="article">
 <meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
 <meta property="og:site_name" content="台馬半導體與AI產業分工地圖">
 <meta property="og:title" content="晶片島與雲端飛地｜故事地圖">
 <meta property="og:description" content="跟著論文的三個階段，從加工出口區走到電廠周邊與柔佛海峽：誰為臺灣與馬來西亞的國家技術空間付出代價？">
 <meta property="og:url" content="https://yunching0513.github.io/TWvsMY_AIindustry/story.html">
 <meta property="og:image" content="https://yunching0513.github.io/TWvsMY_AIindustry/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" hreflang="zh-Hant" href="https://yunching0513.github.io/TWvsMY_AIindustry/story.html">
+<link rel="alternate" hreflang="en" href="https://yunching0513.github.io/TWvsMY_AIindustry/story-en.html">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&family=DM+Sans:wght@400;500&display=swap');
@@ -39,6 +42,11 @@
   .back{display:inline-block;font-size:13.5px;color:var(--ink-soft);text-decoration:none;margin-bottom:28px;
     border-bottom:1px solid var(--tint)}
   .back:hover{color:var(--ink-strong);border-bottom-color:var(--ink-strong)}
+  .topbar{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin-bottom:28px}
+  .topbar .back{margin-bottom:0}
+  .lang{flex:none;font-size:12.5px;line-height:1.6;color:var(--ink);text-decoration:none;border:1px solid var(--ink-strong);border-radius:2px;padding:1px 9px;letter-spacing:.04em}
+  .lang:hover{background:var(--ink-strong);color:#fff}
+  .lang:focus-visible{outline:2px solid var(--shu);outline-offset:1px}
   .eyebrow{font-family:var(--latin);font-size:15px;letter-spacing:var(--ls-wide);text-transform:uppercase;
     color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:15px;font-weight:600}
   .eyebrow::before{content:"";width:38px;height:1px;background:var(--accent)}
@@ -253,7 +261,7 @@
     .story{display:block}
     .mapcol{position:sticky;top:0;height:46vh;z-index:3;border-bottom:1px solid var(--ink-strong)}
     .steps{padding:0 14px 20vh;z-index:1}
-    .step{min-height:72vh;align-items:flex-start;padding:4vh 0}
+    .step{min-height:72vh;align-items:flex-start;padding:4vh 0;scroll-margin-top:44vh}
     .step:first-child{min-height:60vh}
     .card{opacity:.92}
     .map-chip{font-size:12px;top:10px;left:10px}
@@ -268,7 +276,7 @@
 <body>
 
 <header class="hero">
-  <a class="back" href="index.html">← 回到〈台馬半導體與AI產業分工地圖〉</a>
+  <div class="topbar"><a class="back" href="index.html">← 回到〈台馬半導體與AI產業分工地圖〉</a><a class="lang" href="story-en.html" hreflang="en" lang="en">English</a></div>
   <div class="eyebrow">Story Map &middot; ACSEAST 2026</div>
   <h1>晶片島與雲端飛地</h1>
   <p class="sub">誰為臺馬的國家技術空間付出代價？</p>
@@ -299,7 +307,7 @@
 
   <div class="steps">
 
-    <section class="step" data-step="0">
+    <section class="step" data-step="0" id="s0">
       <div class="card">
         <div class="kicker"><span class="zh">導言</span></div>
         <h2>從「追趕成敗」到「誰付出代價」</h2>
@@ -308,7 +316,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="1">
+    <section class="step" data-step="1" id="s1">
       <div class="card">
         <div class="kicker"><span class="zh tw">場景一｜臺灣，2021</span></div>
         <h2>停灌逾<span class="num">7.4萬</span>公頃</h2>
@@ -320,7 +328,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="2">
+    <section class="step" data-step="2" id="s2">
       <div class="card">
         <div class="kicker"><span class="zh my">場景二｜柔佛，2025</span></div>
         <h2>停批理由：用水量約<span class="num">200</span>倍</h2>
@@ -331,7 +339,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="3">
+    <section class="step" data-step="3" id="s3">
       <div class="card">
         <div class="kicker"><span class="zh">核心概念</span></div>
         <h2>國家技術空間：一塊被三重綁定的土地</h2>
@@ -357,7 +365,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="4">
+    <section class="step" data-step="4" id="s4">
       <div class="card">
         <div class="kicker"><span class="zh">前史｜1960–1980年代</span></div>
         <h2>飛地是兩國共同的起點</h2>
@@ -368,7 +376,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="5">
+    <section class="step" data-step="5" id="s5">
       <div class="card">
         <div class="kicker"><span class="zh tw">前史至第一階段｜臺灣</span></div>
         <h2>先成立園區，再購置土地</h2>
@@ -379,7 +387,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="6">
+    <section class="step" data-step="6" id="s6">
       <div class="card">
         <div class="kicker"><span class="zh my">第一階段｜馬來西亞</span></div>
         <h2>建在油棕園上的賽城</h2>
@@ -390,7 +398,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="7">
+    <section class="step" data-step="7" id="s7">
       <div class="card">
         <div class="kicker"><span class="zh tw">第二階段｜2000–2010年代</span></div>
         <h2>水首次與土地並列為公共爭議</h2>
@@ -402,7 +410,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="8">
+    <section class="step" data-step="8" id="s8">
       <div class="card">
         <div class="kicker"><span class="zh tw">第三階段｜臺灣</span></div>
         <h2>水移向工業，電綁定電廠</h2>
@@ -413,7 +421,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="9">
+    <section class="step" data-step="9" id="s9">
       <div class="card">
         <div class="kicker"><span class="zh my">第三階段｜馬來西亞</span></div>
         <h2>新加坡的需求越過柔佛海峽</h2>
@@ -425,7 +433,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="10">
+    <section class="step" data-step="10" id="s10">
       <div class="card">
         <div class="kicker"><span class="zh my">路徑分歧</span></div>
         <h2>招商在聯邦，水與土地的代價在州</h2>
@@ -443,7 +451,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="11">
+    <section class="step" data-step="11" id="s11">
       <div class="card">
         <div class="kicker"><span class="zh tw">從衛星看土地｜臺灣</span></div>
         <h2>16年間，<span class="num">5.3萬</span>公頃農田從衛星上消失</h2>
@@ -462,7 +470,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="12">
+    <section class="step" data-step="12" id="s12">
       <div class="card">
         <div class="kicker"><span class="zh tw">從衛星看土地｜臺中</span></div>
         <h2>臺中少了<span class="num">17%</span>，紅色集中在中科一帶</h2>
@@ -476,7 +484,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="13">
+    <section class="step" data-step="13" id="s13">
       <div class="card">
         <div class="kicker"><span class="zh tw">從衛星看土地｜嘉義，2025</span></div>
         <h2>AI晶片的封裝廠，蓋在農田上</h2>
@@ -493,7 +501,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="14">
+    <section class="step" data-step="14" id="s14">
       <div class="card">
         <div class="kicker"><span class="zh my">從衛星看土地｜馬來西亞</span></div>
         <h2>柔佛的油棕園，五年少了<span class="num">13%</span></h2>
@@ -506,7 +514,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="15">
+    <section class="step" data-step="15" id="s15">
       <div class="card">
         <div class="kicker"><span class="zh my">從衛星看土地｜柔佛古來，2018</span></div>
         <h2>2018年：這裡還是一整片油棕園</h2>
@@ -520,7 +528,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="16">
+    <section class="step" data-step="16" id="s16">
       <div class="card">
         <div class="kicker"><span class="zh my">從衛星看土地｜柔佛古來，2025</span></div>
         <h2>2025年：油棕園變成了資料中心</h2>
@@ -533,7 +541,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="17">
+    <section class="step" data-step="17" id="s17">
       <div class="card">
         <div class="kicker"><span class="zh my">預留容量</span></div>
         <h2>電網依資本的未來需求先行擴建</h2>
@@ -552,7 +560,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="18">
+    <section class="step" data-step="18" id="s18">
       <div class="card">
         <div class="kicker"><span class="zh">2024年後的管制轉折</span></div>
         <h2>再內部化，還是空間重置？</h2>
@@ -582,7 +590,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="19">
+    <section class="step" data-step="19" id="s19">
       <div class="card">
         <div class="kicker"><span class="zh">範圍條件</span></div>
         <h2>先說清楚：規模與地理</h2>
@@ -602,7 +610,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="20">
+    <section class="step" data-step="20" id="s20">
       <div class="card">
         <div class="kicker"><span class="zh">結語</span></div>
         <h2>國家能力的另一面</h2>
@@ -771,10 +779,27 @@
   var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  var langLinks = Array.prototype.slice.call(document.querySelectorAll('a.lang'));
   function markActive(i){
     steps.forEach(function(s, k){ s.classList.toggle('is-active', k === i); });
     chip.textContent = STEPS[i].chip;
+    // the language switch opens the same section in the other language
+    langLinks.forEach(function(a){ a.href = a.getAttribute('href').split('#')[0] + (i > 0 ? '#s' + i : ''); });
   }
+  // A link to a section (#s12) lands on it again once fonts and images have settled, unless the reader has moved on.
+  (function(){
+    var m = /^#s(\d+)$/.exec(location.hash || ''), moved = false;
+    if (!m) return;
+    ['wheel', 'touchstart', 'keydown'].forEach(function(ev){ window.addEventListener(ev, function(){ moved = true; }, {once:true, passive:true}); });
+    function go(){
+      var el = document.getElementById('s' + m[1]), html = document.documentElement;
+      if (!el || moved) return;
+      var prev = html.style.scrollBehavior;
+      html.style.scrollBehavior = 'auto'; el.scrollIntoView({block:'start'}); html.style.scrollBehavior = prev;
+    }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(go);
+    if (document.readyState === 'complete') go(); else window.addEventListener('load', go);
+  })();
 
   if (typeof L === 'undefined'){
     document.getElementById('map').innerHTML =

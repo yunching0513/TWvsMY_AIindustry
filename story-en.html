@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chip Island and Cloud Enclave | Story Map</title>
+<meta name="description" content="Follow the paper’s three phases from export processing zones to power plants and the Johor Strait: who pays for Taiwan’s and Malaysia’s national technological spaces?">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_TW">
+<meta property="og:site_name" content="Semiconductor and AI Industry Map of Taiwan and Malaysia">
+<meta property="og:title" content="Chip Island and Cloud Enclave | Story Map">
+<meta property="og:description" content="Follow the paper’s three phases from export processing zones to power plants and the Johor Strait: who pays for Taiwan’s and Malaysia’s national technological spaces?">
+<meta property="og:url" content="https://yunching0513.github.io/TWvsMY_AIindustry/story-en.html">
+<meta property="og:image" content="https://yunching0513.github.io/TWvsMY_AIindustry/og-story-en.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" hreflang="zh-Hant" href="https://yunching0513.github.io/TWvsMY_AIindustry/story.html">
+<link rel="alternate" hreflang="en" href="https://yunching0513.github.io/TWvsMY_AIindustry/story-en.html">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600&family=Source+Sans+3:wght@300;400;500;600;700&family=Source+Serif+4:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&family=DM+Sans:wght@400;500&display=swap');
+  :root{
+    --bg:#F2F2F2;--panel:#FFFFFF;--panel-soft:#F1F1F1;
+    --ink:#333333;--ink-strong:#000000;--ink-soft:#5c5c5c;--ink-faint:#9a9a9a;
+    --line:#dcdcdc;--tint:#D6DCE0;--accent:#b8a98c;
+    --shu:#A6392C;--shu-soft:#E7D3CC;--midori:#2E6B4E;--midori-soft:#D6DFD7;--slate:#5a6b8c;
+    --ls-wide:0.16em;--ls:0.08em;--ease:cubic-bezier(.22,.61,.36,1);
+    --gothic:"Source Sans 3","Noto Sans TC",sans-serif;
+    --body:"DM Sans","Noto Sans TC",sans-serif;
+    --latin:"Cormorant","Source Serif 4","Noto Serif TC",serif;
+    --serif:"Source Serif 4","Noto Serif TC",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+  body{background:var(--bg);color:var(--ink);font-family:var(--gothic);line-height:1.8;
+    -webkit-font-smoothing:antialiased}
+  a{color:inherit}
+
+  /* ---- hero ---- */
+  .hero{max-width:1180px;margin:0 auto;padding:clamp(28px,5vw,68px) clamp(18px,3vw,44px) clamp(28px,4vw,48px)}
+  .back{display:inline-block;font-size:13.5px;color:var(--ink-soft);text-decoration:none;margin-bottom:28px;
+    border-bottom:1px solid var(--tint)}
+  .back:hover{color:var(--ink-strong);border-bottom-color:var(--ink-strong)}
+  .topbar{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin-bottom:28px}
+  .topbar .back{margin-bottom:0}
+  .lang{flex:none;font-size:12.5px;line-height:1.6;color:var(--ink);text-decoration:none;border:1px solid var(--ink-strong);border-radius:2px;padding:1px 9px;letter-spacing:.04em}
+  .lang:hover{background:var(--ink-strong);color:#fff}
+  .lang:focus-visible{outline:2px solid var(--shu);outline-offset:1px}
+  .eyebrow{font-family:var(--latin);font-size:15px;letter-spacing:var(--ls-wide);text-transform:uppercase;
+    color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:15px;font-weight:600}
+  .eyebrow::before{content:"";width:38px;height:1px;background:var(--accent)}
+  .hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(34px,6vw,62px);line-height:1.25;
+    color:var(--ink-strong);letter-spacing:.02em}
+  .hero .sub{font-family:var(--serif);font-size:clamp(18px,2.4vw,24px);font-weight:500;color:var(--ink);
+    margin-top:12px;line-height:1.6}
+  .hero .meta{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px 22px;font-size:13.5px;color:var(--ink-soft)}
+  .hero .meta b{color:var(--ink-strong);font-weight:500}
+  .hero .lede{max-width:62ch;margin-top:24px;font-size:15px;font-weight:300;color:#4a4a4a;line-height:2}
+  .hero .lede b{font-weight:500;color:var(--ink)}
+  .cue{margin-top:26px;font-size:13px;letter-spacing:var(--ls);color:var(--ink-soft)}
+  .cue::after{content:"  ↓";color:var(--shu)}
+
+  /* ---- story layout ---- */
+  .story{position:relative;display:grid;grid-template-columns:minmax(360px,520px) 1fr;
+    border-top:1px solid var(--line)}
+  .mapcol{grid-column:2;grid-row:1;position:sticky;top:0;height:100vh;align-self:start}
+  #map{position:absolute;inset:0;background:var(--panel-soft)}
+  .steps{grid-column:1;grid-row:1;padding:0 clamp(16px,2.6vw,36px) 30vh;position:relative;z-index:2}
+  .step{min-height:88vh;display:flex;align-items:center;padding:6vh 0}
+  .step:first-child{min-height:70vh}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:4px;
+    padding:clamp(22px,2.6vw,32px);width:100%;transition:border-color .3s var(--ease),opacity .3s var(--ease);
+    opacity:.5}
+  .step.is-active .card{opacity:1;border-color:var(--ink-strong)}
+  .kicker{font-family:var(--latin);font-size:14px;letter-spacing:var(--ls-wide);text-transform:uppercase;
+    color:var(--ink-soft);font-weight:600;margin-bottom:6px}
+  .kicker .zh{font-family:var(--gothic);letter-spacing:.06em;text-transform:none;font-weight:500}
+  .kicker .tw{color:var(--shu)}.kicker .my{color:var(--midori)}
+  .card h2{font-family:var(--serif);font-size:clamp(22px,2.4vw,28px);font-weight:600;color:var(--ink-strong);
+    line-height:1.45;margin-bottom:14px}
+  .card p{font-size:15px;font-weight:300;color:#3f3f3f;line-height:2;margin-bottom:12px}
+  .card p b{font-weight:500;color:var(--ink-strong)}
+  .card .src{font-size:12.5px;color:var(--ink-soft);line-height:1.7;margin-top:14px;padding-top:12px;
+    border-top:1px solid var(--line);font-weight:400}
+  .card .mapnote{font-size:12.5px;color:var(--ink-soft);margin-top:6px}
+  .card .deeplink{margin:10px 0 2px}
+  .card .deeplink a{display:inline-block;font-size:13.5px;font-weight:500;line-height:1.5;color:var(--ink-strong);text-decoration:none;
+    border:1px solid var(--ink-strong);border-radius:2px;padding:5px 12px;background:var(--panel);transition:background .2s var(--ease),color .2s var(--ease)}
+  .card .deeplink a::after{content:"  →"}
+  .card .deeplink a:hover{background:var(--ink-strong);color:#fff}
+  .card .deeplink a:focus-visible{outline:2px solid var(--shu);outline-offset:2px}
+  .farm-cta{display:block;max-width:62ch;margin-top:22px;padding:13px 18px;border:1px solid var(--line);border-left:3px solid var(--midori);
+    border-radius:4px;background:var(--panel);text-decoration:none;color:var(--ink);transition:border-color .25s var(--ease)}
+  .farm-cta:hover{border-color:var(--ink-strong);border-left-color:var(--midori)}
+  .farm-cta:focus-visible{outline:2px solid var(--shu);outline-offset:2px}
+  .farm-cta .fc-k{display:block;font-family:var(--latin);font-size:12.5px;letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--accent);font-weight:600}
+  .farm-cta .fc-t{display:block;font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink-strong);line-height:1.5;margin-top:2px}
+  .farm-cta .fc-d{display:block;font-size:13.5px;font-weight:300;color:#5c5c5c;line-height:1.8;margin-top:2px}
+  .farm-cta .fc-d::after{content:"  →";color:var(--midori)}
+  .num{font-family:var(--serif);font-weight:600;color:var(--ink-strong)}
+  .card .src a, .refs a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--tint);text-underline-offset:3px}
+  .card .src a:hover, .refs a:hover{color:var(--ink-strong);text-decoration-color:var(--ink-strong)}
+  .card .src a[href^="#"]{text-decoration-style:dotted}
+  .photo{margin:4px 0 16px}
+  .photo .ph{display:block;background:var(--panel-soft)}
+  .photo img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;background:var(--panel-soft)}
+  .photo.two .ph-row{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .photo.two img{aspect-ratio:4/3}
+  .photo figcaption{font-size:12.5px;color:#4a4a4a;line-height:1.7;margin-top:8px}
+  .photo .credit{display:block;color:var(--ink-soft);font-size:11.5px;margin-top:2px}
+  .photo .credit a{color:var(--ink-soft);text-decoration:underline;text-decoration-color:var(--tint);text-underline-offset:2px}
+  /* before/after satellite pairs: date tag on each image */
+  .photo.sat a.ph{position:relative}
+  .photo.two.sat img{aspect-ratio:11/10}
+  .photo.sat .when{position:absolute;left:6px;top:6px;background:rgba(17,17,17,.82);color:#fff;font-size:12px;font-weight:500;
+    line-height:1.4;padding:2px 7px;border-radius:2px;pointer-events:none;letter-spacing:.02em}
+  .refs{padding:8px 0 28px}
+  .refs h2{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--ink-strong);margin-bottom:6px}
+  .refs-note{font-size:13px;color:var(--ink-soft);margin-bottom:12px}
+  .refs ol{padding-left:22px}
+  .refs li{font-size:13px;color:#4a4a4a;line-height:1.8;margin-bottom:6px;overflow-wrap:anywhere;scroll-margin-top:20px}
+  .refs li:target{background:#fff6d6}
+
+  /* map overlays */
+  .map-chip{position:absolute;top:14px;left:14px;z-index:1000;background:var(--panel);
+    border:1px solid var(--ink-strong);border-radius:2px;padding:6px 12px;font-size:13px;
+    font-weight:500;color:var(--ink-strong);letter-spacing:.04em;pointer-events:none;max-width:70%}
+  .map-legend{position:absolute;left:14px;top:54px;z-index:1000;max-width:calc(100% - 28px);background:rgba(255,255,255,.92);
+    border:1px solid var(--line);border-radius:2px;padding:8px 12px;font-size:12px;color:var(--ink-soft);
+    display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;pointer-events:none}
+  .map-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px;
+    box-shadow:0 0 0 1px rgba(0,0,0,.12)}
+  .leaflet-container{font-family:var(--gothic)}
+  .tiles-osm{filter:grayscale(.35) brightness(1.04) contrast(.92) saturate(.7)}
+  #map.is-sat{background:#1d2226}
+  #map.is-sat .leaflet-tooltip.lbl.line{background:rgba(255,255,255,.88);padding:2px 7px;border-radius:2px;text-shadow:none}
+  .base-switch{display:flex;background:var(--panel);border:1px solid var(--ink-strong);border-radius:2px;overflow:hidden;
+    box-shadow:0 1px 4px rgba(0,0,0,.18)}
+  .base-switch button{font-family:var(--gothic);font-size:12.5px;line-height:1.4;padding:6px 11px;border:0;margin:0;
+    background:var(--panel);color:var(--ink);cursor:pointer;letter-spacing:.04em}
+  .base-switch button + button{border-left:1px solid var(--line)}
+  .base-switch button[aria-pressed="true"]{background:var(--ink-strong);color:#fff}
+  .base-switch button:focus-visible{outline:2px solid var(--shu);outline-offset:-2px}
+  .leaflet-control-zoom a{background:var(--panel)!important;color:var(--ink)!important;border-color:var(--line)!important}
+  .leaflet-control-attribution{background:rgba(255,255,255,.82)!important;color:var(--ink-soft)!important}
+  .leaflet-control-attribution a{color:var(--midori)!important}
+  .leaflet-tooltip.lbl{background:var(--panel);border:1px solid var(--line);border-radius:2px;box-shadow:0 2px 8px rgba(0,0,0,.08);
+    padding:5px 9px;font-family:var(--gothic);font-size:13px;line-height:1.5;color:var(--ink);white-space:nowrap}
+  .leaflet-tooltip.lbl b{font-weight:500;color:var(--ink-strong);display:block}
+  .leaflet-tooltip.lbl span{color:var(--ink-soft);font-size:12px;display:block}
+  .leaflet-tooltip.lbl.line{background:transparent;border:none;box-shadow:none;font-weight:500;color:var(--ink-strong);
+    text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 3px #fff}
+  .leaflet-tooltip.lbl::before{display:none}
+  .map-fallback{padding:40px;color:var(--ink-soft);font-weight:300;text-align:center}
+  .map-legend i.sq{border-radius:2px}
+  .map-legend i.ln{width:18px;height:0;border-radius:0;border-top:2px dashed #111;box-shadow:none;background:none;vertical-align:3px}
+  .farm-tiles img{image-rendering:pixelated}
+  .ov-switch{font-family:var(--gothic);font-size:12.5px;line-height:1.4;padding:6px 11px;border:1px solid var(--ink-strong);
+    border-radius:2px;background:var(--panel);color:var(--ink);cursor:pointer;letter-spacing:.04em;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+  .ov-switch:focus-visible{outline:2px solid var(--shu);outline-offset:1px}
+  .ov-switch[hidden]{display:none}
+
+  /* ---- satellite chapters: colour key inside the card ---- */
+  .key{list-style:none;margin:6px 0 14px;padding:10px 12px;background:var(--panel-soft);border-radius:2px}
+  .key li{font-size:13px;font-weight:300;color:#3f3f3f;line-height:1.7;padding:2px 0 2px 24px;position:relative}
+  .key li b{font-weight:500;color:var(--ink-strong)}
+  .key i{position:absolute;left:0;top:8px;width:15px;height:11px;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+  .key i.k-f{background:#b6dd96}
+  .key i.k-o{background:#f5a623}
+  .key i.k-r{background:#e3242b}
+  .key i.k-p{background:#e2ea8a}
+  .key i.k-line{height:0;top:13px;border-top:2px dashed #111;box-shadow:none;background:none;border-radius:0}
+
+  /* ---- figures inside cards ---- */
+  .concept{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0 14px}
+  .c-in{border:1px solid var(--ink-strong);padding:10px 6px;text-align:center;font-family:var(--serif);font-weight:600;
+    color:var(--ink-strong);font-size:16px;line-height:1.4}
+  .c-in small{display:block;font-family:var(--gothic);font-weight:300;font-size:12px;color:var(--ink-soft);margin-top:4px}
+  .c-arrow{grid-column:1/-1;text-align:center;color:var(--ink-soft);line-height:1;font-size:18px}
+  .c-out{grid-column:1/-1;background:var(--ink-strong);color:#fff;text-align:center;padding:12px;
+    font-family:var(--serif);font-weight:600;font-size:17px;letter-spacing:.06em}
+  .rail{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:14px 0 6px}
+  .rail li{background:var(--panel-soft);padding:8px 8px 10px;font-size:12px;line-height:1.5;color:var(--ink-soft)}
+  .rail li b{display:block;font-weight:500;color:var(--ink-strong);font-size:13px}
+  .rail li em{display:block;font-style:normal;margin-top:6px;padding-top:6px;border-top:1px solid var(--line);
+    color:var(--ink);font-weight:500}
+  .rail li.now{background:var(--ink-strong);color:#d9d9d9}
+  .rail li.now b,.rail li.now em{color:#fff}
+  .rail li.now em{border-top-color:#555}
+  .layers{list-style:none;margin:6px 0 4px}
+  .layers li{font-size:14px;font-weight:300;color:#3f3f3f;line-height:1.8;padding:8px 0;border-top:1px solid var(--line)}
+  .layers li b{font-weight:500;color:var(--ink-strong);margin-right:6px}
+
+  .bars{margin:16px 0 8px}
+  .bars-h{font-size:12.5px;font-weight:500;color:var(--ink-soft);margin:12px 0 6px}
+  .bars-h:first-child{margin-top:0}
+  .bar-row{display:grid;grid-template-columns:118px 1fr 64px;align-items:center;gap:10px;margin-bottom:6px}
+  .bar-row .bl{font-size:12.5px;color:var(--ink);line-height:1.35}
+  .bar-row .bt{height:16px;position:relative}
+  .bar-row .bt i{position:absolute;left:0;top:0;bottom:0;display:block}
+  .bar-row .bt i.o{border:1.5px solid var(--ink-strong);background:transparent}
+  .bar-row .bt i.g{background:var(--midori-soft);border:1.5px solid var(--ink-strong)}
+  .bar-row .bt i.k{background:var(--midori)}
+  .bar-row .bv{font-family:var(--serif);font-size:13.5px;font-weight:600;color:var(--ink-strong);text-align:right}
+  .bar-row .bv.hl{color:var(--midori)}
+  .fig-note{font-size:12px!important;color:var(--ink-soft)!important;margin:4px 0 12px!important;line-height:1.6!important}
+
+  .sq{display:flex;align-items:flex-start;gap:22px;margin:14px 0 6px;flex-wrap:wrap}
+  .sq-col{display:flex;flex-direction:column;gap:6px;min-width:120px;flex:1}
+  .sq-frame{height:120px;display:flex;align-items:flex-end}
+  .sq-box.tw{background:var(--shu)}
+  .sq-box.my{background:var(--midori)}
+  .sq-box.water{background:var(--tint);box-shadow:inset 0 0 0 1.5px var(--ink-strong)}
+  .sq-col b{font-family:var(--serif);font-weight:600;color:var(--ink-strong);font-size:15px;line-height:1.4}
+  .sq-col span{font-size:12px;color:var(--ink-soft);line-height:1.5}
+  .sq-cap{font-size:13px;font-weight:500;color:var(--ink-strong);margin-top:12px}
+
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0 8px}
+  .twocol h3{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink-strong);margin-bottom:6px;
+    padding-bottom:6px;border-bottom:1.5px solid var(--ink-strong)}
+  .twocol ul{list-style:none}
+  .twocol li{font-size:13px;font-weight:300;color:#3f3f3f;line-height:1.7;padding:6px 0 6px 14px;position:relative;
+    border-bottom:1px solid var(--line)}
+  .twocol li::before{content:"";position:absolute;left:0;top:13px;width:7px;height:7px;border-radius:50%}
+  .twocol li.tw::before{background:var(--shu)}
+  .twocol li.my::before{background:var(--midori)}
+  .twocol li.tbd{color:var(--ink-soft)}
+  .twocol li.tbd::before{background:transparent;box-shadow:inset 0 0 0 1.5px var(--ink-faint)}
+  .verdict{background:var(--panel-soft);border-left:2px solid var(--ink-strong);padding:14px 16px;border-radius:2px;
+    margin:14px 0 4px;font-size:14.5px;font-weight:500;color:var(--ink-strong);line-height:1.8}
+  .fedfig{display:grid;grid-template-columns:70px 1fr;gap:8px 10px;margin:14px 0 8px;font-size:13px;line-height:1.6}
+  .fedfig .lv{font-family:var(--serif);font-weight:600;color:var(--ink-strong);font-size:15px;padding-top:6px}
+  .fedfig .lv.st{color:var(--midori)}
+  .fedfig .items{display:flex;flex-wrap:wrap;gap:6px}
+  .fedfig .items span{border:1px solid var(--ink-strong);padding:4px 8px;border-radius:2px;background:var(--panel)}
+  .fedfig .items.st span{border-color:var(--midori);background:var(--midori-soft)}
+  .fedfig .down{grid-column:2;font-size:12.5px;color:var(--ink-soft)}
+  .fedfig .down::before{content:"↓ ";color:var(--midori)}
+  .quote{font-family:var(--serif);font-size:clamp(19px,2.2vw,23px);font-weight:600;line-height:1.7;color:var(--ink-strong);
+    margin:16px 0 14px;padding:16px 0;border-top:1.5px solid var(--ink-strong);border-bottom:1px solid var(--line)}
+  .next{list-style:none;margin:6px 0}
+  .next li{font-size:13.5px;font-weight:300;color:#3f3f3f;line-height:1.8;padding:6px 0 6px 18px;position:relative}
+  .next li::before{content:"→";position:absolute;left:0;color:var(--ink-soft)}
+
+  /* ---- footer ---- */
+  .end{max-width:1180px;margin:0 auto;padding:40px clamp(18px,3vw,44px) 80px}
+  .end footer{padding-top:24px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:12.5px;
+    font-weight:300;line-height:1.9}
+  .end footer b{color:var(--ink);font-weight:500}
+  .end footer a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--tint);text-underline-offset:3px}
+  .byline{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 20px;margin-top:22px;
+    padding:18px 22px;border:1px solid var(--line);border-radius:4px;background:var(--panel)}
+  .byline .role{font-family:var(--latin);font-size:13px;letter-spacing:var(--ls-wide);text-transform:uppercase;
+    color:var(--accent);font-weight:600}
+  .byline .names{font-family:var(--serif);font-size:17px;font-weight:500;color:var(--ink-strong);letter-spacing:.04em}
+  .byline .names .sep{color:var(--tint);margin:0 8px;font-weight:300}
+
+  /* ---- small screens: map on top, cards scroll beneath ---- */
+  @media (max-width: 900px){
+    .story{display:block}
+    .mapcol{position:sticky;top:0;height:46vh;z-index:3;border-bottom:1px solid var(--ink-strong)}
+    .steps{padding:0 14px 20vh;z-index:1}
+    .step{min-height:72vh;align-items:flex-start;padding:4vh 0;scroll-margin-top:44vh}
+    .step:first-child{min-height:60vh}
+    .card{opacity:.92}
+    .map-chip{font-size:12px;top:10px;left:10px}
+    .map-legend{display:none}
+    .twocol{grid-template-columns:1fr}
+    .leaflet-tooltip.lbl{font-size:12px;padding:4px 7px}
+    .leaflet-tooltip.lbl span{display:none}
+    .leaflet-control-attribution{font-size:9.5px;line-height:1.35}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="topbar"><a class="back" href="index.html">← Back to the industry map (in Chinese)</a><a class="lang" href="story.html" hreflang="zh-Hant" lang="zh-Hant">中文</a></div>
+  <div class="eyebrow">Story Map &middot; ACSEAST 2026</div>
+  <h1>Chip Island and Cloud Enclave</h1>
+  <p class="sub">Who pays for Taiwan’s and Malaysia’s national technological spaces?</p>
+  <div class="meta">
+    <span><b>Gan Sin Tiong and Wu Yun-Ching</b></span>
+    <span>Paper presented at ACSEAST 2026, the Annual Conference on Southeast Asian Studies in Taiwan (draft; please do not cite)</span>
+  </div>
+  <p class="lede">Most studies ask why technological catch-up in Taiwan and Malaysia <b>turned out so differently</b>. This page asks another question: the <b>land, water and power</b> that catch-up depends on, from which sectors, places and groups were they drawn? The map moves with the paper’s three phases, from the export processing zones of the 1960s to today’s power plants and the Johor Strait.</p>
+  <a class="farm-cta" href="farmland-en.html">
+    <span class="fc-k">Farmland Atlas &middot; Companion map</span>
+    <span class="fc-t">Farmland Loss Map: Taiwan and Malaysia</span>
+    <span class="fc-d">The overlays from this page’s “Land from space” sections, in a standalone map you can zoom freely and compare with Google satellite imagery</span>
+  </a>
+  <p class="cue">Scroll down to begin</p>
+</header>
+
+<main class="story">
+  <div class="mapcol" aria-label="Story map: the map moves with each section">
+    <div id="map"></div>
+    <div class="map-chip" id="mapChip">Introduction</div>
+    <div class="map-legend" aria-hidden="true">
+      <span><i style="background:#A6392C"></i>Taiwan</span>
+      <span><i style="background:#2E6B4E"></i>Malaysia</span>
+      <span><i style="background:#5c5c5c"></i>Singapore</span>
+      <span>Locations are approximate</span>
+    </div>
+  </div>
+
+  <div class="steps">
+
+    <section class="step" data-step="0" id="s0">
+      <div class="card">
+        <div class="kicker"><span>Introduction</span></div>
+        <h2>From “did catch-up succeed?” to “who pays?”</h2>
+        <p>Fabs and data centers are the part we see above ground. This study is about what lies beneath: where did the land for science parks come from? Through which institutions, and from whom, were the water and power that fabs and server farms need drawn?</p>
+        <p>Using the concept of <b>national technological space</b>, we compare the two countries over thirty years: how what gets externalized expanded from <b>labor and land</b> to <b>water and power</b>.</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="1" id="s1">
+      <div class="card">
+        <div class="kicker"><span class="tw">Scene 1 · Taiwan, 2021</span></div>
+        <h2>Irrigation suspended on over <span class="num">74,000</span> hectares</h2>
+        <figure class="photo"><a class="ph" href="https://commons.wikimedia.org/wiki/File:%E6%B5%AA%E6%BC%AB%E5%8F%B0%E4%B8%89%E7%B7%9A-%E8%8B%97%E6%A0%97%E5%A4%A7%E6%B9%96-2021%E5%A4%A7%E6%97%B1%E9%AF%89%E9%AD%9A%E6%BD%AD%E6%B0%B4%E5%BA%AB-06.jpg" target="_blank" rel="noopener" aria-label="Open the original on Wikimedia Commons: Liyutan Reservoir in Miaoli during the 2021 drought, its bed exposed"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/%E6%B5%AA%E6%BC%AB%E5%8F%B0%E4%B8%89%E7%B7%9A-%E8%8B%97%E6%A0%97%E5%A4%A7%E6%B9%96-2021%E5%A4%A7%E6%97%B1%E9%AF%89%E9%AD%9A%E6%BD%AD%E6%B0%B4%E5%BA%AB-06.jpg?width=960" alt="Liyutan Reservoir in Miaoli during the 2021 drought, its bed exposed" width="960" height="540" loading="lazy" decoding="async"></a><figcaption>Liyutan Reservoir in Miaoli during the drought of April 2021, much of its bed exposed.<span class="credit">Mingwu1977 · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> · <a href="https://commons.wikimedia.org/wiki/File:%E6%B5%AA%E6%BC%AB%E5%8F%B0%E4%B8%89%E7%B7%9A-%E8%8B%97%E6%A0%97%E5%A4%A7%E6%B9%96-2021%E5%A4%A7%E6%97%B1%E9%AF%89%E9%AD%9A%E6%BD%AD%E6%B0%B4%E5%BA%AB-06.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
+        <p>In what was called the worst drought in a century, the government suspended irrigation for the first rice crop on a large scale across Taiwan, in the irrigation districts of Taoyuan, Hsinchu and Miaoli, Taichung, and Chiayi-Tainan: about <b>24%</b> of all irrigated area. In the same period, TSMC and other chipmakers trucked in water to keep production going.</p>
+        <p>When the south faced drought again two years later, international media reported that rice farmers there had been unable to plant for a third year in a row.</p>
+        <p class="mapnote">Circles on the map show the rough location of the irrigation districts where water was cut off.</p>
+        <p class="src">Sources: <a href="https://www.cna.com.tw/news/afe/202111270016.aspx" target="_blank" rel="noopener">Central News Agency (2021)</a>; <a href="https://www.kunc.org/npr-news/npr-news/2023-04-19/epic-drought-in-taiwan-pits-farmers-against-high-tech-factories-for-water" target="_blank" rel="noopener">Feng (2023)</a></p>
+      </div>
+    </section>
+
+    <section class="step" data-step="2" id="s2">
+      <div class="card">
+        <div class="kicker"><span class="my">Scene 2 · Johor, 2025</span></div>
+        <h2>Why approvals stopped: about <span class="num">200</span> times the water</h2>
+        <figure class="photo"><a class="ph" href="https://commons.wikimedia.org/wiki/File:Johor_Bahru_Skyline_(17300534739).jpg" target="_blank" rel="noopener" aria-label="Open the original on Wikimedia Commons: The Johor Bahru skyline seen from the Woodlands waterfront in Singapore"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Johor_Bahru_Skyline_(17300534739).jpg?width=960" alt="The Johor Bahru skyline seen from the Woodlands waterfront in Singapore" width="960" height="640" loading="lazy" decoding="async"></a><figcaption>Johor Bahru seen from the Woodlands waterfront in Singapore (2015); only the Johor Strait lies between them.<span class="credit">aamanatullah · <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener">CC BY 2.0</a> · <a href="https://commons.wikimedia.org/wiki/File:Johor_Bahru_Skyline_(17300534739).jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
+        <p>In November 2025, the Johor state government announced that it would no longer approve Tier 1 and Tier 2 data centers, because such facilities use about 200 times as much water as Tier 3 and Tier 4. New data centers must use recycled water and be concentrated in designated industrial areas.</p>
+        <p>The two restrictions came at core nodes of global semiconductor manufacturing and of AI cloud infrastructure. They are not isolated accidents but one question: when the state goes all out to produce dedicated space for technological capital, who bears the cost?</p>
+        <p class="src">Source: <a href="https://www.nst.com.my/news/nation/2025/11/1324188/johor-tightens-approvals-data-centres" target="_blank" rel="noopener">New Straits Times (2025)</a></p>
+      </div>
+    </section>
+
+    <section class="step" data-step="3" id="s3">
+      <div class="card">
+        <div class="kicker"><span>Core concept</span></div>
+        <h2>National technological space: land bound three ways</h2>
+        <div class="concept" role="img" aria-label="Land, water and power, and institutions bound together form national technological space">
+          <div class="c-in">Land<small>A designated plot</small></div>
+          <div class="c-in">Water and power<small>Priority access to infrastructure</small></div>
+          <div class="c-in">Institutions<small>Exceptional rules and fast-track approval</small></div>
+          <div class="c-arrow">↓</div>
+          <div class="c-out">National technological space</div>
+        </div>
+        <ul class="layers">
+          <li><b>State spatial selectivity</b>The state actively marks out technological spaces and governs different places and populations differently</li>
+          <li><b>Land regime</b>Differential expropriability: which land, and which communities, are most easily marked for taking?</li>
+          <li><b>Cost externalization</b>Who bears the costs? What is cheapened expands from labor and land to water and power</li>
+        </ul>
+        <ol class="rail" aria-label="Phases and the resource bound first in each">
+          <li><b>Prelude</b>1960s–1980s<em>Labor</em></li>
+          <li><b>Phase 1</b>1990s<em>Land</em></li>
+          <li><b>Phase 2</b>2000s–2010s<em>Land and water</em></li>
+          <li class="now"><b>Phase 3</b>2020–2026<em>Water and power</em></li>
+        </ol>
+        <p class="src">Sources: this study; <a href="#ref-brenner2004">Brenner (2004)</a>; <a href="#ref-ong2000">Ong (2000)</a>; <a href="https://doi.org/10.1111/dech.12012" target="_blank" rel="noopener">Levien (2013)</a>; <a href="#ref-kapp1950">Kapp (1950)</a>; <a href="#ref-moore2015">Moore (2015)</a>; <a href="https://doi.org/10.1177/25148486251406484" target="_blank" rel="noopener">Kollar (2026)</a></p>
+      </div>
+    </section>
+
+    <section class="step" data-step="4" id="s4">
+      <div class="card">
+        <div class="kicker"><span>Prelude · 1960s–1980s</span></div>
+        <h2>Both countries started from enclaves</h2>
+        <figure class="photo two"><div class="ph-row"><a class="ph" href="https://commons.wikimedia.org/wiki/File:Factory_building_of_Orient_Semiconductor_Electronics_Limited_in_Nanzih_Export_Processing_Zone.jpg" target="_blank" rel="noopener" aria-label="Open the original on Wikimedia Commons: The Orient Semiconductor Electronics factory in the Nanzih Export Processing Zone, Kaohsiung"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Factory_building_of_Orient_Semiconductor_Electronics_Limited_in_Nanzih_Export_Processing_Zone.jpg?width=960" alt="The Orient Semiconductor Electronics factory in the Nanzih Export Processing Zone, Kaohsiung" width="960" height="638" loading="lazy" decoding="async"></a><a class="ph" href="https://commons.wikimedia.org/wiki/File:Bayan_Lepas_Free_Industrial_Zone_2023.jpg" target="_blank" rel="noopener" aria-label="Open the original on Wikimedia Commons: Aerial view of the Bayan Lepas Free Industrial Zone, Penang"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Bayan_Lepas_Free_Industrial_Zone_2023.jpg?width=960" alt="Aerial view of the Bayan Lepas Free Industrial Zone, Penang" width="960" height="540" loading="lazy" decoding="async"></a></div><figcaption>Left: the Orient Semiconductor Electronics (OSE) factory in the Nanzih Export Processing Zone, Kaohsiung (2008). Right: the Bayan Lepas Free Industrial Zone in Penang from the air (2023).<span class="credit">Left: Joe Lewis · <a href="https://creativecommons.org/licenses/by-sa/2.0/" target="_blank" rel="noopener">CC BY-SA 2.0</a> · <a href="https://commons.wikimedia.org/wiki/File:Factory_building_of_Orient_Semiconductor_Electronics_Limited_in_Nanzih_Export_Processing_Zone.jpg" target="_blank" rel="noopener">Wikimedia Commons</a><br>Right: HundenvonPenang · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> · <a href="https://commons.wikimedia.org/wiki/File:Bayan_Lepas_Free_Industrial_Zone_2023.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
+        <p>By the 1960s, American electronics firms had moved into the export processing zones of southern Taiwan for packaging, testing and assembly. In 1972 Penang’s Bayan Lepas Free Trade Zone opened, and Clarion and National Semiconductor began production right away.</p>
+        <p>What was cheapened then was <b>labor</b>. In the 1970s, all direct production jobs in Malaysia’s semiconductor plants were done by women, each bonding machine run by one woman under close supervision; Taiwan had its home-based subcontracting system of “living rooms as factories”.</p>
+        <p class="src">Sources: <a href="#ref-amsden2003">Amsden &amp; Chu (2003)</a>; <a href="https://doi.org/10.1080/13547860.2010.494910" target="_blank" rel="noopener">Rasiah (2010)</a>; <a href="#ref-ong1987">Ong (1987)</a>; <a href="#ref-hsiung1996">Hsiung (1996)</a></p>
+      </div>
+    </section>
+
+    <section class="step" data-step="5" id="s5">
+      <div class="card">
+        <div class="kicker"><span class="tw">Prelude to Phase 1 · Taiwan</span></div>
+        <h2>Set up the park first, buy the land later</h2>
+        <figure class="photo"><a class="ph" href="https://commons.wikimedia.org/wiki/File:TSMC_Fab_18_and_fields_May_2025.jpg" target="_blank" rel="noopener" aria-label="Open the original on Wikimedia Commons: TSMC’s Fab 18 in the Southern Taiwan Science Park, with farmland in front"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/TSMC_Fab_18_and_fields_May_2025.jpg?width=960" alt="TSMC’s Fab 18 in the Southern Taiwan Science Park, with farmland in front" width="960" height="640" loading="lazy" decoding="async"></a><figcaption>TSMC’s Fab 18 in the Southern Taiwan Science Park, with farmland in front (May 2025).<span class="credit">4300streetcar · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> · <a href="https://commons.wikimedia.org/wiki/File:TSMC_Fab_18_and_fields_May_2025.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
+        <p>Hsinchu Science Park (established in 1980; a prelude in this paper) was set up under a statute on science-based industrial parks promulgated in 1979. It was established first as an administrative entity, and the land was bought afterwards. Firms that moved in paid below-market rent for factory buildings and sites: <b>the land itself was part of the state subsidy</b>.</p>
+        <p>From the mid-1990s the Hsinchu model was copied in Tainan: this is Taiwan’s Phase 1. Expanding science parks meant the state had to keep turning farmland into industrial land, through farmland conversion, floating zoning and zone expropriation.</p>
+        <p class="src">Sources: <a href="https://doi.org/10.2307/41165909" target="_blank" rel="noopener">Mathews (1997)</a>; <a href="#ref-amsden2003">Amsden &amp; Chu (2003)</a></p>
+      </div>
+    </section>
+
+    <section class="step" data-step="6" id="s6">
+      <div class="card">
+        <div class="kicker"><span class="my">Phase 1 · Malaysia</span></div>
+        <h2>Cyberjaya, built on an oil palm estate</h2>
+        <figure class="photo two"><div class="ph-row"><a class="ph" href="https://commons.wikimedia.org/wiki/File:Oil_Palm_Plantations_in_Melaka.jpg" target="_blank" rel="noopener" aria-label="Open the original on Wikimedia Commons: An oil palm plantation in Melaka"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Oil_Palm_Plantations_in_Melaka.jpg?width=960" alt="An oil palm plantation in Melaka" width="960" height="720" loading="lazy" decoding="async"></a><a class="ph" href="https://commons.wikimedia.org/wiki/File:Skylines_of_Cyberjaya_(221225)_05.jpg" target="_blank" rel="noopener" aria-label="Open the original on Wikimedia Commons: The Cyberjaya skyline, with land being cleared in front"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Skylines_of_Cyberjaya_(221225)_05.jpg?width=960" alt="The Cyberjaya skyline, with land being cleared in front" width="960" height="720" loading="lazy" decoding="async"></a></div><figcaption>Left: an oil palm plantation in Peninsular Malaysia (Melaka, 2015; for illustration, not the Prang Besar estate). Right: the Cyberjaya skyline today (2022).<span class="credit">Left: Chongkian · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> · <a href="https://commons.wikimedia.org/wiki/File:Oil_Palm_Plantations_in_Melaka.jpg" target="_blank" rel="noopener">Wikimedia Commons</a><br>Right: *angys* · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> · <a href="https://commons.wikimedia.org/wiki/File:Skylines_of_Cyberjaya_(221225)_05.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
+        <p>The Multimedia Super Corridor was launched in the mid-1990s. Its core city, Cyberjaya, was built on the former Prang Besar oil palm estate owned by the government-linked company Golden Hope, and opened in 1997. <b>Indian estate workers</b> whose families had lived there for generations were forced to move.</p>
+        <p>Plantations are a legacy of the colonial economy, and also a land bank that the postcolonial state and government-linked companies can deploy directly. With the idea of <b>differential expropriability</b>, the paper asks: which land, and which communities, are most easily marked for taking?</p>
+        <p class="src">Sources: <a href="#ref-bunnell2004">Bunnell (2004)</a>; <a href="#ref-yan2021b">Gan (2021b)</a>; <a href="#ref-edwards1993">Edwards &amp; Jomo (1993)</a></p>
+      </div>
+    </section>
+
+    <section class="step" data-step="7" id="s7">
+      <div class="card">
+        <div class="kicker"><span class="tw">Phase 2 · 2000s–2010s</span></div>
+        <h2>For the first time, water joins land as a public dispute</h2>
+        <figure class="photo"><a class="ph" href="https://commons.wikimedia.org/wiki/File:%E8%BE%B2%E6%B0%91%E6%8A%97%E8%AD%B0%E6%90%B6%E6%B0%B4%E5%B7%A5%E7%A8%8B%E8%A1%8C%E5%8B%95%E5%8A%87.jpg" target="_blank" rel="noopener" aria-label="Open the original on Wikimedia Commons: Farmers on Ketagalan Boulevard staging a protest skit against the water diversion for CTSP Phase 4"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/%E8%BE%B2%E6%B0%91%E6%8A%97%E8%AD%B0%E6%90%B6%E6%B0%B4%E5%B7%A5%E7%A8%8B%E8%A1%8C%E5%8B%95%E5%8A%87.jpg?width=960" alt="Farmers on Ketagalan Boulevard staging a protest skit against the water diversion for CTSP Phase 4" width="960" height="640" loading="lazy" decoding="async"></a><figcaption>March 2012: Taiwan Rural Front and Changhua farmers stage a protest skit on Ketagalan Boulevard against the water diversion for Phase 4 of the Central Taiwan Science Park, cutting a pipe that stands for the diversion works.<span class="credit">Mingwangx · <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a> · <a href="https://commons.wikimedia.org/wiki/File:%E8%BE%B2%E6%B0%91%E6%8A%97%E8%AD%B0%E6%90%B6%E6%B0%B4%E5%B7%A5%E7%A8%8B%E8%A1%8C%E5%8B%95%E5%8A%87.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
+        <p>Phase 4 of the Central Taiwan Science Park, the Erlin Park, was planned to need <b>155,000 tonnes</b> of industrial water a day. In August 2011, hundreds of Changhua farmers and activists rallied at a sluice gate in Xizhou Township against plans to draw water for the park from the Cizaipi Canal, which is fed by the Zhuoshui River; the diversion plan was for <b>over 65,000 tonnes</b> a day.</p>
+        <p>Water joined land as a key cost of technological space, and those bearing it expanded from landowners and residents in expropriation zones to the farmers of a whole irrigation district and the coastal ecology. In the same period, Malaysia’s state-owned foundry Silterra began production in Kulim in 2000, and stayed at mature process technologies for many years.</p>
+        <p class="mapnote">The dashed line on the map shows the direction of the diversion, schematically.</p>
+        <p class="src">Sources: <a href="https://www.businesstoday.com.tw/article/category/80392/post/201008120020/" target="_blank" rel="noopener">Business Today Taiwan (2010)</a>; <a href="https://www.taipeitimes.com/News/front/archives/2011/08/08/2003510205" target="_blank" rel="noopener">Taipei Times (2011)</a>; <a href="https://doi.org/10.35188/UNU-WIDER/2015/012-6" target="_blank" rel="noopener">Rasiah (2015)</a>; <a href="https://bookshop.iseas.edu.sg/publication/8011" target="_blank" rel="noopener">Lee &amp; Hutchinson (2026)</a></p>
+      </div>
+    </section>
+
+    <section class="step" data-step="8" id="s8">
+      <div class="card">
+        <div class="kicker"><span class="tw">Phase 3 · Taiwan</span></div>
+        <h2>Water moves to industry; power is tied to power plants</h2>
+        <figure class="photo"><a class="ph" href="https://commons.wikimedia.org/wiki/File:Tatan_Power_Plant_20190606.jpg" target="_blank" rel="noopener" aria-label="Open the original on Wikimedia Commons: Taipower’s Tatan Power Plant in Guanyin, Taoyuan"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Tatan_Power_Plant_20190606.jpg?width=960" alt="Taipower’s Tatan Power Plant in Guanyin, Taoyuan" width="960" height="641" loading="lazy" decoding="async"></a><figcaption>Taipower’s Tatan Power Plant in Guanyin, Taoyuan (2019).<span class="credit">Taiwan Power Company · Government Website Open Information Announcement · <a href="https://commons.wikimedia.org/wiki/File:Tatan_Power_Plant_20190606.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
+        <p>In 2020, Taiwan’s irrigation associations were turned into government agencies. After the 2021 suspension, the government promoted large-zone rotation: about 26,000 to 31,000 hectares rotate out of rice each year. If every farmer declared a switch of crops, this would save 180 to 220 million tonnes of water a year, “equal to one Shimen Reservoir”.</p>
+        <p>In August 2024, Taipower said it would no longer supply data centers of 5MW or more north of Taoyuan, and the Ministry of Economic Affairs said bluntly: “If you want the big AI companies, please support Taipower’s power plants.” In July 2026, Taipower named the areas around the <b>Tatan and Hsieh-ho power plants</b> as places where AI data center zones could be planned. Technological space began to be tied directly to power plants (infrastructure anchoring).</p>
+        <p class="src">Sources: <a href="https://www.cna.com.tw/news/aipl/202004090157.aspx" target="_blank" rel="noopener">Central News Agency (2020)</a>; <a href="https://www.cna.com.tw/news/afe/202111270016.aspx" target="_blank" rel="noopener">Central News Agency (2021)</a>; <a href="https://finance.technews.tw/2024/08/12/want-big-ai-companies-to-invest-please-support-building-power-plants/" target="_blank" rel="noopener">TechNews (2024a)</a>; <a href="https://udn.com/news/story/7238/9629060" target="_blank" rel="noopener">United Daily News (2026)</a></p>
+      </div>
+    </section>
+
+    <section class="step" data-step="9" id="s9">
+      <div class="card">
+        <div class="kicker"><span class="my">Phase 3 · Malaysia</span></div>
+        <h2>Singapore’s demand crosses the Johor Strait</h2>
+        <figure class="photo"><a class="ph" href="https://commons.wikimedia.org/wiki/File:Water_pipes_from_Johor_Bahru_to_Singapore.jpg" target="_blank" rel="noopener" aria-label="Open the original on Wikimedia Commons: Water pipes along the Causeway, linking Johor and Singapore"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Water_pipes_from_Johor_Bahru_to_Singapore.jpg?width=960" alt="Water pipes along the Causeway, linking Johor and Singapore" width="960" height="540" loading="lazy" decoding="async"></a><figcaption>Water pipes laid along the Causeway, linking Johor Bahru and Singapore (2023).<span class="credit">Ryuch · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> · <a href="https://commons.wikimedia.org/wiki/File:Water_pipes_from_Johor_Bahru_to_Singapore.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
+        <p>Singapore approved no new data centers from 2019 and began lifting the pause only in 2022, so demand moved north to Johor. DC Byte estimated that Johor’s capacity grew from 10MW in early 2021 to 1,500MW in 2024, but that includes capacity under construction and planned; capacity actually operating in July 2025 was <b>487MW</b>.</p>
+        <p>The state used TNB’s “Green Lane” to cut the time to get power connected from 36–48 months to 12 months, and set up the Johor-Singapore Special Economic Zone in 2025. Cross-border water was already there: under the 1962 agreement, Singapore may draw 250 million gallons of raw water a day from the Johor River. Domestic capital is involved too: YTL Power’s data center with NVIDIA in Kulai is promoted as “sovereign AI”.</p>
+        <p class="mapnote">The dashed line shows demand moving north; the solid line, raw water flowing south (schematic).</p>
+        <p class="src">Sources: <a href="https://w.media/johor-from-10mw-to-1500mw-in-three-years/" target="_blank" rel="noopener">W.Media (2024)</a>; <a href="https://www.datacenterdynamics.com/en/analysis/the-past-present-and-future-of-johor/" target="_blank" rel="noopener">DatacenterDynamics (2025)</a>; <a href="https://www.tnb.com.my/assets/press_releases/2023080944_ENG.pdf" target="_blank" rel="noopener">Tenaga Nasional Berhad (2023)</a>; <a href="https://www.mfa.gov.sg/about-mfa/key-issues/water-agreements/" target="_blank" rel="noopener">Ministry of Foreign Affairs Singapore (n.d.)</a>; <a href="https://www.kaaplaw.com" target="_blank" rel="noopener">Kadir, Andri &amp; Partners (2025)</a></p>
+      </div>
+    </section>
+
+    <section class="step" data-step="10" id="s10">
+      <div class="card">
+        <div class="kicker"><span class="my">Diverging paths</span></div>
+        <h2>Investment is courted federally; the states bear the costs in water and land</h2>
+        <figure class="photo"><a class="ph" href="https://commons.wikimedia.org/wiki/File:Putrajaya_Malaysia_Perdana-Putra-01.jpg" target="_blank" rel="noopener" aria-label="Open the original on Wikimedia Commons: Perdana Putra, the Prime Minister’s Office in Putrajaya"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Putrajaya_Malaysia_Perdana-Putra-01.jpg?width=960" alt="Perdana Putra, the Prime Minister’s Office in Putrajaya" width="960" height="460" loading="lazy" decoding="async"></a><figcaption>Perdana Putra in Putrajaya, the Prime Minister’s Office and administrative center of the federal government (2014).<span class="credit">CEphoto, Uwe Aranas · <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a> · <a href="https://commons.wikimedia.org/wiki/File:Putrajaya_Malaysia_Perdana-Putra-01.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
+        <div class="fedfig" role="img" aria-label="The federal government courts investment; the costs in water and land fall on the states">
+          <div class="lv">Federal</div>
+          <div class="items"><span>Green Lane</span><span>Tax incentives</span><span>Johor-Singapore SEZ</span><span>500kV grid expansion</span></div>
+          <div class="down">Data centers arrive; the costs in water and land fall on the states</div>
+          <div class="lv st">State</div>
+          <div class="items st"><span>Johor: no more Tier 1 and Tier 2 data centers</span><span>Selangor: water tariff for data centers</span><span>State approval of land</span></div>
+        </div>
+        <p>Under the Federal Constitution, water resources are a state matter, and land acquisition needs state approval. So it was Johor that stopped approving data centers, and Selangor that set a dedicated water tariff for them (RM5.31 per cubic meter, against RM0.65 in the lowest household band).</p>
+        <p>In Taiwan’s unitary state, by contrast, the central government both courts investment and allocates water and power: an important institutional condition behind the two countries’ diverging paths of externalization.</p>
+        <p class="src">Sources: <a href="https://www.thesundaily.my/home/green-equilibrium-water-resources-are-under-state-govt-purview-NM9907197" target="_blank" rel="noopener">Piarapakaran (n.d.)</a>; <a href="https://www.kaaplaw.com" target="_blank" rel="noopener">Kadir, Andri &amp; Partners (2025)</a>; <a href="https://www.nst.com.my/news/nation/2025/11/1324188/johor-tightens-approvals-data-centres" target="_blank" rel="noopener">New Straits Times (2025)</a>; <a href="https://www.malaymail.com/news/malaysia/2025/08/01/selangor-water-tariffs-to-rise-from-sept-1-no-changes-for-low-use-domestic-users-new-rate-introduced-for-data-centres/186146" target="_blank" rel="noopener">Malay Mail (2025)</a>; <a href="https://www.datacenterdynamics.com/en/analysis/the-past-present-and-future-of-johor/" target="_blank" rel="noopener">DatacenterDynamics (2025)</a>; <a href="https://www.tnb.com.my/assets/press_releases/2023080944_ENG.pdf" target="_blank" rel="noopener">Tenaga Nasional Berhad (2023)</a>; <a href="https://www.tnb.com.my/assets/quarterly_results/Analyst_Briefing_4QFY2024_for_Website.pdf" target="_blank" rel="noopener">Tenaga Nasional Berhad (2025)</a></p>
+      </div>
+    </section>
+
+    <section class="step" data-step="11" id="s11">
+      <div class="card">
+        <div class="kicker"><span class="tw">Land from space · Taiwan</span></div>
+        <h2>In 16 years, <span class="num">53,000</span> hectares of farmland vanished from satellite view</h2>
+        <p>The University of Maryland mapped the world’s cropland from Landsat imagery, in cells 30 meters square. We compared the 2003 and 2019 maps and marked the cells that were cropland before and no longer are.</p>
+        <ul class="key" aria-label="What the map colors mean">
+          <li><i class="k-f"></i><b>Green</b>: cropland still farmed in 2019</li>
+          <li><i class="k-o"></i><b>Orange</b>: cropland in 2003, no longer in 2019</li>
+          <li><i class="k-r"></i><b>Red</b>: the same, and built over with houses, factories or roads by 2021</li>
+        </ul>
+        <p>Together that is about <b>53,000 hectares</b>, roughly twice the size of Taipei City. About <b>11,000 hectares</b> of it (about a fifth, roughly the size of Hsinchu City) has been built over; the rest may be fallow, planted with fruit trees, or still empty.</p>
+        <p>Over the same period, about 40,000 hectares were newly mapped as cropland (for example, land farmed again after a long fallow), so the net loss is about 13,000 hectares (−3.8%). The Ministry of Agriculture’s statistics also show a decline: Taiwan’s cultivated land fell from about 803,000 hectares in 2012 to about 775,000 hectares in 2025 (−3.4%). The two cover different years and are calculated differently, so only the broad trend can be compared.</p>
+        <p class="fig-note">Note: this satellite map counts only herbaceous crops such as rice and vegetables, not orchards or tea. The colors show only that land use changed, not that science parks used all of it.</p>
+        <p class="mapnote">Zoom in for detail; the buttons at the top right switch to satellite imagery or hide the overlay for a moment.</p>
+        <p class="deeplink"><a href="farmland-en.html#tw">Open the farmland loss map and zoom in yourself</a></p>
+        <p class="src">Sources: <a href="https://doi.org/10.1038/s43016-021-00429-z" target="_blank" rel="noopener">Potapov et al. (2022)</a>; <a href="https://doi.org/10.5281/zenodo.7254221" target="_blank" rel="noopener">Zanaga et al. (2022)</a>; <a href="https://agrstat.moa.gov.tw/moasdweb/book/Book.aspx" target="_blank" rel="noopener">Department of Statistics, Ministry of Agriculture (n.d.)</a>; overlay computed for this page</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="12" id="s12">
+      <div class="card">
+        <div class="kicker"><span class="tw">Land from space · Taichung</span></div>
+        <h2>Taichung lost <span class="num">17%</span>, and the red clusters around the science park</h2>
+        <p>Zoom in to Taichung. From 2003 to 2019, the cropland visible from space in Taichung City shrank from about 24,000 to 20,000 hectares, down 17%: the largest drop among counties and cities with more than 10,000 hectares of cropland. About <b>40%</b> of the lost cropland has been built over, also the highest of any county or city.</p>
+        <p>The largest patch of red lies in the <b>Taichung Park</b> of the Central Taiwan Science Park (established in 2003): within the park boundary marked on OpenStreetMap, about 70% of the land was still cropland in 2003. At the Qixing site of the <b>Houli Park</b> to the north, the share is about 80%.</p>
+        <p>Red dots are also scattered around the park: new roads, housing or factories. Satellites cannot tell which land the park used directly and which went to development the park brought with it.</p>
+        <figure class="photo two sat"><div class="ph-row"><a class="ph" href="img/compare/taichung-1999-1600.jpg" target="_blank" rel="noopener" aria-label="Open the large image: A 1999 Landsat image (30 m resolution), before the CTSP Taichung Park was set up"><img src="img/compare/taichung-1999-800.jpg" alt="A 1999 Landsat image (30 m resolution), before the CTSP Taichung Park was set up" width="800" height="727" loading="lazy" decoding="async"><span class="when">1999</span></a><a class="ph" href="img/compare/taichung-2025-12-1600.jpg" target="_blank" rel="noopener" aria-label="Open the large image: December 2025 satellite image: large factory buildings fill the dashed boundary of the CTSP Taichung Park"><img src="img/compare/taichung-2025-12-800.jpg" alt="December 2025 satellite image: large factory buildings fill the dashed boundary of the CTSP Taichung Park" width="800" height="727" loading="lazy" decoding="async"><span class="when">Dec 2025</span></a></div><figcaption>A closer look at the Taichung Park: in 1999 (left) the park did not exist yet; this is a 30-meter Landsat image, so it is blurrier. In December 2025 (right), large factory buildings fill the dashed boundary.<span class="credit">Left: <a href="https://doi.org/10.5067/MEaSUREs/GWELD/GWELDYR.031" target="_blank" rel="noopener">NASA GWELD</a> (Landsat), via <a href="https://gibs.earthdata.nasa.gov" target="_blank" rel="noopener">NASA GIBS</a> · Right: <a href="https://livingatlas.arcgis.com/wayback/" target="_blank" rel="noopener">Esri World Imagery Wayback</a> (Maxar) · Dashed line: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors · Click an image to enlarge</span></figcaption></figure>
+        <p class="mapnote">The dashed frames are park boundaries (from OpenStreetMap).</p>
+        <p class="deeplink"><a href="farmland-en.html#tw-taichung">See Taichung on the farmland loss map</a></p>
+        <p class="src">Sources: <a href="https://doi.org/10.1038/s43016-021-00429-z" target="_blank" rel="noopener">Potapov et al. (2022)</a>; <a href="https://doi.org/10.5281/zenodo.7254221" target="_blank" rel="noopener">Zanaga et al. (2022)</a>; <a href="https://topics.amcham.com.tw/2019/03/what-are-taiwans-science-parks/" target="_blank" rel="noopener">AmCham Taiwan (2019)</a>; overlay computed for this page</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="13" id="s13">
+      <div class="card">
+        <div class="kicker"><span class="tw">Land from space · Chiayi, 2025</span></div>
+        <h2>Packaging plants for AI chips, built on farmland</h2>
+        <p>This is satellite imagery from 2025; the dashed frame is the area of the Chiayi Science Park then under construction. TSMC is building CoWoS and other advanced packaging plants here: demand for AI chips from NVIDIA, AMD and others has soared, and advanced packaging capacity cannot keep up.</p>
+        <p>The green laid on top marks land that satellites still classified as cropland in 2019: about <b>90%</b> of this site was cropland then. Construction began in May 2024. Work on the first plant stopped after suspected archaeological remains were found, so TSMC rushed the second plant ahead; by July 2026 the first plant to be finished was in mass production. The science park’s second phase to the east, about 90 hectares, broke ground the same month and will hold two more packaging plants.</p>
+        <ul class="key" aria-label="What the map colors mean">
+          <li><i class="k-f"></i><b>Green</b>: cropland still farmed in 2019</li>
+          <li><i class="k-line"></i><b>Dashed frame</b>: Chiayi Science Park (2025 construction area and phase 2)</li>
+        </ul>
+        <p class="fig-note">The global cropland map ends in 2019; for what came after, the satellite images are compared directly.</p>
+        <figure class="photo two sat"><div class="ph-row"><a class="ph" href="img/compare/chiayi-2017-04-1600.jpg" target="_blank" rel="noopener" aria-label="Open the large image: April 2017 satellite image: farmland fills the dashed boundary of the Chiayi Science Park"><img src="img/compare/chiayi-2017-04-800.jpg" alt="April 2017 satellite image: farmland fills the dashed boundary of the Chiayi Science Park" width="800" height="727" loading="lazy" decoding="async"><span class="when">Apr 2017</span></a><a class="ph" href="img/compare/chiayi-2025-11-1600.jpg" target="_blank" rel="noopener" aria-label="Open the large image: November 2025 satellite image: large plant buildings in the construction area on the left; phase 2 on the right is still farmland"><img src="img/compare/chiayi-2025-11-800.jpg" alt="November 2025 satellite image: large plant buildings in the construction area on the left; phase 2 on the right is still farmland" width="800" height="727" loading="lazy" decoding="async"><span class="when">Nov 2025</span></a></div><figcaption>A closer look: in April 2017 (left), the dashed area is all farmland. In November 2025 (right), large plant buildings stand in the construction area on the left, while phase 2 on the right is still farmland.<span class="credit">Imagery: <a href="https://livingatlas.arcgis.com/wayback/" target="_blank" rel="noopener">Esri World Imagery Wayback</a> (Maxar), with capture dates · Dashed line: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors · Click an image to enlarge</span></figcaption></figure>
+        <p class="deeplink"><a href="farmland-en.html#tw-chiayi">See the Chiayi Science Park in Google satellite imagery</a></p>
+        <p class="src">Sources: <a href="https://www.taiwannews.com.tw/news/5117164" target="_blank" rel="noopener">Taiwan News (2024a)</a>; <a href="https://www.trendforce.com/news/2024/06/12/news-tsmc-accelerates-cowos-advanced-packaging-capacity-construction-beginning-equipment-procurement-in-its-chiayi-plant/" target="_blank" rel="noopener">TrendForce (2024)</a>; <a href="https://www.taipeitimes.com/News/biz/archives/2024/06/19/2003819546" target="_blank" rel="noopener">Taipei Times (2024)</a>; <a href="https://www.taiwannews.com.tw/zh/news/5993263" target="_blank" rel="noopener">Taiwan News (2024b)</a>; <a href="https://www.ctee.com.tw/news/20240618700036-439901" target="_blank" rel="noopener">Commercial Times (2024)</a>; <a href="https://www.thestar.com.my/tech/tech-news/2026/07/13/tsmc-to-add-2-advanced-chip-packaging-plants-in-chiayi-taiwan-minister-says" target="_blank" rel="noopener">Reuters (2026)</a>; <a href="https://udn.com/news/story/7240/9623437" target="_blank" rel="noopener">Economic Daily News (2026)</a>; <a href="https://doi.org/10.1038/s43016-021-00429-z" target="_blank" rel="noopener">Potapov et al. (2022)</a></p>
+      </div>
+    </section>
+
+    <section class="step" data-step="14" id="s14">
+      <div class="card">
+        <div class="kicker"><span class="my">Land from space · Malaysia</span></div>
+        <h2>Johor’s oil palm area fell <span class="num">13%</span> in five years</h2>
+        <p>The satellite cropland map above counts only herbaceous crops (in Malaysia, mostly rice), not oil palm, a tree that grows for more than twenty years once planted. So here we turn to the planted-area statistics of the Malaysian Palm Oil Board (MPOB).</p>
+        <p>From 2019 to 2024, Malaysia’s oil palm planted area fell by about 287,000 hectares (−4.9%). <b>Johor</b>, where data centers are most concentrated, lost about 99,000 hectares (−13%), more than the whole of Singapore; <b>Selangor</b> lost 21% and <b>Perak</b> 14%.</p>
+        <p>Not every lost estate became a data center, though: land may also go to other crops, housing or industrial estates, and the figures rise and fall from year to year. Johor’s was back up to about 676,000 hectares in 2025. The plantation group SD Guthrie has said it will set aside about 10,000 hectares over the next ten years (starting with old rubber estates and low-yielding oil palm land) for solar farms and industrial parks.</p>
+        <p class="mapnote">Each circle’s area equals the oil palm area the state lost from 2019 to 2024; circles sit at rough state centers.</p>
+        <p class="deeplink"><a href="farmland-en.html#my-oilpalm">See the figures by state on the farmland loss map</a></p>
+        <p class="src">Sources: <a href="https://bepi.mpob.gov.my/images/area/2019/Area_summary.pdf" target="_blank" rel="noopener">MPOB (2020)</a>; <a href="https://bepi.mpob.gov.my/images/area/2024/Area_summary2024.pdf" target="_blank" rel="noopener">MPOB (2025)</a>; <a href="https://bepi.mpob.gov.my/images/area/2025/Area_summary2025.pdf" target="_blank" rel="noopener">MPOB (2026)</a>; <a href="https://prestasisawit.mpob.gov.my/en/palmnews/news/38712" target="_blank" rel="noopener">The Business Times (2025)</a></p>
+      </div>
+    </section>
+
+    <section class="step" data-step="15" id="s15">
+      <div class="card">
+        <div class="kicker"><span class="my">Land from space · Kulai, Johor, 2018</span></div>
+        <h2>2018: still one large oil palm estate</h2>
+        <p>This is satellite imagery from 2018 of Kulai, Johor, about 30 kilometers northwest of downtown Johor Bahru. The area in the dashed frame later became the YTL Green Data Center Park.</p>
+        <p>The yellow-green on top is a global map of oil palm in 2019 that a research team made from satellite data: more than 99% of the roughly <b>108 hectares</b> in the frame (about 150 football fields) was industrial oil palm plantation.</p>
+        <ul class="key" aria-label="What the map colors mean">
+          <li><i class="k-p"></i><b>Yellow-green</b>: oil palm plantations in 2019</li>
+          <li><i class="k-line"></i><b>Dashed frame</b>: YTL Green Data Center Park (from OpenStreetMap)</li>
+        </ul>
+        <p class="src">Sources: <a href="https://doi.org/10.5194/essd-13-1211-2021" target="_blank" rel="noopener">Descals et al. (2021)</a>; satellite imagery: <a href="https://cloudless.eox.at" target="_blank" rel="noopener">EOxCloudless 2018</a>; overlay computed for this page</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="16" id="s16">
+      <div class="card">
+        <div class="kicker"><span class="my">Land from space · Kulai, Johor, 2025</span></div>
+        <h2>2025: the oil palm estate has become a data center</h2>
+        <p>The same place in 2025 satellite imagery. In August 2022, YTL and Singapore’s Sea group broke ground here on the park’s first phase; the whole park is planned for 500MW. Large server hall roofs and cleared, graded land are already visible.</p>
+        <p>The computing facility that YTL Power is building with NVIDIA under the banner of “sovereign AI”, mentioned earlier, is in this park.</p>
+        <p>This is one concrete case of oil palm estates becoming data centers in Johor; how many estates across the state have been converted this way can only be known by checking them one by one.</p>
+        <figure class="photo two sat"><div class="ph-row"><a class="ph" href="img/compare/kulai-2018-01-1600.jpg" target="_blank" rel="noopener" aria-label="Open the large image: January 2018 satellite image: rows of oil palm inside the YTL park boundary"><img src="img/compare/kulai-2018-01-800.jpg" alt="January 2018 satellite image: rows of oil palm inside the YTL park boundary" width="800" height="727" loading="lazy" decoding="async"><span class="when">Jan 2018</span></a><a class="ph" href="img/compare/kulai-2023-07-1600.jpg" target="_blank" rel="noopener" aria-label="Open the large image: July 2023 satellite image: the northeast of the YTL park has been cleared and built on"><img src="img/compare/kulai-2023-07-800.jpg" alt="July 2023 satellite image: the northeast of the YTL park has been cleared and built on" width="800" height="727" loading="lazy" decoding="async"><span class="when">Jul 2023</span></a></div><figcaption>A closer look: in January 2018 (left), the frame holds rows of oil palm. By July 2023 (right), the northeast of the frame has been cleared and built on.<span class="credit">Imagery: <a href="https://livingatlas.arcgis.com/wayback/" target="_blank" rel="noopener">Esri World Imagery Wayback</a> (Maxar), with capture dates; the southwest corner of the right image was taken in November 2021 · Dashed line: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors · Click an image to enlarge</span></figcaption></figure>
+        <p class="deeplink"><a href="farmland-en.html#my-kulai">See the Kulai park in Google satellite imagery</a></p>
+        <p class="src">Sources: <a href="https://www.mida.gov.my/media-release/ytl-data-centers-and-sea-break-ground-with-the-rm1-5bil-first-phase-of-the-500mw-ytl-green-data-center-park-in-johor/" target="_blank" rel="noopener">MIDA (2022)</a>; <a href="https://www.ytlpowerinternational.com/press-releases/ytl-to-advance-ai-development-in-malaysia-in-collaboration-with-nvidia/" target="_blank" rel="noopener">YTL Power International (2023)</a>; satellite imagery: <a href="https://cloudless.eox.at" target="_blank" rel="noopener">EOxCloudless 2025</a></p>
+      </div>
+    </section>
+
+    <section class="step" data-step="17" id="s17">
+      <div class="card">
+        <div class="kicker"><span class="my">Reserved capacity</span></div>
+        <h2>The grid is built ahead for capital’s future demand</h2>
+        <div class="bars" role="img" aria-label="TNB to the end of 2024: 5.9GW contracted, 1.9GW connected, 0.405GW actual load. MITI, June 2025: 1.276GW declared maximum demand, 0.603GW actual load">
+          <div class="bars-h">TNB connection contracts, to the end of 2024</div>
+          <div class="bar-row"><span class="bl">Contracted</span><span class="bt"><i class="o" style="width:100%"></i></span><span class="bv">5.9GW</span></div>
+          <div class="bar-row"><span class="bl">Connected</span><span class="bt"><i class="g" style="width:32.2%"></i></span><span class="bv">1.9GW</span></div>
+          <div class="bar-row"><span class="bl">Actual load</span><span class="bt"><i class="k" style="width:6.9%"></i></span><span class="bv hl">0.405GW</span></div>
+          <div class="bars-h">MITI reply to Parliament: all data centers, June 2025</div>
+          <div class="bar-row"><span class="bl">Declared maximum demand</span><span class="bt"><i class="o" style="width:21.6%"></i></span><span class="bv">1.276GW</span></div>
+          <div class="bar-row"><span class="bl">Actual load</span><span class="bt"><i class="k" style="width:10.2%"></i></span><span class="bv hl">0.603GW</span></div>
+        </div>
+        <p class="fig-note">Bar length is proportional to GW. The two sets of figures are counted differently: the first are TNB connection contracts, the second declared demand.</p>
+        <p>Actual load in December 2024 was only <b>405MW</b>, about 21% of connected capacity; in June 2025, the actual load of all data centers was 603MW, about <b>47%</b> of declared maximum demand. What the state has committed may well be <b>reserved capacity</b>: an externalization that comes before actual use and is harder to see. How these investments enter the tariff base, and who pays for them, remains to be examined.</p>
+        <p class="src">Sources: <a href="https://www.tnb.com.my/assets/quarterly_results/Analyst_Briefing_4QFY2024_for_Website.pdf" target="_blank" rel="noopener">Tenaga Nasional Berhad (2025, pp. 13, 17)</a>; <a href="https://w.media/data-centers-in-malaysia-consume-50-of-declared-demand-risks-stranded-assets/" target="_blank" rel="noopener">W.Media (2025)</a></p>
+      </div>
+    </section>
+
+    <section class="step" data-step="18" id="s18">
+      <div class="card">
+        <div class="kicker"><span>The regulatory turn after 2024</span></div>
+        <h2>Re-internalization, or spatial relocation?</h2>
+        <figure class="photo"><a class="ph" href="https://commons.wikimedia.org/wiki/File:%E5%8D%94%E5%92%8C%E7%99%BC%E9%9B%BB%E5%BB%A0FUJI8449.jpg" target="_blank" rel="noopener" aria-label="Open the original on Wikimedia Commons: Taipower’s Hsieh-ho Power Plant in Keelung"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/%E5%8D%94%E5%92%8C%E7%99%BC%E9%9B%BB%E5%BB%A0FUJI8449.jpg?width=960" alt="Taipower’s Hsieh-ho Power Plant in Keelung" width="960" height="640" loading="lazy" decoding="async"></a><figcaption>Taipower’s Hsieh-ho Power Plant in Keelung (2015); in 2026 Taipower named the area around it as a possible data center zone.<span class="credit">Taiwankengo · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a> · <a href="https://commons.wikimedia.org/wiki/File:%E5%8D%94%E5%92%8C%E7%99%BC%E9%9B%BB%E5%BB%A0FUJI8449.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
+        <p>The test is <b>who bears</b> the cost, and <b>where</b>.</p>
+        <div class="twocol">
+          <div>
+            <h3>Re-internalization</h3>
+            <ul>
+              <li class="tw">Taiwan: electricity prices for data centers raised by 15% to 25% (2024)</li>
+              <li class="tw">Taiwan: water consumption fee for large water users (2023)</li>
+              <li class="my">Malaysia: RP4 tariffs itemized by cost component (2025)</li>
+              <li class="my">Selangor: dedicated water tariff for data centers (2025)</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Spatial relocation</h3>
+            <ul>
+              <li class="tw">Taiwan: data centers pushed toward the Tatan and Hsieh-ho power plants</li>
+              <li class="my">Malaysia: data centers pushed toward recycled water and renewable energy</li>
+              <li class="tbd">To be tested: whether plantations are being turned into solar farms</li>
+            </ul>
+          </div>
+        </div>
+        <p class="verdict">The paper therefore revises H3: partial, price-based re-internalization coexists with spatial relocation.</p>
+        <p class="src">Sources: <a href="https://www.cna.com.tw/news/afe/202403220343.aspx" target="_blank" rel="noopener">Central News Agency (2024)</a>; <a href="https://gazette2.nat.gov.tw/EG_FileManager/eguploadpub/eg029004/ch04/type1/gov31/num5/images/AA.pdf" target="_blank" rel="noopener">Ministry of Economic Affairs (2023)</a>; <a href="https://www.bernama.com/en/news.php?id=2436381" target="_blank" rel="noopener">Bernama (2025)</a>; <a href="https://www.malaymail.com/news/malaysia/2025/08/01/selangor-water-tariffs-to-rise-from-sept-1-no-changes-for-low-use-domestic-users-new-rate-introduced-for-data-centres/186146" target="_blank" rel="noopener">Malay Mail (2025)</a>; <a href="https://udn.com/news/story/7238/9629060" target="_blank" rel="noopener">United Daily News (2026)</a>; <a href="https://www.nst.com.my/news/nation/2025/11/1324188/johor-tightens-approvals-data-centres" target="_blank" rel="noopener">New Straits Times (2025)</a></p>
+      </div>
+    </section>
+
+    <section class="step" data-step="19" id="s19">
+      <div class="card">
+        <div class="kicker"><span>Scope conditions</span></div>
+        <h2>First, be clear about scale and geography</h2>
+        <p class="sq-cap">Power: TSMC is about 5 to 7 times Malaysia’s data centers</p>
+        <div class="sq" role="img" aria-label="TSMC’s average load from its global electricity use in 2024 was about 2.9GW; Malaysia’s data centers had an actual load of 0.4 to 0.6GW">
+          <div class="sq-col"><div class="sq-frame"><div class="sq-box tw" style="width:120px;height:120px"></div></div><b>2.9GW</b><span>TSMC’s average load from its global electricity use, 2024</span></div>
+          <div class="sq-col"><div class="sq-frame"><div class="sq-box my" style="width:55px;height:55px"></div></div><b>0.4 to 0.6GW</b><span>Actual load of Malaysia’s data centers (drawn at the upper bound)</span></div>
+        </div>
+        <p class="sq-cap">Water: the raw water Singapore may draw under the agreement is over a hundred times what Johor’s data centers use</p>
+        <div class="sq" role="img" aria-label="Under the 1962 agreement about 1.1 billion liters of raw water a day may be drawn; Johor’s data centers use 9.07 million liters a day">
+          <div class="sq-col"><div class="sq-frame"><div class="sq-box water" style="width:120px;height:120px"></div></div><b>About 1.1 billion liters a day</b><span>Raw water that may be drawn under the 1962 agreement</span></div>
+          <div class="sq-col"><div class="sq-frame"><div class="sq-box my" style="width:11px;height:11px"></div></div><b>9.07 million liters a day</b><span>Actual water use of Johor’s data centers</span></div>
+        </div>
+        <p class="fig-note">Areas are proportional to the values.</p>
+        <p>Much of the difference between the two countries may come from industry type and scale rather than from the relationship between state and capital itself; Johor’s position next to Singapore is a geographic scope condition. The cross-border externalization of water is mainly the historical structure of the 1962 agreement, to which data centers so far add only at the margin; the cross-border spillover that holds up better is likely in land and grid capacity.</p>
+        <p class="src">Sources: <a href="https://ec.ltn.com.tw/article/paper/1725922" target="_blank" rel="noopener">Liberty Times (2025)</a>; <a href="https://www.tnb.com.my/assets/quarterly_results/Analyst_Briefing_4QFY2024_for_Website.pdf" target="_blank" rel="noopener">Tenaga Nasional Berhad (2025)</a>; <a href="https://www.businesstoday.com.my/2025/11/05/malaysia-records-143-data-centre-projects-since-2021-valued-at-rm144-billion/" target="_blank" rel="noopener">Business Today (2025b)</a>; <a href="https://www.mfa.gov.sg/about-mfa/key-issues/water-agreements/" target="_blank" rel="noopener">Ministry of Foreign Affairs Singapore (n.d.)</a></p>
+      </div>
+    </section>
+
+    <section class="step" data-step="20" id="s20">
+      <div class="card">
+        <div class="kicker"><span>Conclusion</span></div>
+        <h2>The other side of state capacity</h2>
+        <figure class="photo"><a class="ph" href="https://commons.wikimedia.org/wiki/File:%E5%8F%B0%E9%9B%BB%E5%8F%B0%E5%8D%97%E9%B9%BD%E7%94%B0%E5%85%89%E9%9B%BB%E5%A0%B4.jpg" target="_blank" rel="noopener" aria-label="Open the original on Wikimedia Commons: Taipower’s solar farm on salt pans in Tainan"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/%E5%8F%B0%E9%9B%BB%E5%8F%B0%E5%8D%97%E9%B9%BD%E7%94%B0%E5%85%89%E9%9B%BB%E5%A0%B4.jpg?width=960" alt="Taipower’s solar farm on salt pans in Tainan" width="960" height="516" loading="lazy" decoding="async"></a><figcaption>Taipower’s solar farm on former salt pans in Tainan (2020).<span class="credit">Taiwan Power Company · Government Website Open Information Announcement · <a href="https://commons.wikimedia.org/wiki/File:%E5%8F%B0%E9%9B%BB%E5%8F%B0%E5%8D%97%E9%B9%BD%E7%94%B0%E5%85%89%E9%9B%BB%E5%A0%B4.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></span></figcaption></figure>
+        <p>State capacity is not only about bearing the risks of technological catch-up; it also includes <b>the capacity to marshal land, water and the grid</b>. The other side of that capacity is the continual shifting of costs onto particular communities and geographic peripheries.</p>
+        <p class="quote">When server farms and solar panels replace oil palm estates and rice fields, who loses the land, and who bears the cost of the water and power?</p>
+        <p>The next phase of fieldwork will be based in Johor and in the farming and fishing villages of central and southern Taiwan:</p>
+        <ul class="next">
+          <li>Tracking the gap between contracted maximum demand and actual load over time</li>
+          <li>The situation of estate workers as Johor’s plantations turn into data centers and solar farms</li>
+          <li>Compiling cadastral and archival records of farmland expropriation and conversion for Taiwan’s science parks</li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<div class="end">
+  <section class="refs" aria-labelledby="refs-h">
+    <h2 id="refs-h">References</h2>
+    <p class="refs-note">Works and data cited on this page, in the paper’s reference style; items with a URL or DOI open directly. Chinese-language sources keep their original titles, with English translations in brackets.</p>
+    <ol>
+      <li id="ref-amcham2019">AmCham Taiwan. (2019, March). What are Taiwan's science parks? Taiwan Business TOPICS. <a href="https://topics.amcham.com.tw/2019/03/what-are-taiwans-science-parks/" target="_blank" rel="noopener">https://topics.amcham.com.tw/2019/03/what-are-taiwans-science-parks/</a></li>
+      <li id="ref-amsden2003">Amsden, A. H., &amp; Chu, W.-W. (2003). Beyond late development: Taiwan's upgrading policies. MIT Press.</li>
+      <li id="ref-bernama2025">Bernama. (2025, June 20). New electricity tariff: Over 23.6 mln domestic users in Peninsular Malaysia to enjoy fairer rates. <a href="https://www.bernama.com/en/news.php?id=2436381" target="_blank" rel="noopener">https://www.bernama.com/en/news.php?id=2436381</a></li>
+      <li id="ref-brenner2004">Brenner, N. (2004). New state spaces: Urban governance and the rescaling of statehood. Oxford University Press.</li>
+      <li id="ref-bunnell2004">Bunnell, T. (2004). Malaysia, modernity and the Multimedia Super Corridor: A critical geography of intelligent landscapes. RoutledgeCurzon.</li>
+      <li id="ref-bt2025b">Business Today. (2025b, November 5). Malaysia records 143 data centre projects since 2021 valued at RM144 billion. <a href="https://www.businesstoday.com.my/2025/11/05/malaysia-records-143-data-centre-projects-since-2021-valued-at-rm144-billion/" target="_blank" rel="noopener">https://www.businesstoday.com.my/2025/11/05/malaysia-records-143-data-centre-projects-since-2021-valued-at-rm144-billion/</a></li>
+      <li id="ref-bt2010">Business Today Taiwan. (2010, August 12). <span lang="zh-Hant">經濟與環保　雙贏還是零和？</span> [Economy and environment: Win-win or zero-sum?]. <a href="https://www.businesstoday.com.tw/article/category/80392/post/201008120020/" target="_blank" rel="noopener">https://www.businesstoday.com.tw/article/category/80392/post/201008120020/</a></li>
+      <li id="ref-cna2020">Central News Agency. (2020, April 9). <span lang="zh-Hant">農田水利會立專法改制公務機關　不受國產法規範</span> [Irrigation associations to become government agencies under a dedicated act, outside the National Property Act]. <a href="https://www.cna.com.tw/news/aipl/202004090157.aspx" target="_blank" rel="noopener">https://www.cna.com.tw/news/aipl/202004090157.aspx</a></li>
+      <li id="ref-cna2021">Central News Agency. (2021, November 27). <span lang="zh-Hant">枯水期祭全台水稻輪作制　經部拚年省一座石門水庫</span> [Rice rotation across Taiwan in the dry season: Ministry of Economic Affairs aims to save a Shimen Reservoir’s worth of water a year]. <a href="https://www.cna.com.tw/news/afe/202111270016.aspx" target="_blank" rel="noopener">https://www.cna.com.tw/news/afe/202111270016.aspx</a></li>
+      <li id="ref-cna2024">Central News Agency. (2024, March 22). <span lang="zh-Hant">4月起漲電價　逾9成住宅電費月增近20元、產業最高調25%</span> [Electricity prices rise from April: monthly bills up by nearly NT$20 for over 90% of households, and by up to 25% for industry]. <a href="https://www.cna.com.tw/news/afe/202403220343.aspx" target="_blank" rel="noopener">https://www.cna.com.tw/news/afe/202403220343.aspx</a></li>
+      <li id="ref-ctee2024">Commercial Times. (2024, June 18). <span lang="zh-Hant">台積嘉科挖到寶　二廠急啟動</span> [TSMC’s Chiayi Science Park site turns up archaeological finds; second plant rushed ahead]. <a href="https://www.ctee.com.tw/news/20240618700036-439901" target="_blank" rel="noopener">https://www.ctee.com.tw/news/20240618700036-439901</a></li>
+      <li id="ref-dcd2025">DatacenterDynamics. (2025, October 29). The past, present and future of Johor. <a href="https://www.datacenterdynamics.com/en/analysis/the-past-present-and-future-of-johor/" target="_blank" rel="noopener">https://www.datacenterdynamics.com/en/analysis/the-past-present-and-future-of-johor/</a></li>
+      <li id="ref-moa">Department of Statistics, Ministry of Agriculture. (n.d.). <span lang="zh-Hant">農業統計年報</span> [Agricultural statistics yearbook] (2021 and 2025 eds.). <a href="https://agrstat.moa.gov.tw/moasdweb/book/Book.aspx" target="_blank" rel="noopener">https://agrstat.moa.gov.tw/moasdweb/book/Book.aspx</a></li>
+      <li id="ref-descals2021">Descals, A., Wich, S., Meijaard, E., Gaveau, D. L. A., Peedell, S., &amp; Szantoi, Z. (2021). High-resolution global map of smallholder and industrial closed-canopy oil palm plantations. Earth System Science Data, 13(3), 1211–1231. <a href="https://doi.org/10.5194/essd-13-1211-2021" target="_blank" rel="noopener">https://doi.org/10.5194/essd-13-1211-2021</a> (data: <a href="https://doi.org/10.5281/zenodo.4473715" target="_blank" rel="noopener">https://doi.org/10.5281/zenodo.4473715</a>)</li>
+      <li id="ref-edn2026">Economic Daily News. (2026, July 13). <span lang="zh-Hant">嘉科二期動土　強化半導體鏈</span> [Chiayi Science Park phase two breaks ground, strengthening the semiconductor supply chain]. udn.com. <a href="https://udn.com/news/story/7240/9623437" target="_blank" rel="noopener">https://udn.com/news/story/7240/9623437</a></li>
+      <li id="ref-edwards1993">Edwards, C., &amp; Jomo K. S. (1993). Policy options for Malaysian industrialisation. In Jomo K. S. (Ed.), Industrialising Malaysia: Policy, performance, prospects (pp. 316–334). Routledge.</li>
+      <li id="ref-feng2023">Feng, E. (2023, April 19). Epic drought in Taiwan pits farmers against high-tech factories for water. NPR. <a href="https://www.kunc.org/npr-news/npr-news/2023-04-19/epic-drought-in-taiwan-pits-farmers-against-high-tech-factories-for-water" target="_blank" rel="noopener">https://www.kunc.org/npr-news/npr-news/2023-04-19/epic-drought-in-taiwan-pits-farmers-against-high-tech-factories-for-water</a></li>
+      <li id="ref-yan2021b">Gan, S. T. (2021b). <span lang="zh-Hant">族裔政治的交纏：馬來西亞國家空間生產</span> [Entangled ethnic politics: The production of state space in Malaysia]. <span lang="zh-Hant">中國地理學會會刊</span> [Bulletin of the Geographical Society of China], 67, 33–54.</li>
+      <li id="ref-hsiung1996">Hsiung, P.-C. (1996). Living rooms as factories: Class, gender, and the satellite factory system in Taiwan. Temple University Press.</li>
+      <li id="ref-kaap2025">Kadir, Andri &amp; Partners. (2025, December). Malaysia's big data centre push: Strong potential, real risks [Briefing]. <a href="https://www.kaaplaw.com" target="_blank" rel="noopener">https://www.kaaplaw.com</a></li>
+      <li id="ref-kapp1950">Kapp, K. W. (1950). The social costs of private enterprise. Harvard University Press.</li>
+      <li id="ref-kollar2026">Kollar, J. (2026). Fallowing the fields, feeding the fabs: Territorial restructuring and the political-industrial ecology of high-tech Taiwan. Environment and Planning E: Nature and Space, 9(2), 751–776. <a href="https://doi.org/10.1177/25148486251406484" target="_blank" rel="noopener">https://doi.org/10.1177/25148486251406484</a></li>
+      <li id="ref-lee2026">Lee, C., &amp; Hutchinson, F. E. (2026). Malaysia's semiconductor industry: Performance, pitfalls and potential (Trends in Southeast Asia, TRS16/26). ISEAS–Yusof Ishak Institute. <a href="https://bookshop.iseas.edu.sg/publication/8011" target="_blank" rel="noopener">https://bookshop.iseas.edu.sg/publication/8011</a></li>
+      <li id="ref-levien2013">Levien, M. (2013). Regimes of dispossession: From steel towns to special economic zones. Development and Change, 44(2), 381–407. <a href="https://doi.org/10.1111/dech.12012" target="_blank" rel="noopener">https://doi.org/10.1111/dech.12012</a></li>
+      <li id="ref-ltn2025">Liberty Times. (2025, September 28). <span lang="zh-Hant">AI需求帶動　台積電今年用電占比挑戰10%</span> [Driven by AI demand, TSMC’s share of Taiwan’s electricity use may reach 10% this year]. <a href="https://ec.ltn.com.tw/article/paper/1725922" target="_blank" rel="noopener">https://ec.ltn.com.tw/article/paper/1725922</a></li>
+      <li id="ref-mm2025">Malay Mail. (2025, August 1). Selangor water tariffs to rise from Sept 1; no changes for low-use domestic users, new rate introduced for data centres. <a href="https://www.malaymail.com/news/malaysia/2025/08/01/selangor-water-tariffs-to-rise-from-sept-1-no-changes-for-low-use-domestic-users-new-rate-introduced-for-data-centres/186146" target="_blank" rel="noopener">https://www.malaymail.com/news/malaysia/2025/08/01/selangor-water-tariffs-to-rise-from-sept-1-no-changes-for-low-use-domestic-users-new-rate-introduced-for-data-centres/186146</a></li>
+      <li id="ref-mida2022">Malaysian Investment Development Authority. (2022, August 25). YTL Data Centers and Sea break ground with the RM1.5bil first phase of the 500MW YTL Green Data Center Park in Johor [Media release]. <a href="https://www.mida.gov.my/media-release/ytl-data-centers-and-sea-break-ground-with-the-rm1-5bil-first-phase-of-the-500mw-ytl-green-data-center-park-in-johor/" target="_blank" rel="noopener">https://www.mida.gov.my/media-release/ytl-data-centers-and-sea-break-ground-with-the-rm1-5bil-first-phase-of-the-500mw-ytl-green-data-center-park-in-johor/</a></li>
+      <li id="ref-mpob2020">Malaysian Palm Oil Board. (2020). Oil palm planted area as at December 2019 [Data table]. <a href="https://bepi.mpob.gov.my/images/area/2019/Area_summary.pdf" target="_blank" rel="noopener">https://bepi.mpob.gov.my/images/area/2019/Area_summary.pdf</a></li>
+      <li id="ref-mpob2025">Malaysian Palm Oil Board. (2025). Oil palm planted area as at December 2024 [Data table]. <a href="https://bepi.mpob.gov.my/images/area/2024/Area_summary2024.pdf" target="_blank" rel="noopener">https://bepi.mpob.gov.my/images/area/2024/Area_summary2024.pdf</a></li>
+      <li id="ref-mpob2026">Malaysian Palm Oil Board. (2026). Oil palm planted area as at December 2025 [Data table]. <a href="https://bepi.mpob.gov.my/images/area/2025/Area_summary2025.pdf" target="_blank" rel="noopener">https://bepi.mpob.gov.my/images/area/2025/Area_summary2025.pdf</a></li>
+      <li id="ref-mathews1997">Mathews, J. A. (1997). A Silicon Valley of the East: Creating Taiwan's semiconductor industry. California Management Review, 39(4), 26–54. <a href="https://doi.org/10.2307/41165909" target="_blank" rel="noopener">https://doi.org/10.2307/41165909</a></li>
+      <li id="ref-moea2023">Ministry of Economic Affairs. (2023, January 6). <span lang="zh-Hant">耗水費徵收辦法</span> [Regulations for the collection of water consumption fees]. Executive Yuan Gazette. <a href="https://gazette2.nat.gov.tw/EG_FileManager/eguploadpub/eg029004/ch04/type1/gov31/num5/images/AA.pdf" target="_blank" rel="noopener">https://gazette2.nat.gov.tw/EG_FileManager/eguploadpub/eg029004/ch04/type1/gov31/num5/images/AA.pdf</a></li>
+      <li id="ref-mfa">Ministry of Foreign Affairs Singapore. (n.d.). Water agreements. <a href="https://www.mfa.gov.sg/about-mfa/key-issues/water-agreements/" target="_blank" rel="noopener">https://www.mfa.gov.sg/about-mfa/key-issues/water-agreements/</a></li>
+      <li id="ref-moore2015">Moore, J. W. (2015). Capitalism in the web of life: Ecology and the accumulation of capital. Verso.</li>
+      <li id="ref-nst2025">New Straits Times. (2025, November 27). Johor tightens approvals for data centres. <a href="https://www.nst.com.my/news/nation/2025/11/1324188/johor-tightens-approvals-data-centres" target="_blank" rel="noopener">https://www.nst.com.my/news/nation/2025/11/1324188/johor-tightens-approvals-data-centres</a></li>
+      <li id="ref-ong1987">Ong, A. (1987). Spirits of resistance and capitalist discipline: Factory women in Malaysia. State University of New York Press.</li>
+      <li id="ref-ong2000">Ong, A. (2000). Graduated sovereignty in South-East Asia. Theory, Culture &amp; Society, 17(4), 55–75.</li>
+      <li id="ref-piara">Piarapakaran S. (n.d.). Green equilibrium: Water resources are under state govt purview. The Sun. <a href="https://www.thesundaily.my/home/green-equilibrium-water-resources-are-under-state-govt-purview-NM9907197" target="_blank" rel="noopener">https://www.thesundaily.my/home/green-equilibrium-water-resources-are-under-state-govt-purview-NM9907197</a></li>
+      <li id="ref-potapov2022">Potapov, P., Turubanova, S., Hansen, M. C., Tyukavina, A., Zalles, V., Khan, A., Song, X.-P., Pickens, A., Shen, Q., &amp; Cortez, J. (2022). Global maps of cropland extent and change show accelerated cropland expansion in the twenty-first century. Nature Food, 3(1), 19–28. <a href="https://doi.org/10.1038/s43016-021-00429-z" target="_blank" rel="noopener">https://doi.org/10.1038/s43016-021-00429-z</a></li>
+      <li id="ref-rasiah2010">Rasiah, R. (2010). Are electronics firms in Malaysia catching up in the technology ladder? Journal of the Asia Pacific Economy, 15(3), 301–319. <a href="https://doi.org/10.1080/13547860.2010.494910" target="_blank" rel="noopener">https://doi.org/10.1080/13547860.2010.494910</a></li>
+      <li id="ref-rasiah2015">Rasiah, R. (2015). The industrial policy experience of the electronics industry in Malaysia (WIDER Working Paper 2015/123). UNU-WIDER. <a href="https://doi.org/10.35188/UNU-WIDER/2015/012-6" target="_blank" rel="noopener">https://doi.org/10.35188/UNU-WIDER/2015/012-6</a></li>
+      <li id="ref-reuters2026">Reuters. (2026, July 13). TSMC to add 2 advanced chip packaging plants in Chiayi, Taiwan minister says. The Star. <a href="https://www.thestar.com.my/tech/tech-news/2026/07/13/tsmc-to-add-2-advanced-chip-packaging-plants-in-chiayi-taiwan-minister-says" target="_blank" rel="noopener">https://www.thestar.com.my/tech/tech-news/2026/07/13/tsmc-to-add-2-advanced-chip-packaging-plants-in-chiayi-taiwan-minister-says</a></li>
+      <li id="ref-tt2011">Taipei Times. (2011, August 8). Changhua farmers protest CTSP irrigation water plans. <a href="https://www.taipeitimes.com/News/front/archives/2011/08/08/2003510205" target="_blank" rel="noopener">https://www.taipeitimes.com/News/front/archives/2011/08/08/2003510205</a></li>
+      <li id="ref-taipeitimes2024">Taipei Times. (2024, June 19). TSMC plant halted over possible archeological find. <a href="https://www.taipeitimes.com/News/biz/archives/2024/06/19/2003819546" target="_blank" rel="noopener">https://www.taipeitimes.com/News/biz/archives/2024/06/19/2003819546</a></li>
+      <li id="ref-tnews2024">Taiwan News. (2024a, March 18). Taiwan's TSMC expands advanced packaging capacity in Chiayi. <a href="https://www.taiwannews.com.tw/news/5117164" target="_blank" rel="noopener">https://www.taiwannews.com.tw/news/5117164</a></li>
+      <li id="ref-tnzh2024">Taiwan News. (2024b, December 15). <span lang="zh-Hant">台積電CoWoS加速擴產委外　2025年封測廠搭順風車</span> [TSMC speeds up CoWoS expansion and outsourcing; packaging and testing firms ride the wave in 2025]. <a href="https://www.taiwannews.com.tw/zh/news/5993263" target="_blank" rel="noopener">https://www.taiwannews.com.tw/zh/news/5993263</a></li>
+      <li id="ref-technews2024a">TechNews. (2024a, August 12). <span lang="zh-Hant">經濟部：北部電廠電網不夠，要 AI 大廠投資請支持台電蓋電廠</span> [Ministry of Economic Affairs: Power plants and grid in the north are not enough; to get big AI companies to invest, support Taipower building power plants]. <a href="https://finance.technews.tw/2024/08/12/want-big-ai-companies-to-invest-please-support-building-power-plants/" target="_blank" rel="noopener">https://finance.technews.tw/2024/08/12/want-big-ai-companies-to-invest-please-support-building-power-plants/</a></li>
+      <li id="ref-tnb2023">Tenaga Nasional Berhad. (2023). TNB establishes exclusive green lane pathway and strategic offerings for Malaysia's data centre market [Press release]. <a href="https://www.tnb.com.my/assets/press_releases/2023080944_ENG.pdf" target="_blank" rel="noopener">https://www.tnb.com.my/assets/press_releases/2023080944_ENG.pdf</a></li>
+      <li id="ref-tnb2025">Tenaga Nasional Berhad. (2025). Analyst briefing: 4QFY2024 [Presentation slides]. <a href="https://www.tnb.com.my/assets/quarterly_results/Analyst_Briefing_4QFY2024_for_Website.pdf" target="_blank" rel="noopener">https://www.tnb.com.my/assets/quarterly_results/Analyst_Briefing_4QFY2024_for_Website.pdf</a></li>
+      <li id="ref-bt2025sg">The Business Times. (2025, November 19). AI boom is turning Malaysia's palm oil estates into data centres. Reprinted in MPOB Palm News. <a href="https://prestasisawit.mpob.gov.my/en/palmnews/news/38712" target="_blank" rel="noopener">https://prestasisawit.mpob.gov.my/en/palmnews/news/38712</a></li>
+      <li id="ref-trendforce2024">TrendForce. (2024, June 12). [News] TSMC accelerates CoWoS advanced packaging capacity construction, beginning equipment procurement in its Chiayi plant. <a href="https://www.trendforce.com/news/2024/06/12/news-tsmc-accelerates-cowos-advanced-packaging-capacity-construction-beginning-equipment-procurement-in-its-chiayi-plant/" target="_blank" rel="noopener">https://www.trendforce.com/news/2024/06/12/news-tsmc-accelerates-cowos-advanced-packaging-capacity-construction-beginning-equipment-procurement-in-its-chiayi-plant/</a></li>
+      <li id="ref-udn2026">United Daily News. (2026, July 15). <span lang="zh-Hant">北部5MW以上AI資料中心解禁　曾文生點名兩地方可提專區方案</span> [Ban on AI data centers of 5MW or more in the north lifted; Tseng Wen-sheng names two places that can propose dedicated zones]. <a href="https://udn.com/news/story/7238/9629060" target="_blank" rel="noopener">https://udn.com/news/story/7238/9629060</a></li>
+      <li id="ref-wmedia2024">W.Media. (2024, October 31). Johor: From 10MW to 1,500MW in three years. <a href="https://w.media/johor-from-10mw-to-1500mw-in-three-years/" target="_blank" rel="noopener">https://w.media/johor-from-10mw-to-1500mw-in-three-years/</a></li>
+      <li id="ref-wmedia2025">W.Media. (2025, November 6). Data centers in Malaysia consume 50% of declared demand; risks stranded assets. <a href="https://w.media/data-centers-in-malaysia-consume-50-of-declared-demand-risks-stranded-assets/" target="_blank" rel="noopener">https://w.media/data-centers-in-malaysia-consume-50-of-declared-demand-risks-stranded-assets/</a></li>
+      <li id="ref-ytl2023">YTL Power International. (2023, December 8). YTL to advance AI development in Malaysia in collaboration with NVIDIA [Press release]. <a href="https://www.ytlpowerinternational.com/press-releases/ytl-to-advance-ai-development-in-malaysia-in-collaboration-with-nvidia/" target="_blank" rel="noopener">https://www.ytlpowerinternational.com/press-releases/ytl-to-advance-ai-development-in-malaysia-in-collaboration-with-nvidia/</a></li>
+      <li id="ref-zanaga2022">Zanaga, D., Van De Kerchove, R., Daems, D., De Keersmaecker, W., Brockmann, C., Kirches, G., Wevers, J., Cartus, O., Santoro, M., Fritz, S., Lesiv, M., Herold, M., Tsendbazar, N.-E., Xu, P., Ramoino, F., &amp; Arino, O. (2022). ESA WorldCover 10 m 2021 v200 [Data set]. Zenodo. <a href="https://doi.org/10.5281/zenodo.7254221" target="_blank" rel="noopener">https://doi.org/10.5281/zenodo.7254221</a></li>
+    </ol>
+  </section>
+  <footer>
+    <b>About this page:</b> Based on the conference paper “Chip Island and Cloud Enclave: Who Pays for Taiwan’s and Malaysia’s National Technological Spaces?” (in Chinese), presented at ACSEAST 2026, the annual conference of the Taiwan Association of Southeast Asian Studies. These are preliminary findings; the data and arguments are still being revised. Please do not cite.<br>
+    <b>Map:</b> Markers show approximate locations; circles, dashed lines and solid lines are schematic and do not show actual extents or pipeline routes. The “Land from space” sections are the exception: their overlays and dashed frames are actual extents drawn from the data below, and the area of each Malaysian state’s circle is proportional to the oil palm area it lost. Basemap: OpenStreetMap street map by default (© OpenStreetMap contributors); the buttons at the top right of the map switch to <a href="https://cloudless.eox.at" target="_blank" rel="noopener">EOxCloudless</a> satellite imagery (EOX IT Services GmbH, containing modified Copernicus Sentinel data 2025, for non-commercial use under <a href="https://cloudless.eox.at/documentation/license" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>).<br>
+    <b>Overlays:</b> Taiwan’s cropland change compares the 2003 and 2019 maps of the <a href="https://doi.org/10.1038/s43016-021-00429-z" target="_blank" rel="noopener">GLAD global cropland dataset</a> (30-meter cells). “Built over” follows <a href="https://doi.org/10.5281/zenodo.7254221" target="_blank" rel="noopener">ESA WorldCover 2021</a> (CC BY 4.0; a cell counts when 5 or more of its nine 10-meter pixels are built-up); areas are adjusted for latitude and were recomputed for this page. When the map is zoomed out, orange and red are drawn stronger so that their distribution shows. Oil palm uses the 2019 data of <a href="https://doi.org/10.5281/zenodo.4473715" target="_blank" rel="noopener">Descals et al. (2021)</a> (CC BY 4.0). Park boundaries come from <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> (ODbL). For Malaysia’s cropland change calculated the same way, see the <a href="farmland-en.html">farmland loss map</a>. The 2018 satellite imagery is EOxCloudless 2018 (containing modified Copernicus Sentinel data 2017–2018, CC BY-NC-SA 4.0).<br>
+    <b>Satellite comparisons:</b> The before-and-after pairs in the “Land from space” sections use high-resolution imagery from <a href="https://livingatlas.arcgis.com/wayback/" target="_blank" rel="noopener">Esri World Imagery Wayback</a> (Maxar), labeled with capture dates; the 1999 image is NASA GWELD’s annual Landsat composite (via NASA GIBS).<br>
+    <b>Photos:</b> All from Wikimedia Commons, under open licenses such as Creative Commons (CC BY, CC BY-SA) or Taiwan’s Government Website Open Information Announcement; authors and licenses are given in each caption, and clicking a photo opens its original page.
+  </footer>
+  <div class="byline">
+    <span class="role">Researchers</span>
+    <span class="names">Gan Sin Tiong<span class="sep">·</span>Wu Yun-Ching</span>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function(){
+  var COL = {tw:'#A6392C', my:'#2E6B4E', sg:'#5c5c5c'};
+
+  // Approximate locations (schematic, see footer).
+  var P = {
+    kepz:     {ll:[22.590,120.305], c:'tw', dir:'left',   name:'Export processing zones, southern Taiwan', note:'1960s: US electronics firms move in'},
+    bayan:    {ll:[5.315,100.285],  c:'my', dir:'left',   name:'Bayan Lepas Free Trade Zone, Penang', note:'Opened in 1972'},
+    hsp:      {ll:[24.7745,121.0055], c:'tw', dir:'right', name:'Hsinchu Science Park', note:'Established 1980 (prelude)'},
+    stsp:     {ll:[23.100,120.286], c:'tw', dir:'left',   name:'Southern Taiwan Science Park', note:'From the mid-1990s'},
+    cyber:    {ll:[2.922,101.655],  c:'my', dir:'right',  name:'Cyberjaya', note:'Former Prang Besar oil palm estate; opened 1997'},
+    kulim:    {ll:[5.365,100.562],  c:'my', dir:'right',  name:'Kulim Hi-Tech Park', note:'Silterra, in production from 2000'},
+    erlin:    {ll:[23.915,120.395], c:'tw', dir:'left',   name:'CTSP Phase 4, Erlin Park', note:'Planned: 155,000 tonnes of industrial water a day'},
+    xizhou:   {ll:[23.845,120.500], c:'tw', dir:'right',  name:'Cizaipi Canal, Xizhou Township', note:'Farmers rallied here in August 2011'},
+    taoyuan:  {ll:[24.993,121.301], c:'tw', dir:'bottom', name:'Taoyuan', note:'North of here, no power for new data centers of 5MW+ (2024)'},
+    datan:    {ll:[25.0261,121.0472], c:'tw', dir:'left',  name:'Tatan Power Plant', note:'Named in July 2026 as a possible data center zone'},
+    hsiehho:  {ll:[25.1573,121.7393], c:'tw', dir:'right', name:'Hsieh-ho Power Plant', note:'Named in July 2026 as a possible data center zone'},
+    jb:       {ll:[1.4927,103.7414], c:'my', dir:'left',   name:'Johor data center cluster', note:'Around Johor Bahru'},
+    kulai:    {ll:[1.660,103.600],  c:'my', dir:'left',   name:'Kulai', note:'YTL Power and NVIDIA data center'},
+    jriver:   {ll:[1.740,103.900],  c:'my', dir:'right',  name:'Johor River intake', note:'1962 agreement: up to 250 million gallons a day'},
+    sg:       {ll:[1.3521,103.8198], c:'sg', dir:'bottom', name:'Singapore', note:'Data center approvals paused 2019–2022'},
+    putrajaya:{ll:[2.9264,101.6964], c:'my', dir:'right',  name:'Putrajaya (federal)', note:'Green Lane, tax incentives, Johor-Singapore SEZ'},
+    selangor: {ll:[3.0738,101.5183], c:'my', dir:'left',   name:'Selangor', note:'Data center water tariff: RM5.31/m³'}
+  };
+
+  // Satellite chapters (see footer for sources). Farmland overlay tiles exist only for the keys in FARM_IDX:
+  // "z=x:y0-y1,y2;x:...|z=...". Outlines are simplified OpenStreetMap polygons, [lat, lng].
+  var FARM_IDX = '5=26:13-14|6=53:27-28|7=106:54-56;107:54-55|8=213:109-112;214:109-111|9=426:221-222;427:219-224;428:218-223;429:218-220|10=853:442-445;854:440-446;855:439-448;856:438-446;857:437-444,447;858:437-441|11=1707:884-890;1708:882-893;1709:880-893;1710:879-896;1711:878-887,891-896;1712:876-886,888-892;1713:876-879,881-884,887-891;1714:875-889;1715:875-879,881-887,895;1716:875-883;1717:876-880|12=3414:1771-1779;3415:1768-1781;3416:1767-1784;3417:1765-1787;3418:1763-1785;3419:1761-1786;3420:1760-1771,1773-1788;3421:1758-1773,1775-1778,1780,1787-1792;3422:1758-1769,1772,1774,1787,1789-1792;3423:1756-1763,1765-1772,1775,1783-1792;3424:1754-1759,1761-1769,1772,1776,1780,1782-1785;3425:1753-1759,1766-1767,1770,1776-1777,1779-1783;3426:1752-1759,1764-1767,1769,1776-1782;3427:1752-1759,1762-1766,1774-1780;3428:1752-1756,1759,1761-1764,1771-1779;3429:1750-1755,1757-1761,1764,1766,1768-1777;3430:1750-1754,1758-1759,1763-1764,1766-1774;3431:1750-1751,1753-1754,1757-1758,1763-1769,1791;3432:1751,1753-1754,1756-1758,1762,1764-1766;3433:1752,1755-1758,1760-1763;3434:1752-1753,1755,1757-1760;3435:1753';
+  var OUTLINES = {"ytl":[[[1.60893,103.521],[1.61777,103.51359],[1.62604,103.52295],[1.62111,103.52711],[1.6141,103.51887],[1.61071,103.52187]]],"cysp1":[[[23.46913,120.29912],[23.47107,120.29987],[23.47209,120.2967],[23.47815,120.2989],[23.47693,120.3005],[23.47851,120.30197],[23.47856,120.3032],[23.47853,120.30344],[23.47841,120.30371],[23.47732,120.30523],[23.47428,120.30236],[23.47333,120.30174],[23.4732,120.30207],[23.47282,120.3027],[23.47042,120.30571],[23.4695,120.30484],[23.46838,120.30471],[23.46847,120.30396],[23.46877,120.304],[23.46887,120.30239],[23.46892,120.30232],[23.46908,120.30232],[23.46909,120.30208],[23.46892,120.30148],[23.46894,120.30104],[23.46875,120.30105],[23.46882,120.30015]]],"cysp2":[[[23.47053,120.31432],[23.47549,120.30793],[23.47813,120.31036],[23.47903,120.3092],[23.48149,120.3115],[23.47895,120.31476],[23.47639,120.31239],[23.47322,120.31647],[23.47155,120.31493]],[[23.47041,120.31425],[23.46983,120.31409],[23.46701,120.31386],[23.46758,120.31072],[23.46838,120.30471],[23.4695,120.30484],[23.47422,120.30933]]],"ctspTc":[[[24.21034,120.61284],[24.21487,120.61419],[24.21511,120.6145],[24.21495,120.61505],[24.21596,120.61545],[24.21619,120.61573],[24.21621,120.6159],[24.21837,120.61678],[24.21883,120.61725],[24.21917,120.61819],[24.21917,120.62032],[24.2182,120.62069],[24.21822,120.62138],[24.21844,120.62191],[24.21841,120.62278],[24.21873,120.6233],[24.21969,120.62319],[24.22115,120.62283],[24.22289,120.62286],[24.22473,120.62402],[24.22449,120.62474],[24.22474,120.6251],[24.22512,120.62503],[24.22544,120.6252],[24.22562,120.6257],[24.22545,120.62686],[24.22664,120.62775],[24.22562,120.62946],[24.22581,120.62961],[24.22492,120.63109],[24.22248,120.62952],[24.22244,120.62873],[24.22208,120.6285],[24.22173,120.62913],[24.22039,120.62834],[24.21993,120.62696],[24.21892,120.62679],[24.21782,120.62606],[24.21834,120.62466],[24.2175,120.62427],[24.21701,120.62529],[24.21614,120.62564],[24.21565,120.62654],[24.21254,120.62459],[24.213,120.6237],[24.2136,120.62407],[24.21407,120.62375],[24.21472,120.62229],[24.21297,120.62126],[24.21207,120.62081],[24.21084,120.62042],[24.21031,120.62048],[24.20973,120.62142],[24.21097,120.62223],[24.21042,120.62392],[24.20397,120.62205],[24.20327,120.62124],[24.20415,120.61841],[24.2025,120.61766],[24.20216,120.61843],[24.20109,120.61793],[24.1988,120.61713],[24.19822,120.61873],[24.19616,120.61797],[24.19785,120.61251],[24.20059,120.61348],[24.20158,120.60971],[24.19812,120.6081],[24.19896,120.60584],[24.2019,120.60125],[24.20649,120.60302],[24.20607,120.6042],[24.20679,120.60848],[24.20606,120.60937],[24.20532,120.60939],[24.2046,120.61053],[24.2057,120.61149]]],"ctspHl":[[[24.29792,120.72375],[24.29827,120.73204],[24.29305,120.73218],[24.29025,120.73238],[24.2895,120.73204],[24.28816,120.73061],[24.28797,120.72328],[24.2959,120.72405]]]};
+  var PALM_BOUNDS = [[1.570023,103.46],[1.665,103.579991]];
+  // MPOB oil palm planted area, Dec 2019 vs Dec 2024 (hectares lost); positions are rough state centres.
+  var MPOB = [
+    {n:'Johor', ll:[1.95,103.40], ha:98715, pct:13.0, d:'right', lab:true, top:true},
+    {n:'Perak', ll:[4.60,101.05], ha:56176, pct:13.8, d:'left', lab:true},
+    {n:'Pahang', ll:[3.75,102.65], ha:28970, pct:3.8, d:'right', lab:true},
+    {n:'Selangor', ll:[3.35,101.45], ha:27691, pct:21.2, d:'left', lab:true, top:true},
+    {n:'Terengganu', ll:[4.95,103.00], ha:16614, pct:9.2, d:'right'},
+    {n:'Negeri Sembilan', ll:[2.75,102.15], ha:9900, pct:5.2, d:'right'},
+    {n:'Kelantan', ll:[5.30,102.05], ha:7439, pct:4.3, d:'right'},
+    {n:'Melaka', ll:[2.25,102.30], ha:7438, pct:13.0, d:'left'},
+    {n:'Penang', ll:[5.38,100.40], ha:6052, pct:43.9, d:'left'},
+    {n:'Kedah', ll:[5.95,100.70], ha:5195, pct:5.7, d:'left'}
+  ];
+
+  var OVERVIEW = [[0.9,99.6],[25.5,122.2]];
+  var STEPS = [
+    {chip:'Introduction', bounds:OVERVIEW, show:['hsp','stsp','erlin','datan','hsiehho','bayan','kulim','cyber','jb','sg'], labels:false},
+    {chip:'Scene 1 · Taiwan, 2021', bounds:[[22.75,119.9],[25.35,121.95]], show:[], extra:['drought']},
+    {chip:'Scene 2 · Johor, 2025', bounds:[[1.25,103.45],[1.85,104.05]], show:['jb','kulai'], labels:true},
+    {chip:'Core concept: national technological space', bounds:OVERVIEW, show:['kepz','bayan','hsp','stsp','cyber','kulim','erlin','datan','hsiehho','jb','sg'], labels:false},
+    {chip:'Prelude · 1960s–1980s', bounds:[[4.6,99.8],[23.6,121.2]], show:['kepz','bayan'], labels:true},
+    {chip:'Prelude to Phase 1 · Taiwan', bounds:[[22.85,119.95],[25.05,121.4]], show:['hsp','stsp'], labels:true},
+    {chip:'Phase 1 · Malaysia', bounds:[[2.80,101.50],[3.05,101.82]], show:['cyber'], labels:true},
+    {chip:'Phase 2 · The water dispute', bounds:[[23.76,120.25],[23.99,120.62]], show:['erlin','xizhou'], labels:true, extra:['diversion']},
+    {chip:'Phase 3 · Taiwan', bounds:[[24.84,120.72],[25.26,122.06]], show:['taoyuan','datan','hsiehho'], labels:true},
+    {chip:'Phase 3 · Malaysia', bounds:[[1.22,103.45],[1.85,104.06]], show:['jb','kulai','jriver','sg'], labels:true, extra:['crossborder']},
+    {chip:'Diverging paths: federal and state', bounds:[[1.15,101.2],[3.35,104.25]], show:['putrajaya','selangor','jb'], labels:true},
+    {chip:'Land from space: Taiwan’s cropland', bounds:[[21.88,119.95],[25.33,122.05]], show:[], extra:['farm'], legend:'farm', toggle:true, padSmall:[24,10]},
+    {chip:'Land from space: Taichung', bounds:[[24.17,120.56],[24.33,120.77]], show:[], extra:['farm','ctsp'], legend:'farmSite', toggle:true},
+    {chip:'Land from space: Chiayi, 2025', bounds:[[23.460,120.288],[23.488,120.326]], show:[], extra:['img2025','farm','cysp'], legend:'farmSite', toggle:true, ovOpacity:.5},
+    {chip:'Land from space: Malaysia’s oil palm', bounds:[[1.25,100.4],[5.0,104.3]], show:[], extra:['mpob'], legend:'mpob', padSmall:[16,10]},
+    {chip:'Kulai, Johor, 2018', bounds:[[1.600,103.500],[1.635,103.541]], show:[], extra:['img2018','palm','ytl'], legend:'palm', toggle:true},
+    {chip:'Kulai, Johor, 2025', bounds:[[1.600,103.500],[1.635,103.541]], show:[], extra:['img2025','ytl'], legend:'site'},
+    {chip:'Reserved capacity', bounds:[[1.25,103.45],[1.85,104.05]], show:['jb','kulai'], labels:true},
+    {chip:'Re-internalization, or spatial relocation?', bounds:OVERVIEW, show:['datan','hsiehho','jb'], labels:true},
+    {chip:'Scope conditions: scale and geography', bounds:[[1.22,103.45],[1.85,104.06]], show:['jb','jriver','sg'], labels:true, extra:['crossborder']},
+    {chip:'Conclusion', bounds:OVERVIEW, show:['kepz','bayan','hsp','stsp','cyber','kulim','erlin','xizhou','datan','hsiehho','jb','kulai','jriver','sg'], labels:false}
+  ];
+
+  var chip = document.getElementById('mapChip');
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var langLinks = Array.prototype.slice.call(document.querySelectorAll('a.lang'));
+  function markActive(i){
+    steps.forEach(function(s, k){ s.classList.toggle('is-active', k === i); });
+    chip.textContent = STEPS[i].chip;
+    // the language switch opens the same section in the other language
+    langLinks.forEach(function(a){ a.href = a.getAttribute('href').split('#')[0] + (i > 0 ? '#s' + i : ''); });
+  }
+  // A link to a section (#s12) lands on it again once fonts and images have settled, unless the reader has moved on.
+  (function(){
+    var m = /^#s(\d+)$/.exec(location.hash || ''), moved = false;
+    if (!m) return;
+    ['wheel', 'touchstart', 'keydown'].forEach(function(ev){ window.addEventListener(ev, function(){ moved = true; }, {once:true, passive:true}); });
+    function go(){
+      var el = document.getElementById('s' + m[1]), html = document.documentElement;
+      if (!el || moved) return;
+      var prev = html.style.scrollBehavior;
+      html.style.scrollBehavior = 'auto'; el.scrollIntoView({block:'start'}); html.style.scrollBehavior = prev;
+    }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(go);
+    if (document.readyState === 'complete') go(); else window.addEventListener('load', go);
+  })();
+
+  if (typeof L === 'undefined'){
+    document.getElementById('map').innerHTML =
+      '<div class="map-fallback">Could not load the map library (Leaflet).<br>This page needs to reach unpkg.com and openstreetmap.org. Check your connection and reload the page.</div>';
+    observe(function(i){ markActive(i); });
+    return;
+  }
+
+  var map = L.map('map', {
+    zoomControl:false, scrollWheelZoom:false, dragging:!L.Browser.mobile, tap:false,
+    minZoom:3, maxZoom:14
+  });
+  L.control.zoom({position:'topright'}).addTo(map);
+  var EOX = 'https://tiles.maps.eox.at/wmts/1.0.0/';
+  var BASES = {
+    sat: L.layerGroup([
+      L.tileLayer(EOX + 's2cloudless-2025_3857/default/g/{z}/{y}/{x}.jpg', {
+        attribution:'<a href="https://cloudless.eox.at" target="_blank" rel="noopener">EOxCloudless</a> by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2025)',
+        maxZoom:14, zIndex:1
+      }),
+      L.tileLayer(EOX + 'overlay_bright_3857/default/g/{z}/{y}/{x}.png', {
+        attribution:'Labels: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors, EOX',
+        maxZoom:14, zIndex:2, opacity:.9
+      })
+    ]),
+    osm: L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom:19, className:'tiles-osm'
+    })
+  };
+  var baseNow = null;
+  function setBase(b, remember){
+    if (!BASES[b] || b === baseNow) return;
+    if (baseNow) map.removeLayer(BASES[baseNow]);
+    BASES[b].addTo(map);
+    baseNow = b;
+    map.getContainer().classList.toggle('is-sat', b === 'sat');
+    Array.prototype.forEach.call(document.querySelectorAll('.base-switch button'), function(btn){
+      btn.setAttribute('aria-pressed', String(btn.getAttribute('data-b') === b));
+    });
+    if (remember) { try { localStorage.setItem('storyBasemap', b); } catch (e) {} }
+  }
+  var BaseSwitch = L.Control.extend({
+    options:{position:'topright'},
+    onAdd:function(){
+      var div = L.DomUtil.create('div', 'base-switch');
+      div.setAttribute('role', 'group');
+      div.setAttribute('aria-label', 'Switch basemap');
+      div.innerHTML = '<button type="button" data-b="sat" aria-pressed="false">Satellite</button>' +
+                      '<button type="button" data-b="osm" aria-pressed="false">Street</button>';
+      L.DomEvent.disableClickPropagation(div);
+      div.addEventListener('click', function(e){
+        var b = e.target && e.target.getAttribute ? e.target.getAttribute('data-b') : null;
+        if (b) setBase(b, true);
+      });
+      return div;
+    }
+  });
+  map.addControl(new BaseSwitch());
+  var savedBase = null;
+  try { savedBase = localStorage.getItem('storyBasemap'); } catch (e) {}
+  setBase(savedBase === 'sat' ? 'sat' : 'osm');
+  map.fitBounds(OVERVIEW, {padding:[30,30]});
+
+  // ---- satellite chapters: overlays kept between steps so tiles are not reloaded ----
+  map.createPane('imgPane');
+  map.getPane('imgPane').style.zIndex = 350;          // above tiles, below outlines and labels
+  map.getPane('imgPane').style.pointerEvents = 'none';
+
+  var FARM_SET = (function(str){
+    var set = {};
+    str.split('|').forEach(function(zp){
+      var a = zp.split('=');
+      a[1].split(';').forEach(function(col){
+        var c = col.split(':');
+        c[1].split(',').forEach(function(run){
+          var r = run.split('-'), y0 = +r[0], y1 = r.length > 1 ? +r[1] : y0;
+          for (var y = y0; y <= y1; y++) set[a[0] + '/' + c[0] + '/' + y] = 1;
+        });
+      });
+    });
+    return set;
+  })(FARM_IDX);
+  // Only request tiles that exist; empty squares get a blank element instead of a 404.
+  var FarmTiles = L.TileLayer.extend({
+    createTile: function(coords, done){
+      if (!FARM_SET[coords.z + '/' + coords.x + '/' + coords.y]){
+        var blank = document.createElement('div');
+        setTimeout(function(){ done(null, blank); }, 0);
+        return blank;
+      }
+      return L.TileLayer.prototype.createTile.call(this, coords, done);
+    }
+  });
+  var EOX_ATTR = {
+    2018:'<a href="https://cloudless.eox.at" target="_blank" rel="noopener">EOxCloudless</a> 2018 by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2017 &amp; 2018)',
+    2025:'<a href="https://cloudless.eox.at" target="_blank" rel="noopener">EOxCloudless</a> by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2025)'
+  };
+  var PERSIST = {}, PERSIST_KEYS = ['img2018', 'img2025', 'farm', 'palm'];
+  function persistent(k){
+    if (PERSIST[k]) return PERSIST[k];
+    var l;
+    if (k === 'farm'){
+      l = new FarmTiles('tiles/farm-tw/{z}/{x}/{y}.png', {
+        minNativeZoom:5, maxNativeZoom:12, maxZoom:14, zIndex:5, className:'farm-tiles',
+        bounds:L.latLngBounds([[21.88,119.98],[25.32,122.02]]),
+        attribution:'Cropland overlay: <a href="https://doi.org/10.1038/s43016-021-00429-z" target="_blank" rel="noopener">GLAD</a>, <a href="https://doi.org/10.5281/zenodo.7254221" target="_blank" rel="noopener">ESA WorldCover 2021</a> (computed for this page)'
+      });
+    } else if (k === 'palm'){
+      l = L.imageOverlay('img/overlay/kulai-oilpalm-2019.png', PALM_BOUNDS, {
+        pane:'imgPane', interactive:false,
+        attribution:'Oil palm: <a href="https://doi.org/10.5194/essd-13-1211-2021" target="_blank" rel="noopener">Descals et al. 2021</a>'
+      });
+    } else {
+      var yr = k.slice(3);
+      l = L.tileLayer(EOX + 's2cloudless-' + yr + '_3857/default/g/{z}/{y}/{x}.jpg', {maxZoom:14, zIndex:3, attribution:EOX_ATTR[yr]});
+    }
+    PERSIST[k] = l;
+    return l;
+  }
+
+  var ovBtn = null, overlayOn = true, ovLevel = 1;
+  function setOverlay(on){
+    overlayOn = on;
+    ['farm', 'palm'].forEach(function(k){ if (PERSIST[k]) PERSIST[k].setOpacity(on ? ovLevel : 0); });
+    if (ovBtn){
+      ovBtn.textContent = on ? 'Hide overlay' : 'Show overlay';
+      ovBtn.setAttribute('aria-label', on ? 'Hide the overlay and see only the basemap' : 'Show the overlay');
+    }
+  }
+  var OverlaySwitch = L.Control.extend({
+    options:{position:'topright'},
+    onAdd:function(){
+      var b = L.DomUtil.create('button', 'ov-switch');
+      b.type = 'button';
+      b.hidden = true;
+      L.DomEvent.disableClickPropagation(b);
+      b.addEventListener('click', function(){ setOverlay(!overlayOn); });
+      ovBtn = b;
+      return b;
+    }
+  });
+  map.addControl(new OverlaySwitch());
+  setOverlay(true);
+
+  var legendEl = document.querySelector('.map-legend');
+  var LEGEND_DEFAULT = legendEl.innerHTML;
+  var KEY_FARM = '<span><i class="sq" style="background:#b6dd96"></i>Still farmed in 2019</span>' +
+                 '<span><i class="sq" style="background:#f5a623"></i>No longer cropland since 2003</span>' +
+                 '<span><i class="sq" style="background:#e3242b"></i>Built over</span>';
+  var LEGENDS = {
+    farm: KEY_FARM,
+    farmSite: KEY_FARM + '<span><i class="ln"></i>Park boundary</span>',
+    mpob: '<span><i style="background:#2E6B4E"></i>Circle area = oil palm area lost, 2019–2024</span>',
+    palm: '<span><i class="sq" style="background:#e2ea8a"></i>Oil palm in 2019</span><span><i class="ln"></i>Data center park boundary</span><span>2018 satellite imagery</span>',
+    site: '<span><i class="ln"></i>Data center park boundary</span><span>2025 satellite imagery</span>'
+  };
+
+  function label(p){ return '<b>' + p.name + '</b><span>' + p.note + '</span>'; }
+
+  // A label pinned beside a line, clear of the stroke.
+  function tag(ll, txt, dir, off){
+    return L.circleMarker(ll, {radius:0, stroke:false, fill:false, interactive:false})
+      .bindTooltip(txt, {permanent:true, direction:dir, offset:off, className:'lbl line'});
+  }
+  function mid(a, b){ return [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]; }
+  // A white casing under a line so it reads on dark imagery as well as on the street map.
+  function casing(lls){ return L.polyline(lls, {color:'#ffffff', weight:7, opacity:.85, interactive:false}); }
+  function isSmall(){ return !!(window.matchMedia && window.matchMedia('(max-width: 900px)').matches); }
+
+  var EXTRA = {
+    drought: function(){
+      var g = L.layerGroup();
+      [
+        {ll:[24.90,121.15], t:'Taoyuan irrigation district', d:'right'},
+        {ll:[24.62,120.88], t:'Hsinchu and Miaoli irrigation districts', d:'left'},
+        {ll:[24.22,120.62], t:'Taichung irrigation district', d:'right'},
+        {ll:[23.32,120.27], t:'Chiayi-Tainan irrigation district', d:'right'}
+      ].forEach(function(d){
+        L.circle(d.ll, {radius:15000, color:'#ffffff', weight:2, fillColor:COL.tw, fillOpacity:.38})
+          .bindTooltip('<b>' + d.t + '</b><span>No irrigation for the first rice crop, 2021 (schematic)</span>',
+            {permanent:true, direction:d.d, offset: d.d === 'left' ? [-14,0] : [14,0], className:'lbl'})
+          .addTo(g);
+      });
+      return g;
+    },
+    diversion: function(){
+      var g = L.layerGroup();
+      casing([P.xizhou.ll, P.erlin.ll]).addTo(g);
+      L.polyline([P.xizhou.ll, P.erlin.ll], {color:COL.tw, weight:3, dashArray:'7 7'}).addTo(g);
+      if (isSmall()) tag(mid(P.xizhou.ll, P.erlin.ll), 'Diversion plan: over 65,000 tonnes a day (schematic)', 'bottom', [0,16]).addTo(g);
+      else tag(mid(P.xizhou.ll, P.erlin.ll), 'Diversion plan: over 65,000 tonnes a day (schematic)', 'left', [-16,8]).addTo(g);
+      return g;
+    },
+    crossborder: function(){
+      var g = L.layerGroup();
+      var bend = [1.56,103.80];
+      casing([P.sg.ll, P.jb.ll, P.kulai.ll]).addTo(g);
+      casing([P.jriver.ll, bend, [1.4555,103.769], [1.40,103.79]]).addTo(g);
+      L.polyline([P.sg.ll, P.jb.ll, P.kulai.ll], {color:'#333333', weight:3, dashArray:'7 7'}).addTo(g);
+      L.polyline([P.jriver.ll, bend, [1.4555,103.769], [1.40,103.79]], {color:'#3d5a99', weight:3}).addTo(g);
+      tag(mid(P.jb.ll, P.kulai.ll), 'Demand moves north', 'left', [-14,0]).addTo(g);
+      tag(mid(P.jriver.ll, bend), 'Raw water flows south (schematic)', 'right', [14,0]).addTo(g);
+      return g;
+    },
+    ctsp: function(){
+      var g = L.layerGroup();
+      outline(OUTLINES.ctspTc, 'CTSP Taichung Park', 'left', g);
+      outline(OUTLINES.ctspHl, 'Houli Park (Qixing site)', isSmall() ? 'left' : 'right', g);
+      return g;
+    },
+    cysp: function(){
+      var g = L.layerGroup();
+      outline(OUTLINES.cysp1, 'Chiayi Science Park (under construction, 2025)', isSmall() ? 'bottom' : 'left', g);
+      outline(OUTLINES.cysp2, 'Phase 2 (broke ground 2026)', isSmall() ? 'top' : 'right', g);
+      return g;
+    },
+    ytl: function(){
+      var g = L.layerGroup();
+      outline(OUTLINES.ytl, 'YTL Green Data Center Park', isSmall() ? 'bottom' : 'right', g);
+      return g;
+    },
+    // Circles with the same area as the oil palm lost in each state (drawn to map scale).
+    mpob: function(){
+      var g = L.layerGroup(), small = isSmall();
+      MPOB.forEach(function(d){
+        var r = Math.sqrt(d.ha * 1e4 / Math.PI);
+        var circle = L.circle(d.ll, {radius:r, color:'#ffffff', weight:1.5, fillColor:COL.my, fillOpacity:.55}).addTo(g);
+        var amount = (d.ha >= 1e4 ? Math.round(d.ha / 1e3) * 1e3 : d.ha).toLocaleString('en-US');
+        var txt = '<b>' + d.n + ': −' + amount + ' ha</b><span>−' + d.pct.toFixed(1) + '% (2019→2024)</span>';
+        if (small ? d.top : d.lab){
+          // Pin the label just outside the circle so it does not cover it.
+          var dLng = r / (111320 * Math.cos(d.ll[0] * Math.PI / 180));
+          var edge = [d.ll[0], d.ll[1] + (d.d === 'left' ? -dLng : dLng)];
+          L.circleMarker(edge, {radius:0, stroke:false, fill:false, interactive:false})
+            .bindTooltip(txt, {permanent:true, direction:d.d, offset: d.d === 'left' ? [-6,0] : [6,0], className:'lbl'})
+            .addTo(g);
+        } else {
+          circle.bindTooltip(txt, {direction:d.d, className:'lbl'});
+        }
+      });
+      return g;
+    }
+  };
+
+  // A dashed outline with a white casing, labelled on one side.
+  function outline(rings, name, dir, g){
+    var polys = rings.map(function(r){ return [r]; });
+    L.polygon(polys, {color:'#ffffff', weight:6, opacity:.9, fill:false, interactive:false}).addTo(g);
+    L.polygon(polys, {color:'#111111', weight:2.5, dashArray:'7 5', fill:false, interactive:false}).addTo(g);
+    var b = L.latLngBounds([].concat.apply([], rings)), c = b.getCenter();
+    var at = {left:[c.lat, b.getWest()], right:[c.lat, b.getEast()], top:[b.getNorth(), c.lng], bottom:[b.getSouth(), c.lng]}[dir];
+    var off = {left:[-8,0], right:[8,0], top:[0,-8], bottom:[0,8]}[dir];
+    L.circleMarker(at, {radius:0, stroke:false, fill:false, interactive:false})
+      .bindTooltip('<b>' + name + '</b>', {permanent:true, direction:dir, offset:off, className:'lbl'}).addTo(g);
+  }
+
+  var current = L.layerGroup().addTo(map);
+
+  function apply(i){
+    var s = STEPS[i];
+    markActive(i);
+    current.clearLayers();
+    var need = {};
+    (s.extra || []).forEach(function(k){
+      if (PERSIST_KEYS.indexOf(k) >= 0) need[k] = true;
+      else current.addLayer(EXTRA[k]());
+    });
+    PERSIST_KEYS.forEach(function(k){
+      if (need[k]){ var l = persistent(k); if (!map.hasLayer(l)) l.addTo(map); }
+      else if (PERSIST[k] && map.hasLayer(PERSIST[k])) map.removeLayer(PERSIST[k]);
+    });
+    ovLevel = s.ovOpacity || 1;
+    setOverlay(true);
+    if (ovBtn) ovBtn.hidden = !s.toggle;
+    legendEl.innerHTML = LEGENDS[s.legend] || LEGEND_DEFAULT;
+    s.show.forEach(function(id){
+      var p = P[id];
+      var m = L.circleMarker(p.ll, {radius: s.labels ? 8 : 6, color:'#ffffff', weight:2,
+        fillColor:COL[p.c], fillOpacity:.95});
+      m.bindTooltip(label(p), {permanent: !!s.labels, direction:p.dir, offset: p.dir === 'left' ? [-10,0] : (p.dir === 'right' ? [10,0] : [0,10]), className:'lbl'});
+      current.addLayer(m);
+    });
+    var opts = {padding: isSmall() ? (s.padSmall || [64,24]) : [40,40]};
+    if (reduce){ map.fitBounds(s.bounds, opts); }
+    else { opts.duration = 1.2; map.flyToBounds(s.bounds, opts); }
+  }
+
+  function observe(cb){
+    var active = -1;
+    function set(i){ if (i !== active){ active = i; cb(i); } }
+    if ('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if (e.isIntersecting){ set(+e.target.getAttribute('data-step')); }
+        });
+      }, {rootMargin:'-45% 0px -45% 0px', threshold:0});
+      steps.forEach(function(s){ io.observe(s); });
+    } else {
+      steps.forEach(function(s){ s.classList.add('is-active'); });
+    }
+    set(0);
+  }
+
+  observe(apply);
+  window.addEventListener('resize', function(){ map.invalidateSize(); });
+})();
+</script>
+</body>
+</html>

@@ -155,6 +155,7 @@
   .map-fallback{padding:40px;color:var(--ink-soft);font-weight:300;text-align:center}
   .map-legend i.sq{border-radius:2px}
   .map-legend i.ln{width:18px;height:0;border-radius:0;border-top:2px dashed #111;box-shadow:none;background:none;vertical-align:3px}
+  .map-legend i.pvk{width:14px;height:10px;border-radius:0;background:none;border:2px solid #f2b705;box-shadow:0 0 0 1px rgba(0,0,0,.45);vertical-align:-1px}
   .farm-tiles img{image-rendering:pixelated}
   .ov-switch{font-family:var(--gothic);font-size:12.5px;line-height:1.4;padding:6px 11px;border:1px solid var(--ink-strong);
     border-radius:2px;background:var(--panel);color:var(--ink);cursor:pointer;letter-spacing:.04em;box-shadow:0 1px 4px rgba(0,0,0,.18)}
@@ -170,6 +171,8 @@
   .key i.k-o{background:#f5a623}
   .key i.k-r{background:#e3242b}
   .key i.k-p{background:#e2ea8a}
+  .key i.k-c{background:#7048e8}
+  .key i.k-pv{background:none;box-shadow:none;border:2px solid #f2b705;outline:1px solid rgba(0,0,0,.45);height:9px;width:13px}
   .key i.k-line{height:0;top:13px;border-top:2px dashed #111;box-shadow:none;background:none;border-radius:0}
 
   /* ---- figures inside cards ---- */
@@ -503,6 +506,40 @@
 
     <section class="step" data-step="14" id="s14">
       <div class="card">
+        <div class="kicker"><span class="zh tw">從衛星看土地｜臺灣，2019–2025</span></div>
+        <h2>AI競逐這六年，約<span class="num">2.9萬</span>公頃農田長出建物</h2>
+        <p>上面的全球農田地圖只到2019年，正好錯過AI算力競賽加速的這幾年。這裡改用以Sentinel-2衛星影像畫成的10公尺年度土地覆蓋圖，比較2019與2025年。為了避開單一年份的誤判，只算連續兩年都判得一致的變化：2018、2019年都是農田，2024、2025年都是建成區。</p>
+        <p>這樣算下來約<b>2.9萬公頃</b>，差不多一個臺北市。不過紫色並沒有集中在科學園區旁邊：變化最多的是<b>雲林</b>（約5,600公頃）和<b>彰化</b>（約4,900公頃），其次是屏東、臺南與嘉義縣，五個縣市占了約三分之二。園區周邊3公里內，農田變成建成區的比例是12.9%；10公里以外也有10.3%，差距不大。</p>
+        <p>園區範圍裡面則是另一回事：嘉義科學園區在2019年有99%是農田，2025年只剩4%；<b>南科屏東園區</b>從99%降到46%，<b>南科橋頭園區</b>從55%降到6%。</p>
+        <ul class="key" aria-label="地圖顏色說明">
+          <li><i class="k-c"></i><b>紫色</b>：2019年是農田，2025年已判為建成區</li>
+          <li><i class="k-line"></i><b>虛線框</b>：嘉義科學園區、南科橋頭園區、南科屏東園區</li>
+        </ul>
+        <p class="fig-note">提醒：衛星判的「建成區」也包括農舍、溫室和農業設施，不等於依法變更的農地。同一時期，農業部統計的農耕土地只少了約1.5萬公頃（−1.9%）；兩者算法不同，這個落差本身也值得追問。</p>
+        <figure class="photo two sat"><div class="ph-row"><a class="ph" href="img/compare/pingtung-2019-02-1600.jpg" target="_blank" rel="noopener" aria-label="開啟大圖：2019年2月的衛星影像，南科屏東園區的虛線範圍內是農田與網室"><img src="img/compare/pingtung-2019-02-800.jpg" alt="2019年2月的衛星影像，南科屏東園區的虛線範圍內是農田與網室" width="800" height="727" loading="lazy" decoding="async"><span class="when">2019年2月</span></a><a class="ph" href="img/compare/pingtung-2025-03-1600.jpg" target="_blank" rel="noopener" aria-label="開啟大圖：2025年3月的衛星影像，南科屏東園區的虛線範圍內已整地，劃出道路與廠區"><img src="img/compare/pingtung-2025-03-800.jpg" alt="2025年3月的衛星影像，南科屏東園區的虛線範圍內已整地，劃出道路與廠區" width="800" height="727" loading="lazy" decoding="async"><span class="when">2025年3月</span></a></div><figcaption>放大看南科屏東園區：2019年2月（左），虛線範圍內是農田與網室；2025年3月（右），已經整地，劃出道路與廠區。<span class="credit">影像：<a href="https://livingatlas.arcgis.com/wayback/" target="_blank" rel="noopener">Esri World Imagery Wayback</a>（Maxar），標示拍攝日期｜虛線：© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>貢獻者｜點圖可看大圖</span></figcaption></figure>
+        <p class="mapnote">紫色疊圖可用右上角按鈕暫時隱藏；放大可看到單一塊田的變化。</p>
+        <p class="src">資料來源：<a href="https://doi.org/10.1109/IGARSS47720.2021.9553499" target="_blank" rel="noopener">Karra et al.（2021）</a>（Esri/Impact Observatory年度土地覆蓋，2018–2025）；<a href="https://agrstat.moa.gov.tw/moasdweb/book/Book.aspx" target="_blank" rel="noopener">農業部統計處（n.d.）</a>；本頁計算</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="15" id="s15">
+      <div class="card">
+        <div class="kicker"><span class="zh tw">從衛星看土地｜臺南沿海，2019–2025</span></div>
+        <h2>綠電需求，把光電推向鹽田與魚塭</h2>
+        <p>科技業要綠電，土地的壓力也跟著移動。依TransitionZero用衛星判出的全球太陽光電資料，2019年下半年到2024年初，臺灣新增約<b>2,500公頃</b>的地面型光電，多半在臺南、雲林、嘉義與屏東沿海。</p>
+        <p>這些地在蓋光電之前是什麼？約<b>五成</b>是水面（衛星把魚塭和鹽田都判為水體），約<b>27%</b>是農田，約12%是草地。</p>
+        <p>地圖上的黃框，是2019年下半年以後新蓋的光電場。下面這一區位在臺南將軍、七股的廢棄鹽田；台電在這一帶的150MW光電場，2020年9月全部併網，面積約214公頃。</p>
+        <ul class="key" aria-label="地圖顏色說明">
+          <li><i class="k-pv"></i><b>黃框</b>：2019年下半年至2024年初新蓋的地面型光電</li>
+        </ul>
+        <p class="fig-note">全球資料只抓得到規模較大的案場，實際面積應該更多。</p>
+        <figure class="photo two sat"><div class="ph-row"><a class="ph" href="img/compare/tainan-pv-2017-10-1600.jpg" target="_blank" rel="noopener" aria-label="開啟大圖：2017年10月的衛星影像，框內是廢棄的鹽田"><img src="img/compare/tainan-pv-2017-10-800.jpg" alt="2017年10月的衛星影像，框內是廢棄的鹽田" width="800" height="727" loading="lazy" decoding="async"><span class="when">2017年10月</span></a><a class="ph" href="img/compare/tainan-pv-2025-12-1600.jpg" target="_blank" rel="noopener" aria-label="開啟大圖：2025年12月的衛星影像，框內已鋪滿光電板"><img src="img/compare/tainan-pv-2025-12-800.jpg" alt="2025年12月的衛星影像，框內已鋪滿光電板" width="800" height="727" loading="lazy" decoding="async"><span class="when">2025年12月</span></a></div><figcaption>放大看：2017年10月（左），框內是廢棄的鹽田；2025年12月（右），已經鋪滿光電板。<span class="credit">影像：<a href="https://livingatlas.arcgis.com/wayback/" target="_blank" rel="noopener">Esri World Imagery Wayback</a>（Maxar），標示拍攝日期｜虛線：光電範圍，依<a href="https://doi.org/10.5281/zenodo.11368204" target="_blank" rel="noopener">TZ-SAM</a>｜點圖可看大圖</span></figcaption></figure>
+        <p class="src">資料來源：<a href="https://doi.org/10.5281/zenodo.11368204" target="_blank" rel="noopener">Phillpott et al.（2024）</a>；<a href="https://doi.org/10.1109/IGARSS47720.2021.9553499" target="_blank" rel="noopener">Karra et al.（2021）</a>；<a href="https://m.energytrend.com/news/20210412-21386.html" target="_blank" rel="noopener">EnergyTrend（2021）</a>；本頁計算</p>
+      </div>
+    </section>
+
+    <section class="step" data-step="16" id="s16">
+      <div class="card">
         <div class="kicker"><span class="zh my">從衛星看土地｜馬來西亞</span></div>
         <h2>柔佛的油棕園，五年少了<span class="num">13%</span></h2>
         <p>上面那套衛星農田地圖只算草本作物（在馬來西亞主要是稻田），不算油棕這種一種就是二十多年的樹，所以這裡改看馬來西亞棕油局（MPOB）的種植面積統計。</p>
@@ -514,7 +551,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="15" id="s15">
+    <section class="step" data-step="17" id="s17">
       <div class="card">
         <div class="kicker"><span class="zh my">從衛星看土地｜柔佛古來，2018</span></div>
         <h2>2018年：這裡還是一整片油棕園</h2>
@@ -528,7 +565,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="16" id="s16">
+    <section class="step" data-step="18" id="s18">
       <div class="card">
         <div class="kicker"><span class="zh my">從衛星看土地｜柔佛古來，2025</span></div>
         <h2>2025年：油棕園變成了資料中心</h2>
@@ -541,7 +578,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="17" id="s17">
+    <section class="step" data-step="19" id="s19">
       <div class="card">
         <div class="kicker"><span class="zh my">預留容量</span></div>
         <h2>電網依資本的未來需求先行擴建</h2>
@@ -560,7 +597,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="18" id="s18">
+    <section class="step" data-step="20" id="s20">
       <div class="card">
         <div class="kicker"><span class="zh">2024年後的管制轉折</span></div>
         <h2>再內部化，還是空間重置？</h2>
@@ -590,7 +627,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="19" id="s19">
+    <section class="step" data-step="21" id="s21">
       <div class="card">
         <div class="kicker"><span class="zh">範圍條件</span></div>
         <h2>先說清楚：規模與地理</h2>
@@ -610,7 +647,7 @@
       </div>
     </section>
 
-    <section class="step" data-step="20" id="s20">
+    <section class="step" data-step="22" id="s22">
       <div class="card">
         <div class="kicker"><span class="zh">結語</span></div>
         <h2>國家能力的另一面</h2>
@@ -643,10 +680,12 @@
       <li id="ref-dcd2025">DatacenterDynamics. (2025, October 29). The past, present and future of Johor. <a href="https://www.datacenterdynamics.com/en/analysis/the-past-present-and-future-of-johor/" target="_blank" rel="noopener">https://www.datacenterdynamics.com/en/analysis/the-past-present-and-future-of-johor/</a></li>
       <li id="ref-descals2021">Descals, A., Wich, S., Meijaard, E., Gaveau, D. L. A., Peedell, S., &amp; Szantoi, Z. (2021). High-resolution global map of smallholder and industrial closed-canopy oil palm plantations. Earth System Science Data, 13(3), 1211–1231. <a href="https://doi.org/10.5194/essd-13-1211-2021" target="_blank" rel="noopener">https://doi.org/10.5194/essd-13-1211-2021</a>（圖資：<a href="https://doi.org/10.5281/zenodo.4473715" target="_blank" rel="noopener">https://doi.org/10.5281/zenodo.4473715</a>）</li>
       <li id="ref-edwards1993">Edwards, C., &amp; Jomo K. S. (1993). Policy options for Malaysian industrialisation. In Jomo K. S. (Ed.), Industrialising Malaysia: Policy, performance, prospects (pp. 316–334). Routledge.</li>
+      <li id="ref-energytrend2021">EnergyTrend. (2021, April 12). TPC’s largest 150MW ground solar plant fully connected to the grid, with an annual power generation estimated at 200 million kWh. <a href="https://m.energytrend.com/news/20210412-21386.html" target="_blank" rel="noopener">https://m.energytrend.com/news/20210412-21386.html</a></li>
       <li id="ref-feng2023">Feng, E. (2023, April 19). Epic drought in Taiwan pits farmers against high-tech factories for water. NPR. <a href="https://www.kunc.org/npr-news/npr-news/2023-04-19/epic-drought-in-taiwan-pits-farmers-against-high-tech-factories-for-water" target="_blank" rel="noopener">https://www.kunc.org/npr-news/npr-news/2023-04-19/epic-drought-in-taiwan-pits-farmers-against-high-tech-factories-for-water</a></li>
       <li id="ref-hsiung1996">Hsiung, P.-C. (1996). Living rooms as factories: Class, gender, and the satellite factory system in Taiwan. Temple University Press.</li>
       <li id="ref-kaap2025">Kadir, Andri &amp; Partners. (2025, December). Malaysia's big data centre push: Strong potential, real risks [Briefing]. <a href="https://www.kaaplaw.com" target="_blank" rel="noopener">https://www.kaaplaw.com</a></li>
       <li id="ref-kapp1950">Kapp, K. W. (1950). The social costs of private enterprise. Harvard University Press.</li>
+      <li id="ref-karra2021">Karra, K., Kontgis, C., Statman-Weil, Z., Mazzariello, J. C., Mathis, M., &amp; Brumby, S. P. (2021). Global land use/land cover with Sentinel 2 and deep learning. In 2021 IEEE International Geoscience and Remote Sensing Symposium IGARSS (pp. 4704–4707). <a href="https://doi.org/10.1109/IGARSS47720.2021.9553499" target="_blank" rel="noopener">https://doi.org/10.1109/IGARSS47720.2021.9553499</a></li>
       <li id="ref-kollar2026">Kollar, J. (2026). Fallowing the fields, feeding the fabs: Territorial restructuring and the political-industrial ecology of high-tech Taiwan. Environment and Planning E: Nature and Space, 9(2), 751–776. <a href="https://doi.org/10.1177/25148486251406484" target="_blank" rel="noopener">https://doi.org/10.1177/25148486251406484</a></li>
       <li id="ref-lee2026">Lee, C., &amp; Hutchinson, F. E. (2026). Malaysia's semiconductor industry: Performance, pitfalls and potential (Trends in Southeast Asia, TRS16/26). ISEAS–Yusof Ishak Institute. <a href="https://bookshop.iseas.edu.sg/publication/8011" target="_blank" rel="noopener">https://bookshop.iseas.edu.sg/publication/8011</a></li>
       <li id="ref-levien2013">Levien, M. (2013). Regimes of dispossession: From steel towns to special economic zones. Development and Change, 44(2), 381–407. <a href="https://doi.org/10.1111/dech.12012" target="_blank" rel="noopener">https://doi.org/10.1111/dech.12012</a></li>
@@ -661,6 +700,7 @@
       <li id="ref-nst2025">New Straits Times. (2025, November 27). Johor tightens approvals for data centres. <a href="https://www.nst.com.my/news/nation/2025/11/1324188/johor-tightens-approvals-data-centres" target="_blank" rel="noopener">https://www.nst.com.my/news/nation/2025/11/1324188/johor-tightens-approvals-data-centres</a></li>
       <li id="ref-ong1987">Ong, A. (1987). Spirits of resistance and capitalist discipline: Factory women in Malaysia. State University of New York Press.</li>
       <li id="ref-ong2000">Ong, A. (2000). Graduated sovereignty in South-East Asia. Theory, Culture &amp; Society, 17(4), 55–75.</li>
+      <li id="ref-phillpott2024">Phillpott, M., O’Connor, J., Ferreira, A., Max, S., Kruitwagen, L., &amp; Guzzardi, M. (2024). Solar Asset Mapper: A continuously-updated global inventory of solar energy facilities built with satellite data and machine learning (Version 2024 Q1) [Data set]. Zenodo. <a href="https://doi.org/10.5281/zenodo.11368204" target="_blank" rel="noopener">https://doi.org/10.5281/zenodo.11368204</a></li>
       <li id="ref-piara">Piarapakaran S. (n.d.). Green equilibrium: Water resources are under state govt purview. The Sun. <a href="https://www.thesundaily.my/home/green-equilibrium-water-resources-are-under-state-govt-purview-NM9907197" target="_blank" rel="noopener">https://www.thesundaily.my/home/green-equilibrium-water-resources-are-under-state-govt-purview-NM9907197</a></li>
       <li id="ref-potapov2022">Potapov, P., Turubanova, S., Hansen, M. C., Tyukavina, A., Zalles, V., Khan, A., Song, X.-P., Pickens, A., Shen, Q., &amp; Cortez, J. (2022). Global maps of cropland extent and change show accelerated cropland expansion in the twenty-first century. Nature Food, 3(1), 19–28. <a href="https://doi.org/10.1038/s43016-021-00429-z" target="_blank" rel="noopener">https://doi.org/10.1038/s43016-021-00429-z</a></li>
       <li id="ref-rasiah2010">Rasiah, R. (2010). Are electronics firms in Malaysia catching up in the technology ladder? Journal of the Asia Pacific Economy, 15(3), 301–319. <a href="https://doi.org/10.1080/13547860.2010.494910" target="_blank" rel="noopener">https://doi.org/10.1080/13547860.2010.494910</a></li>
@@ -696,6 +736,7 @@
     <b>關於本頁：</b>依據研討會論文〈晶片島與雲端飛地：誰為臺馬的國家技術空間付出代價？〉（2026年臺灣東南亞學會年會）整理，為初步研究成果，數據與論點仍在修訂中，請勿引用。<br>
     <b>地圖：</b>地點標記為概略位置，圓圈、虛線與實線均為示意，不代表實際範圍或管線路徑；「從衛星看土地」各節例外：疊圖與虛線框是依下列資料畫出的實際範圍，馬來西亞各州圓圈的面積則與減少的油棕面積等比。底圖：預設為OpenStreetMap街道地圖（© OpenStreetMap貢獻者），可用地圖右上角的按鈕切換為<a href="https://cloudless.eox.at" target="_blank" rel="noopener">EOxCloudless</a>衛星影像（EOX IT Services GmbH，含經修改的Copernicus Sentinel 2025年資料，依<a href="https://cloudless.eox.at/documentation/license" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>供非商業使用）。<br>
     <b>疊圖：</b>臺灣農地變化比對<a href="https://doi.org/10.1038/s43016-021-00429-z" target="_blank" rel="noopener">GLAD全球農田地圖</a>2003年與2019年兩期（每格30公尺）；「蓋成建物」依<a href="https://doi.org/10.5281/zenodo.7254221" target="_blank" rel="noopener">ESA WorldCover 2021</a>判定（CC BY 4.0；每格內9個10公尺像元有5個以上為建成地即計入），面積依緯度換算，由本頁重新計算；縮小檢視時，為了看得出分布，橘色與紅色會加深。油棕園採<a href="https://doi.org/10.5281/zenodo.4473715" target="_blank" rel="noopener">Descals et al.（2021）</a>的2019年圖資（CC BY 4.0）。園區範圍取自<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>（ODbL）。用同一套方法算出的馬來西亞農地變化，見<a href="farmland.html">農地流失地圖</a>。2018年衛星影像為EOxCloudless 2018（含經修改的Copernicus Sentinel 2017–2018年資料，CC BY-NC-SA 4.0）。<br>
+    <b>2019–2025年：</b>農田轉為建成區，依Esri/Impact Observatory以Sentinel-2畫成的10公尺年度土地覆蓋（<a href="https://doi.org/10.1109/IGARSS47720.2021.9553499" target="_blank" rel="noopener">Karra et al., 2021</a>；CC BY 4.0），只計2018、2019年都判為農作且2024、2025年都判為建成區的像元，由本頁重新計算；縮小檢視時紫色會加深。地面型光電依TransitionZero Solar Asset Mapper 2024年第1季版（<a href="https://doi.org/10.5281/zenodo.11368204" target="_blank" rel="noopener">Phillpott et al., 2024</a>；CC BY-NC 4.0），只畫2019年下半年以後建置者。<br>
     <b>衛星對照：</b>〈從衛星看土地〉各節的前後對照，高解析度影像取自<a href="https://livingatlas.arcgis.com/wayback/" target="_blank" rel="noopener">Esri World Imagery Wayback</a>（Maxar），圖上標示的是拍攝日期；1999年影像為NASA GWELD的Landsat年度合成影像（經NASA GIBS提供）。<br>
     <b>照片：</b>均取自Wikimedia Commons，採創用CC（CC BY、CC BY-SA）或政府網站資料開放宣告等開放授權；作者與授權標示於各圖說，點選照片可開啟原始頁面。
   </footer>
@@ -706,6 +747,7 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="data/story-2019-2025.js"></script>
 <script>
 (function(){
   var COL = {tw:'#A6392C', my:'#2E6B4E', sg:'#5c5c5c'};
@@ -735,6 +777,7 @@
   // "z=x:y0-y1,y2;x:...|z=...". Outlines are simplified OpenStreetMap polygons, [lat, lng].
   var FARM_IDX = '5=26:13-14|6=53:27-28|7=106:54-56;107:54-55|8=213:109-112;214:109-111|9=426:221-222;427:219-224;428:218-223;429:218-220|10=853:442-445;854:440-446;855:439-448;856:438-446;857:437-444,447;858:437-441|11=1707:884-890;1708:882-893;1709:880-893;1710:879-896;1711:878-887,891-896;1712:876-886,888-892;1713:876-879,881-884,887-891;1714:875-889;1715:875-879,881-887,895;1716:875-883;1717:876-880|12=3414:1771-1779;3415:1768-1781;3416:1767-1784;3417:1765-1787;3418:1763-1785;3419:1761-1786;3420:1760-1771,1773-1788;3421:1758-1773,1775-1778,1780,1787-1792;3422:1758-1769,1772,1774,1787,1789-1792;3423:1756-1763,1765-1772,1775,1783-1792;3424:1754-1759,1761-1769,1772,1776,1780,1782-1785;3425:1753-1759,1766-1767,1770,1776-1777,1779-1783;3426:1752-1759,1764-1767,1769,1776-1782;3427:1752-1759,1762-1766,1774-1780;3428:1752-1756,1759,1761-1764,1771-1779;3429:1750-1755,1757-1761,1764,1766,1768-1777;3430:1750-1754,1758-1759,1763-1764,1766-1774;3431:1750-1751,1753-1754,1757-1758,1763-1769,1791;3432:1751,1753-1754,1756-1758,1762,1764-1766;3433:1752,1755-1758,1760-1763;3434:1752-1753,1755,1757-1760;3435:1753';
   var OUTLINES = {"ytl":[[[1.60893,103.521],[1.61777,103.51359],[1.62604,103.52295],[1.62111,103.52711],[1.6141,103.51887],[1.61071,103.52187]]],"cysp1":[[[23.46913,120.29912],[23.47107,120.29987],[23.47209,120.2967],[23.47815,120.2989],[23.47693,120.3005],[23.47851,120.30197],[23.47856,120.3032],[23.47853,120.30344],[23.47841,120.30371],[23.47732,120.30523],[23.47428,120.30236],[23.47333,120.30174],[23.4732,120.30207],[23.47282,120.3027],[23.47042,120.30571],[23.4695,120.30484],[23.46838,120.30471],[23.46847,120.30396],[23.46877,120.304],[23.46887,120.30239],[23.46892,120.30232],[23.46908,120.30232],[23.46909,120.30208],[23.46892,120.30148],[23.46894,120.30104],[23.46875,120.30105],[23.46882,120.30015]]],"cysp2":[[[23.47053,120.31432],[23.47549,120.30793],[23.47813,120.31036],[23.47903,120.3092],[23.48149,120.3115],[23.47895,120.31476],[23.47639,120.31239],[23.47322,120.31647],[23.47155,120.31493]],[[23.47041,120.31425],[23.46983,120.31409],[23.46701,120.31386],[23.46758,120.31072],[23.46838,120.30471],[23.4695,120.30484],[23.47422,120.30933]]],"ctspTc":[[[24.21034,120.61284],[24.21487,120.61419],[24.21511,120.6145],[24.21495,120.61505],[24.21596,120.61545],[24.21619,120.61573],[24.21621,120.6159],[24.21837,120.61678],[24.21883,120.61725],[24.21917,120.61819],[24.21917,120.62032],[24.2182,120.62069],[24.21822,120.62138],[24.21844,120.62191],[24.21841,120.62278],[24.21873,120.6233],[24.21969,120.62319],[24.22115,120.62283],[24.22289,120.62286],[24.22473,120.62402],[24.22449,120.62474],[24.22474,120.6251],[24.22512,120.62503],[24.22544,120.6252],[24.22562,120.6257],[24.22545,120.62686],[24.22664,120.62775],[24.22562,120.62946],[24.22581,120.62961],[24.22492,120.63109],[24.22248,120.62952],[24.22244,120.62873],[24.22208,120.6285],[24.22173,120.62913],[24.22039,120.62834],[24.21993,120.62696],[24.21892,120.62679],[24.21782,120.62606],[24.21834,120.62466],[24.2175,120.62427],[24.21701,120.62529],[24.21614,120.62564],[24.21565,120.62654],[24.21254,120.62459],[24.213,120.6237],[24.2136,120.62407],[24.21407,120.62375],[24.21472,120.62229],[24.21297,120.62126],[24.21207,120.62081],[24.21084,120.62042],[24.21031,120.62048],[24.20973,120.62142],[24.21097,120.62223],[24.21042,120.62392],[24.20397,120.62205],[24.20327,120.62124],[24.20415,120.61841],[24.2025,120.61766],[24.20216,120.61843],[24.20109,120.61793],[24.1988,120.61713],[24.19822,120.61873],[24.19616,120.61797],[24.19785,120.61251],[24.20059,120.61348],[24.20158,120.60971],[24.19812,120.6081],[24.19896,120.60584],[24.2019,120.60125],[24.20649,120.60302],[24.20607,120.6042],[24.20679,120.60848],[24.20606,120.60937],[24.20532,120.60939],[24.2046,120.61053],[24.2057,120.61149]]],"ctspHl":[[[24.29792,120.72375],[24.29827,120.73204],[24.29305,120.73218],[24.29025,120.73238],[24.2895,120.73204],[24.28816,120.73061],[24.28797,120.72328],[24.2959,120.72405]]]};
+  var OUTLINES2 = {"stspPt":[[[22.6537,120.45995],[22.651,120.45033],[22.65762,120.4483],[22.65889,120.45296],[22.6572,120.46025]]],"stspQt":[[[22.77453,120.32947],[22.77946,120.3402],[22.77428,120.34272],[22.77275,120.34293],[22.76962,120.34296],[22.7668,120.34281],[22.76469,120.3422],[22.76306,120.34136],[22.76149,120.34185],[22.7611,120.34228],[22.7602,120.34276],[22.7595,120.34219],[22.75952,120.34192],[22.7594,120.34176],[22.75956,120.34118],[22.75951,120.34017],[22.76032,120.34013],[22.76028,120.33981],[22.76113,120.33962],[22.75972,120.33735],[22.75792,120.3326],[22.76395,120.32975],[22.76885,120.32758],[22.77336,120.3259]]]};
   var PALM_BOUNDS = [[1.570023,103.46],[1.665,103.579991]];
   // MPOB oil palm planted area, Dec 2019 vs Dec 2024 (hectares lost); positions are rough state centres.
   var MPOB = [
@@ -766,6 +809,8 @@
     {chip:'從衛星看土地：臺灣的農田', bounds:[[21.88,119.95],[25.33,122.05]], show:[], extra:['farm'], legend:'farm', toggle:true, padSmall:[24,10]},
     {chip:'從衛星看土地：臺中', bounds:[[24.17,120.56],[24.33,120.77]], show:[], extra:['farm','ctsp'], legend:'farmSite', toggle:true},
     {chip:'從衛星看土地：嘉義，2025', bounds:[[23.460,120.288],[23.488,120.326]], show:[], extra:['img2025','farm','cysp'], legend:'farmSite', toggle:true, ovOpacity:.5},
+    {chip:'從衛星看土地：臺灣，2019–2025', bounds:[[22.55,119.98],[24.15,120.80]], show:[], extra:['conv','newparks'], legend:'conv', toggle:true, padSmall:[24,10]},
+    {chip:'從衛星看土地：臺南沿海光電', bounds:[[23.10,120.03],[23.24,120.20]], show:[], extra:['img2025','pv'], legend:'pv'},
     {chip:'從衛星看土地：馬來西亞的油棕', bounds:[[1.25,100.4],[5.0,104.3]], show:[], extra:['mpob'], legend:'mpob', padSmall:[16,10]},
     {chip:'柔佛古來，2018', bounds:[[1.600,103.500],[1.635,103.541]], show:[], extra:['img2018','palm','ytl'], legend:'palm', toggle:true},
     {chip:'柔佛古來，2025', bounds:[[1.600,103.500],[1.635,103.541]], show:[], extra:['img2025','ytl'], legend:'site'},
@@ -869,7 +914,7 @@
   map.getPane('imgPane').style.zIndex = 350;          // above tiles, below outlines and labels
   map.getPane('imgPane').style.pointerEvents = 'none';
 
-  var FARM_SET = (function(str){
+  function tileSet(str){
     var set = {};
     str.split('|').forEach(function(zp){
       var a = zp.split('=');
@@ -882,11 +927,13 @@
       });
     });
     return set;
-  })(FARM_IDX);
+  }
+  var FARM_SET = tileSet(FARM_IDX);
+  var CONV_SET = window.STORY2025 ? tileSet(window.STORY2025.CONV_IDX) : {};
   // Only request tiles that exist; empty squares get a blank element instead of a 404.
   var FarmTiles = L.TileLayer.extend({
     createTile: function(coords, done){
-      if (!FARM_SET[coords.z + '/' + coords.x + '/' + coords.y]){
+      if (!(this.options.idxSet || FARM_SET)[coords.z + '/' + coords.x + '/' + coords.y]){
         var blank = document.createElement('div');
         setTimeout(function(){ done(null, blank); }, 0);
         return blank;
@@ -898,7 +945,7 @@
     2018:'<a href="https://cloudless.eox.at" target="_blank" rel="noopener">EOxCloudless</a> 2018 by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2017 &amp; 2018)',
     2025:'<a href="https://cloudless.eox.at" target="_blank" rel="noopener">EOxCloudless</a> by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2025)'
   };
-  var PERSIST = {}, PERSIST_KEYS = ['img2018', 'img2025', 'farm', 'palm'];
+  var PERSIST = {}, PERSIST_KEYS = ['img2018', 'img2025', 'farm', 'palm', 'conv'];
   function persistent(k){
     if (PERSIST[k]) return PERSIST[k];
     var l;
@@ -907,6 +954,12 @@
         minNativeZoom:5, maxNativeZoom:12, maxZoom:14, zIndex:5, className:'farm-tiles',
         bounds:L.latLngBounds([[21.88,119.98],[25.32,122.02]]),
         attribution:'農地疊圖：<a href="https://doi.org/10.1038/s43016-021-00429-z" target="_blank" rel="noopener">GLAD</a>、<a href="https://doi.org/10.5281/zenodo.7254221" target="_blank" rel="noopener">ESA WorldCover 2021</a>（本頁計算）'
+      });
+    } else if (k === 'conv'){
+      l = new FarmTiles('tiles/conv-tw/{z}/{x}/{y}.png', {
+        idxSet:CONV_SET, minNativeZoom:5, maxNativeZoom:12, maxZoom:14, zIndex:6, className:'farm-tiles',
+        bounds:L.latLngBounds([[21.85,119.95],[25.35,122.05]]),
+        attribution:'農轉建疊圖：<a href="https://doi.org/10.1109/IGARSS47720.2021.9553499" target="_blank" rel="noopener">Esri/Impact Observatory</a>（本頁計算）'
       });
     } else if (k === 'palm'){
       l = L.imageOverlay('img/overlay/kulai-oilpalm-2019.png', PALM_BOUNDS, {
@@ -924,7 +977,7 @@
   var ovBtn = null, overlayOn = true, ovLevel = 1;
   function setOverlay(on){
     overlayOn = on;
-    ['farm', 'palm'].forEach(function(k){ if (PERSIST[k]) PERSIST[k].setOpacity(on ? ovLevel : 0); });
+    ['farm', 'palm', 'conv'].forEach(function(k){ if (PERSIST[k]) PERSIST[k].setOpacity(on ? ovLevel : 0); });
     if (ovBtn){
       ovBtn.textContent = on ? '隱藏疊圖' : '顯示疊圖';
       ovBtn.setAttribute('aria-label', on ? '隱藏疊圖，只看底圖' : '顯示疊圖');
@@ -951,6 +1004,8 @@
                  '<span><i class="sq" style="background:#f5a623"></i>2003年後不再是農田</span>' +
                  '<span><i class="sq" style="background:#e3242b"></i>已蓋成建物</span>';
   var LEGENDS = {
+    conv: '<span><i class="sq" style="background:#7048e8"></i>2019年是農田、2025年判為建成區</span><span><i class="ln"></i>園區範圍</span>',
+    pv: '<span><i class="pvk"></i>2019年後新蓋的光電</span><span>2025年衛星影像</span>',
     farm: KEY_FARM,
     farmSite: KEY_FARM + '<span><i class="ln"></i>園區範圍</span>',
     mpob: '<span><i style="background:#2E6B4E"></i>圓圈面積＝2019–2024年減少的油棕面積</span>',
@@ -1015,6 +1070,22 @@
       var g = L.layerGroup();
       outline(OUTLINES.cysp1, '嘉義科學園區（2025年施工中）', isSmall() ? 'bottom' : 'left', g);
       outline(OUTLINES.cysp2, '第二期（2026年動土）', isSmall() ? 'top' : 'right', g);
+      return g;
+    },
+    newparks: function(){
+      var g = L.layerGroup(), small = isSmall();
+      outline(OUTLINES.cysp1, '嘉義科學園區', 'left', g);
+      outline(OUTLINES2.stspQt, '南科橋頭園區', small ? 'left' : 'right', g);
+      outline(OUTLINES2.stspPt, '南科屏東園區', 'right', g);
+      return g;
+    },
+    pv: function(){
+      var g = L.layerGroup();
+      if (!window.STORY2025) return g;
+      var rings = window.STORY2025.PV_TW.map(function(r){ return [r]; });
+      L.polygon(rings, {color:'#111111', weight:4, opacity:.55, fill:false, interactive:false}).addTo(g);
+      L.polygon(rings, {color:'#f2b705', weight:2, fill:true, fillColor:'#f2b705', fillOpacity:.12, interactive:false,
+        attribution:'光電：<a href="https://doi.org/10.5281/zenodo.11368204" target="_blank" rel="noopener">TZ-SAM</a>'}).addTo(g);
       return g;
     },
     ytl: function(){

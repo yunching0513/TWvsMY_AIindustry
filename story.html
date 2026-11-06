@@ -171,7 +171,7 @@
   .key i.k-o{background:#f5a623}
   .key i.k-r{background:#e3242b}
   .key i.k-p{background:#e2ea8a}
-  .key i.k-c{background:#7048e8}
+  .key i.k-sv{background:linear-gradient(90deg,#b2182b 0 50%,#92c5de 50% 100%)}
   .key i.k-pv{background:none;box-shadow:none;border:2px solid #f2b705;outline:1px solid rgba(0,0,0,.45);height:9px;width:13px}
   .key i.k-line{height:0;top:13px;border-top:2px dashed #111;box-shadow:none;background:none;border-radius:0}
 
@@ -506,19 +506,18 @@
 
     <section class="step" data-step="14" id="s14">
       <div class="card">
-        <div class="kicker"><span class="zh tw">從衛星看土地｜臺灣，2019–2025</span></div>
-        <h2>AI競逐這六年，約<span class="num">2.9萬</span>公頃農田長出建物</h2>
-        <p>上面的全球農田地圖只到2019年，正好錯過AI算力競賽加速的這幾年。這裡改用以Sentinel-2衛星影像畫成的10公尺年度土地覆蓋圖，比較2019與2025年。為了避開單一年份的誤判，只算連續兩年都判得一致的變化：2018、2019年都是農田，2024、2025年都是建成區。</p>
-        <p>這樣算下來約<b>2.9萬公頃</b>，差不多一個臺北市。不過紫色並沒有集中在科學園區旁邊：變化最多的是<b>雲林</b>（約5,600公頃）和<b>彰化</b>（約4,900公頃），其次是屏東、臺南與嘉義縣，五個縣市占了約三分之二。園區周邊3公里內，農田變成建成區的比例是12.9%；10公里以外也有10.3%，差距不大。</p>
-        <p>園區範圍裡面則是另一回事：嘉義科學園區在2019年有99%是農田，2025年只剩4%；<b>南科屏東園區</b>從99%降到46%，<b>南科橋頭園區</b>從55%降到6%。</p>
+        <div class="kicker"><span class="zh tw">從衛星看土地｜臺灣，2020–2025</span></div>
+        <h2>農地少了<span class="num">2.3萬</span>公頃，多半不是蓋成房子</h2>
+        <p>AI競逐的這幾年，臺灣的土地怎麼變？我們先試了全球衛星土地覆蓋圖，結果它把大量農田誤判成建物：拿內政部的國土利用現況調查逐點比對，衛星說「農田變建物」的地方，真正轉用的只有約2%。所以這一節改用國土利用現況調查。</p>
+        <p>比較2020–21年與2024–25年兩期調查：水田、旱田與果園少了約<b>2.35萬公頃</b>（−3.6%），其中果園就少了1.65萬公頃。同一時間，森林多了約1.8萬公頃，空置與整地中的土地多了約0.6萬公頃；消失的農地，有不少是廢耕後長回樹林或閒置。建築、交通與公共用地則多了約1.35萬公頃。</p>
+        <p>科學園區所在的26個鄉鎮，農地少了3.8%，其他鄉鎮少了3.6%，差別不大。園區裡面則是另一回事：<b>嘉義科學園區</b>、<b>南科屏東園區</b>、<b>南科橋頭園區</b>，2019年幾乎都是農田，2025年已經整地建廠。</p>
         <ul class="key" aria-label="地圖顏色說明">
-          <li><i class="k-c"></i><b>紫色</b>：2019年是農田，2025年已判為建成區</li>
+          <li><i class="k-sv"></i><b>紅色</b>：農地減少；<b>藍色</b>：農地增加（各鄉鎮，公頃）</li>
           <li><i class="k-line"></i><b>虛線框</b>：嘉義科學園區、南科橋頭園區、南科屏東園區</li>
         </ul>
-        <p class="fig-note">提醒：衛星判的「建成區」也包括農舍、溫室和農業設施，不等於依法變更的農地。同一時期，農業部統計的農耕土地只少了約1.5萬公頃（−1.9%）；兩者算法不同，這個落差本身也值得追問。</p>
+        <p class="fig-note">顏色代表各鄉鎮的面積變化，不是比例；兩期調查是分區輪流更新，時間不完全一致。滑過地圖可看各鄉鎮數字。</p>
         <figure class="photo two sat"><div class="ph-row"><a class="ph" href="img/compare/pingtung-2019-02-1600.jpg" target="_blank" rel="noopener" aria-label="開啟大圖：2019年2月的衛星影像，南科屏東園區的虛線範圍內是農田與網室"><img src="img/compare/pingtung-2019-02-800.jpg" alt="2019年2月的衛星影像，南科屏東園區的虛線範圍內是農田與網室" width="800" height="727" loading="lazy" decoding="async"><span class="when">2019年2月</span></a><a class="ph" href="img/compare/pingtung-2025-03-1600.jpg" target="_blank" rel="noopener" aria-label="開啟大圖：2025年3月的衛星影像，南科屏東園區的虛線範圍內已整地，劃出道路與廠區"><img src="img/compare/pingtung-2025-03-800.jpg" alt="2025年3月的衛星影像，南科屏東園區的虛線範圍內已整地，劃出道路與廠區" width="800" height="727" loading="lazy" decoding="async"><span class="when">2025年3月</span></a></div><figcaption>放大看南科屏東園區：2019年2月（左），虛線範圍內是農田與網室；2025年3月（右），已經整地，劃出道路與廠區。<span class="credit">影像：<a href="https://livingatlas.arcgis.com/wayback/" target="_blank" rel="noopener">Esri World Imagery Wayback</a>（Maxar），標示拍攝日期｜虛線：© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>貢獻者｜點圖可看大圖</span></figcaption></figure>
-        <p class="mapnote">紫色疊圖可用右上角按鈕暫時隱藏；放大可看到單一塊田的變化。</p>
-        <p class="src">資料來源：<a href="https://doi.org/10.1109/IGARSS47720.2021.9553499" target="_blank" rel="noopener">Karra et al.（2021）</a>（Esri/Impact Observatory年度土地覆蓋，2018–2025）；<a href="https://agrstat.moa.gov.tw/moasdweb/book/Book.aspx" target="_blank" rel="noopener">農業部統計處（n.d.）</a>；本頁計算</p>
+        <p class="src">資料來源：<a href="https://data.gov.tw/dataset/158973" target="_blank" rel="noopener">內政部國土測繪中心（2022）</a>；<a href="https://data.gov.tw/dataset/178038" target="_blank" rel="noopener">內政部國土測繪中心（2026）</a>；<a href="https://doi.org/10.1016/j.rse.2014.02.015" target="_blank" rel="noopener">Olofsson et al.（2014）</a>（抽樣檢驗方法）；本頁計算</p>
       </div>
     </section>
 
@@ -527,14 +526,14 @@
         <div class="kicker"><span class="zh tw">從衛星看土地｜臺南沿海，2019–2025</span></div>
         <h2>綠電需求，把光電推向鹽田與魚塭</h2>
         <p>科技業要綠電，土地的壓力也跟著移動。依TransitionZero用衛星判出的全球太陽光電資料，2019年下半年到2024年初，臺灣新增約<b>2,500公頃</b>的地面型光電，多半在臺南、雲林、嘉義與屏東沿海。</p>
-        <p>這些地在蓋光電之前是什麼？約<b>五成</b>是水面（衛星把魚塭和鹽田都判為水體），約<b>27%</b>是農田，約12%是草地。</p>
+        <p>內政部的國土利用調查也看得到：電力用地四年間從約3,650公頃增為約6,600公頃，增加的大多在臺南七股、北門、學甲，嘉義義竹，雲林口湖等沿海鄉鎮；同時魚塭少了約5,300公頃。在2020–21年的調查裡，這些光電場的位置約<b>四分之一</b>是鹽田與空置地，約<b>兩成</b>是魚塭，約兩成是農田與果園。</p>
         <p>地圖上的黃框，是2019年下半年以後新蓋的光電場。下面這一區位在臺南將軍、七股的廢棄鹽田；台電在這一帶的150MW光電場，2020年9月全部併網，面積約214公頃。</p>
         <ul class="key" aria-label="地圖顏色說明">
           <li><i class="k-pv"></i><b>黃框</b>：2019年下半年至2024年初新蓋的地面型光電</li>
         </ul>
         <p class="fig-note">全球資料只抓得到規模較大的案場，實際面積應該更多。</p>
         <figure class="photo two sat"><div class="ph-row"><a class="ph" href="img/compare/tainan-pv-2017-10-1600.jpg" target="_blank" rel="noopener" aria-label="開啟大圖：2017年10月的衛星影像，框內是廢棄的鹽田"><img src="img/compare/tainan-pv-2017-10-800.jpg" alt="2017年10月的衛星影像，框內是廢棄的鹽田" width="800" height="727" loading="lazy" decoding="async"><span class="when">2017年10月</span></a><a class="ph" href="img/compare/tainan-pv-2025-12-1600.jpg" target="_blank" rel="noopener" aria-label="開啟大圖：2025年12月的衛星影像，框內已鋪滿光電板"><img src="img/compare/tainan-pv-2025-12-800.jpg" alt="2025年12月的衛星影像，框內已鋪滿光電板" width="800" height="727" loading="lazy" decoding="async"><span class="when">2025年12月</span></a></div><figcaption>放大看：2017年10月（左），框內是廢棄的鹽田；2025年12月（右），已經鋪滿光電板。<span class="credit">影像：<a href="https://livingatlas.arcgis.com/wayback/" target="_blank" rel="noopener">Esri World Imagery Wayback</a>（Maxar），標示拍攝日期｜虛線：光電範圍，依<a href="https://doi.org/10.5281/zenodo.11368204" target="_blank" rel="noopener">TZ-SAM</a>｜點圖可看大圖</span></figcaption></figure>
-        <p class="src">資料來源：<a href="https://doi.org/10.5281/zenodo.11368204" target="_blank" rel="noopener">Phillpott et al.（2024）</a>；<a href="https://doi.org/10.1109/IGARSS47720.2021.9553499" target="_blank" rel="noopener">Karra et al.（2021）</a>；<a href="https://m.energytrend.com/news/20210412-21386.html" target="_blank" rel="noopener">EnergyTrend（2021）</a>；本頁計算</p>
+        <p class="src">資料來源：<a href="https://doi.org/10.5281/zenodo.11368204" target="_blank" rel="noopener">Phillpott et al.（2024）</a>；<a href="https://data.gov.tw/dataset/178038" target="_blank" rel="noopener">內政部國土測繪中心（2026）</a>；<a href="https://m.energytrend.com/news/20210412-21386.html" target="_blank" rel="noopener">EnergyTrend（2021）</a>；本頁計算</p>
       </div>
     </section>
 
@@ -685,7 +684,6 @@
       <li id="ref-hsiung1996">Hsiung, P.-C. (1996). Living rooms as factories: Class, gender, and the satellite factory system in Taiwan. Temple University Press.</li>
       <li id="ref-kaap2025">Kadir, Andri &amp; Partners. (2025, December). Malaysia's big data centre push: Strong potential, real risks [Briefing]. <a href="https://www.kaaplaw.com" target="_blank" rel="noopener">https://www.kaaplaw.com</a></li>
       <li id="ref-kapp1950">Kapp, K. W. (1950). The social costs of private enterprise. Harvard University Press.</li>
-      <li id="ref-karra2021">Karra, K., Kontgis, C., Statman-Weil, Z., Mazzariello, J. C., Mathis, M., &amp; Brumby, S. P. (2021). Global land use/land cover with Sentinel 2 and deep learning. In 2021 IEEE International Geoscience and Remote Sensing Symposium IGARSS (pp. 4704–4707). <a href="https://doi.org/10.1109/IGARSS47720.2021.9553499" target="_blank" rel="noopener">https://doi.org/10.1109/IGARSS47720.2021.9553499</a></li>
       <li id="ref-kollar2026">Kollar, J. (2026). Fallowing the fields, feeding the fabs: Territorial restructuring and the political-industrial ecology of high-tech Taiwan. Environment and Planning E: Nature and Space, 9(2), 751–776. <a href="https://doi.org/10.1177/25148486251406484" target="_blank" rel="noopener">https://doi.org/10.1177/25148486251406484</a></li>
       <li id="ref-lee2026">Lee, C., &amp; Hutchinson, F. E. (2026). Malaysia's semiconductor industry: Performance, pitfalls and potential (Trends in Southeast Asia, TRS16/26). ISEAS–Yusof Ishak Institute. <a href="https://bookshop.iseas.edu.sg/publication/8011" target="_blank" rel="noopener">https://bookshop.iseas.edu.sg/publication/8011</a></li>
       <li id="ref-levien2013">Levien, M. (2013). Regimes of dispossession: From steel towns to special economic zones. Development and Change, 44(2), 381–407. <a href="https://doi.org/10.1111/dech.12012" target="_blank" rel="noopener">https://doi.org/10.1111/dech.12012</a></li>
@@ -718,6 +716,8 @@
       <li id="ref-ytl2023">YTL Power International. (2023, December 8). YTL to advance AI development in Malaysia in collaboration with NVIDIA [Press release]. <a href="https://www.ytlpowerinternational.com/press-releases/ytl-to-advance-ai-development-in-malaysia-in-collaboration-with-nvidia/" target="_blank" rel="noopener">https://www.ytlpowerinternational.com/press-releases/ytl-to-advance-ai-development-in-malaysia-in-collaboration-with-nvidia/</a></li>
       <li id="ref-zanaga2022">Zanaga, D., Van De Kerchove, R., Daems, D., De Keersmaecker, W., Brockmann, C., Kirches, G., Wevers, J., Cartus, O., Santoro, M., Fritz, S., Lesiv, M., Herold, M., Tsendbazar, N.-E., Xu, P., Ramoino, F., &amp; Arino, O. (2022). ESA WorldCover 10 m 2021 v200 [Data set]. Zenodo. <a href="https://doi.org/10.5281/zenodo.7254221" target="_blank" rel="noopener">https://doi.org/10.5281/zenodo.7254221</a></li>
       <li id="ref-ctee2024">工商時報（2024年6月18日）。台積嘉科挖到寶　二廠急啟動。 <a href="https://www.ctee.com.tw/news/20240618700036-439901" target="_blank" rel="noopener">https://www.ctee.com.tw/news/20240618700036-439901</a></li>
+      <li id="ref-nlsc2022">內政部國土測繪中心（2022）。109–110年國土利用現況調查成果鄉鎮市區統計資料（108年版土地利用分級分類系統表，3級分類）。政府資料開放平臺。 <a href="https://data.gov.tw/dataset/158973" target="_blank" rel="noopener">https://data.gov.tw/dataset/158973</a></li>
+      <li id="ref-nlsc2026">內政部國土測繪中心（2026）。113–114年國土利用現況調查成果鄉鎮市區統計資料（108年版土地利用分級分類系統表，3級分類）。政府資料開放平臺。 <a href="https://data.gov.tw/dataset/178038" target="_blank" rel="noopener">https://data.gov.tw/dataset/178038</a></li>
       <li id="ref-cna2020">中央通訊社（2020年4月9日）。農田水利會立專法改制公務機關　不受國產法規範。 <a href="https://www.cna.com.tw/news/aipl/202004090157.aspx" target="_blank" rel="noopener">https://www.cna.com.tw/news/aipl/202004090157.aspx</a></li>
       <li id="ref-cna2021">中央通訊社（2021年11月27日）。枯水期祭全台水稻輪作制　經部拚年省一座石門水庫。 <a href="https://www.cna.com.tw/news/afe/202111270016.aspx" target="_blank" rel="noopener">https://www.cna.com.tw/news/afe/202111270016.aspx</a></li>
       <li id="ref-cna2024">中央通訊社（2024年3月22日）。4月起漲電價　逾9成住宅電費月增近20元、產業最高調25%。 <a href="https://www.cna.com.tw/news/afe/202403220343.aspx" target="_blank" rel="noopener">https://www.cna.com.tw/news/afe/202403220343.aspx</a></li>
@@ -736,7 +736,7 @@
     <b>關於本頁：</b>依據研討會論文〈晶片島與雲端飛地：誰為臺馬的國家技術空間付出代價？〉（2026年臺灣東南亞學會年會）整理，為初步研究成果，數據與論點仍在修訂中，請勿引用。<br>
     <b>地圖：</b>地點標記為概略位置，圓圈、虛線與實線均為示意，不代表實際範圍或管線路徑；「從衛星看土地」各節例外：疊圖與虛線框是依下列資料畫出的實際範圍，馬來西亞各州圓圈的面積則與減少的油棕面積等比。底圖：預設為OpenStreetMap街道地圖（© OpenStreetMap貢獻者），可用地圖右上角的按鈕切換為<a href="https://cloudless.eox.at" target="_blank" rel="noopener">EOxCloudless</a>衛星影像（EOX IT Services GmbH，含經修改的Copernicus Sentinel 2025年資料，依<a href="https://cloudless.eox.at/documentation/license" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>供非商業使用）。<br>
     <b>疊圖：</b>臺灣農地變化比對<a href="https://doi.org/10.1038/s43016-021-00429-z" target="_blank" rel="noopener">GLAD全球農田地圖</a>2003年與2019年兩期（每格30公尺）；「蓋成建物」依<a href="https://doi.org/10.5281/zenodo.7254221" target="_blank" rel="noopener">ESA WorldCover 2021</a>判定（CC BY 4.0；每格內9個10公尺像元有5個以上為建成地即計入），面積依緯度換算，由本頁重新計算；縮小檢視時，為了看得出分布，橘色與紅色會加深。油棕園採<a href="https://doi.org/10.5281/zenodo.4473715" target="_blank" rel="noopener">Descals et al.（2021）</a>的2019年圖資（CC BY 4.0）。園區範圍取自<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>（ODbL）。用同一套方法算出的馬來西亞農地變化，見<a href="farmland.html">農地流失地圖</a>。2018年衛星影像為EOxCloudless 2018（含經修改的Copernicus Sentinel 2017–2018年資料，CC BY-NC-SA 4.0）。<br>
-    <b>2019–2025年：</b>農田轉為建成區，依Esri/Impact Observatory以Sentinel-2畫成的10公尺年度土地覆蓋（<a href="https://doi.org/10.1109/IGARSS47720.2021.9553499" target="_blank" rel="noopener">Karra et al., 2021</a>；CC BY 4.0），只計2018、2019年都判為農作且2024、2025年都判為建成區的像元，由本頁重新計算；縮小檢視時紫色會加深。地面型光電依TransitionZero Solar Asset Mapper 2024年第1季版（<a href="https://doi.org/10.5281/zenodo.11368204" target="_blank" rel="noopener">Phillpott et al., 2024</a>；CC BY-NC 4.0），只畫2019年下半年以後建置者。<br>
+    <b>2020–2025年：</b>農地與建成用地的變化，依內政部國土測繪中心國土利用現況調查的鄉鎮市區統計（109–110年與113–114年，108年版分類）計算；鄉鎮界線為內政部2025年版並經簡化。全球衛星土地覆蓋（Esri/Impact Observatory）經本頁以調查分層抽樣檢驗（Olofsson et al., 2014），會高估臺灣的農地轉用，因此不採用。地面型光電依TransitionZero Solar Asset Mapper 2024年第1季版（<a href="https://doi.org/10.5281/zenodo.11368204" target="_blank" rel="noopener">Phillpott et al., 2024</a>；CC BY-NC 4.0），只畫2019年下半年以後建置者。<br>
     <b>衛星對照：</b>〈從衛星看土地〉各節的前後對照，高解析度影像取自<a href="https://livingatlas.arcgis.com/wayback/" target="_blank" rel="noopener">Esri World Imagery Wayback</a>（Maxar），圖上標示的是拍攝日期；1999年影像為NASA GWELD的Landsat年度合成影像（經NASA GIBS提供）。<br>
     <b>照片：</b>均取自Wikimedia Commons，採創用CC（CC BY、CC BY-SA）或政府網站資料開放宣告等開放授權；作者與授權標示於各圖說，點選照片可開啟原始頁面。
   </footer>
@@ -809,7 +809,7 @@
     {chip:'從衛星看土地：臺灣的農田', bounds:[[21.88,119.95],[25.33,122.05]], show:[], extra:['farm'], legend:'farm', toggle:true, padSmall:[24,10]},
     {chip:'從衛星看土地：臺中', bounds:[[24.17,120.56],[24.33,120.77]], show:[], extra:['farm','ctsp'], legend:'farmSite', toggle:true},
     {chip:'從衛星看土地：嘉義，2025', bounds:[[23.460,120.288],[23.488,120.326]], show:[], extra:['img2025','farm','cysp'], legend:'farmSite', toggle:true, ovOpacity:.5},
-    {chip:'從衛星看土地：臺灣，2019–2025', bounds:[[22.55,119.98],[24.15,120.80]], show:[], extra:['conv','newparks'], legend:'conv', toggle:true, padSmall:[24,10]},
+    {chip:'從衛星看土地：臺灣，2020–2025', bounds:[[21.95,119.98],[25.32,122.0]], show:[], extra:['survey','newparks'], legend:'survey', padSmall:[24,10]},
     {chip:'從衛星看土地：臺南沿海光電', bounds:[[23.10,120.03],[23.24,120.20]], show:[], extra:['img2025','pv'], legend:'pv'},
     {chip:'從衛星看土地：馬來西亞的油棕', bounds:[[1.25,100.4],[5.0,104.3]], show:[], extra:['mpob'], legend:'mpob', padSmall:[16,10]},
     {chip:'柔佛古來，2018', bounds:[[1.600,103.500],[1.635,103.541]], show:[], extra:['img2018','palm','ytl'], legend:'palm', toggle:true},
@@ -929,7 +929,6 @@
     return set;
   }
   var FARM_SET = tileSet(FARM_IDX);
-  var CONV_SET = window.STORY2025 ? tileSet(window.STORY2025.CONV_IDX) : {};
   // Only request tiles that exist; empty squares get a blank element instead of a 404.
   var FarmTiles = L.TileLayer.extend({
     createTile: function(coords, done){
@@ -945,7 +944,7 @@
     2018:'<a href="https://cloudless.eox.at" target="_blank" rel="noopener">EOxCloudless</a> 2018 by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2017 &amp; 2018)',
     2025:'<a href="https://cloudless.eox.at" target="_blank" rel="noopener">EOxCloudless</a> by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2025)'
   };
-  var PERSIST = {}, PERSIST_KEYS = ['img2018', 'img2025', 'farm', 'palm', 'conv'];
+  var PERSIST = {}, PERSIST_KEYS = ['img2018', 'img2025', 'farm', 'palm'];
   function persistent(k){
     if (PERSIST[k]) return PERSIST[k];
     var l;
@@ -954,12 +953,6 @@
         minNativeZoom:5, maxNativeZoom:12, maxZoom:14, zIndex:5, className:'farm-tiles',
         bounds:L.latLngBounds([[21.88,119.98],[25.32,122.02]]),
         attribution:'農地疊圖：<a href="https://doi.org/10.1038/s43016-021-00429-z" target="_blank" rel="noopener">GLAD</a>、<a href="https://doi.org/10.5281/zenodo.7254221" target="_blank" rel="noopener">ESA WorldCover 2021</a>（本頁計算）'
-      });
-    } else if (k === 'conv'){
-      l = new FarmTiles('tiles/conv-tw/{z}/{x}/{y}.png', {
-        idxSet:CONV_SET, minNativeZoom:5, maxNativeZoom:12, maxZoom:14, zIndex:6, className:'farm-tiles',
-        bounds:L.latLngBounds([[21.85,119.95],[25.35,122.05]]),
-        attribution:'農轉建疊圖：<a href="https://doi.org/10.1109/IGARSS47720.2021.9553499" target="_blank" rel="noopener">Esri/Impact Observatory</a>（本頁計算）'
       });
     } else if (k === 'palm'){
       l = L.imageOverlay('img/overlay/kulai-oilpalm-2019.png', PALM_BOUNDS, {
@@ -977,7 +970,7 @@
   var ovBtn = null, overlayOn = true, ovLevel = 1;
   function setOverlay(on){
     overlayOn = on;
-    ['farm', 'palm', 'conv'].forEach(function(k){ if (PERSIST[k]) PERSIST[k].setOpacity(on ? ovLevel : 0); });
+    ['farm', 'palm'].forEach(function(k){ if (PERSIST[k]) PERSIST[k].setOpacity(on ? ovLevel : 0); });
     if (ovBtn){
       ovBtn.textContent = on ? '隱藏疊圖' : '顯示疊圖';
       ovBtn.setAttribute('aria-label', on ? '隱藏疊圖，只看底圖' : '顯示疊圖');
@@ -1004,7 +997,7 @@
                  '<span><i class="sq" style="background:#f5a623"></i>2003年後不再是農田</span>' +
                  '<span><i class="sq" style="background:#e3242b"></i>已蓋成建物</span>';
   var LEGENDS = {
-    conv: '<span><i class="sq" style="background:#7048e8"></i>2019年是農田、2025年判為建成區</span><span><i class="ln"></i>園區範圍</span>',
+    survey: '<span><i class="sq" style="background:#b2182b"></i>農地−300公頃以上</span><span><i class="sq" style="background:#ef8a62"></i>−100至−300</span><span><i class="sq" style="background:#fddbc7"></i>−30至−100</span><span><i class="sq" style="background:#f2f2f2"></i>±30</span><span><i class="sq" style="background:#92c5de"></i>增加30以上</span><span><i class="ln"></i>園區範圍</span>',
     pv: '<span><i class="pvk"></i>2019年後新蓋的光電</span><span>2025年衛星影像</span>',
     farm: KEY_FARM,
     farmSite: KEY_FARM + '<span><i class="ln"></i>園區範圍</span>',
@@ -1070,6 +1063,18 @@
       var g = L.layerGroup();
       outline(OUTLINES.cysp1, '嘉義科學園區（2025年施工中）', isSmall() ? 'bottom' : 'left', g);
       outline(OUTLINES.cysp2, '第二期（2026年動土）', isSmall() ? 'top' : 'right', g);
+      return g;
+    },
+    survey: function(){
+      var g = L.layerGroup();
+      if (!window.STORY2025) return g;
+      function col(v){ return v <= -300 ? '#b2182b' : v <= -100 ? '#ef8a62' : v <= -30 ? '#fddbc7' : v < 30 ? '#f2f2f2' : '#92c5de'; }
+      function fmt(v){ return (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toLocaleString('en-US'); }
+      L.geoJSON(window.STORY2025.SURVEY_TW, {
+        style: function(f){ return {color:'#ffffff', weight:.6, fillColor:col(f.properties.ag), fillOpacity:.78}; },
+        onEachFeature: function(f, l){ var p = f.properties; l.bindTooltip('<b>' + p.n + '</b><span>農地 ' + fmt(p.ag) + '公頃｜建成 ' + fmt(p.bu) + '公頃' + (p.pw >= 20 ? '｜電力 ' + fmt(p.pw) + '公頃' : '') + '</span>', {sticky:true, className:'lbl'}); },
+        attribution:'土地利用：內政部國土測繪中心（本頁計算）'
+      }).addTo(g);
       return g;
     },
     newparks: function(){
